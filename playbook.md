@@ -1,9 +1,9 @@
 # Data Analysis Playbook
 ### A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
-**Author:** Taofeek Salami
-**First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)
-**Version:** 2.0
+**Author:** Taofeek Salami  
+**First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
+**Version:** 2.0  
 **Purpose:** Establish a repeatable, well-documented workflow for approaching any analytics project—from portfolio work to production environments. This playbook is tool-agnostic and can be applied across industries, datasets, and business domains.
 
 ---
