@@ -953,6 +953,15 @@ Examples:
 - Duplicate check
 - Constraint validation
 
+Stronger use case of the following in SQL where necessary. 
+
+- indexes
+- query optimization
+- execution plans
+- views
+- stored procedures
+- transactions
+
 ---
 
 ## Python
