@@ -16,6 +16,7 @@
 | 2.0 | July 2026 | Added the Analytical Language & Evidence Standards section  |
 | 2.1 | July 2026 | Added the Report Structure & Prose Standards |
 | 2.2 | July 2026 | Added the Oral Presentation Planning |
+| 2.3 | July 2026 | Added the Oral Presentation Building & Delivery | 
 
 ---
 
@@ -1031,13 +1032,15 @@ A run-on is two or more independent clauses connected or punctuated incorrectly 
 
 ---
 
-# Oral Presentation Planning
+# Oral Presentation - Planning, Building & Delivery
 
 Just as it's a mistake to start writing code before deciding what the analysis needs to answer, it's a mistake to start writing slides before planning the presentation. Before opening a deck tool, decide: **purpose, audience, message, structure, outline** — in that order.
 
 ---
 
-## 1. Define the Purpose
+## 1. Planning
+
+### 1.1 Define the Purpose
 
 Classify the presentation as one of three types before deciding content:
 
@@ -1049,9 +1052,7 @@ Classify the presentation as one of three types before deciding content:
 
 The purpose determines depth and content — an instructional deck leans into method; a persuasive deck leans into impact and recommendation.
 
----
-
-## 2. Define the Audience — Role and Size
+### 1.2 Define the Audience — Role and Size
 
 Two separate dimensions to plan for:
 
@@ -1065,9 +1066,7 @@ Two separate dimensions to plan for:
 | Large meeting/conference | ~100 people, e.g. a software dept. all-hands |
 | Workshop/training | ~30 people, hands-on technical training for a customer's team |
 
----
-
-## 3. Decide the Message — Before Building Any Slides
+### 1.3 Decide the Message — Before Building Any Slides
 
 Assumption to plan around: **the audience will forget ~90% of the presentation within a week.** So decide the one thing they should retain first, then work backward to decide what the deck needs to include to get them there.
 
@@ -1079,9 +1078,7 @@ Three components, decided in this order:
 
 Do not proceed to structure/outline until this one sentence exists.
 
----
-
-## 4. Structure
+### 1.4 Structure
 
 | Section | Content | Notes |
 |---|---|---|
@@ -1091,13 +1088,92 @@ Do not proceed to structure/outline until this one sentence exists.
 
 Attention is highest at the beginning and end — this structure is built to exploit that, not fight it.
 
----
-
-## 5. Outline — Section Count and Timing
+### 1.5 Outline — Section Count and Timing
 
 - Aim for **~5 sections**, no more. Too many sections dilutes attention.
 - Typical shape (adapt names to the project): reason for the analysis → exploratory analysis → core analysis/model → conclusions → follow-up actions.
 - **Time budget drives scope, not the reverse** — decide how long you have before deciding how much to include, not after the deck is built.
+
+---
+
+## 2. Slide Design & Building
+
+Planning decides *what* to say. This section governs *how it looks* once you start building.
+
+### 2.1 Slide Density Philosophy
+
+- Prefer **many slides with little content** over few slides packed with content — it keeps the presentation dynamic and matches the audience's attention capacity.
+- Don't optimize for slide count or time-per-slide directly — those are proxies. Optimize for **one message per slide**. Get that right and pacing follows naturally.
+- Cramming multiple messages onto one slide raises cognitive load, clouds the message, and causes the audience to miss the point entirely.
+
+### 2.2 Color
+
+- Use the **minimum number of colors** needed to convey the message. Everything on the slide should carry meaning — cut what doesn't.
+- Maintain strong **contrast** between text and background for readability.
+- Never rely on **green + red together** to distinguish meaning — color-vision-deficient viewers can't tell them apart. Confirm color choices are accessible.
+
+### 2.3 Fonts
+
+- Rule of thumb: **sans-serif for screen**, **serif for print**. Research doesn't conclusively favor one over the other — treat this as a default, not a law.
+- Font choice is contextual — Comic Sans is fine for a kids' audience, not for a business setting.
+- The real fix for unreadable slides is usually **short text in a big font**, not a different typeface.
+- Use as few font variations as possible (weights, sizes, italics, letter/line spacing) — each one used should earn its place by adding clarity, not decoration.
+
+### 2.4 Text Slides
+
+- Slides support the spoken narrative — they are not a written report. If a slide needs to stand alone without a presenter, that's a signal to produce a recording, not to overload the slide.
+- Write only the **main supporting points**, not full sentences or paragraphs.
+- Give every content slide a **headline**: concise, specific, states the slide's main point, and set in a larger font so it's the first thing read.
+- Use **layering** to break a complex slide into smaller pieces: present each point individually, then bring them together on a final view to summarize. This keeps focus on one idea at a time.
+
+### 2.5 Visualization Slides
+
+- When text starts feeling crowded, replace it with a graph — visual information is generally absorbed faster and more accurately than text.
+- Apply the same layering logic to charts: reveal elements one at a time, then show the composed view.
+- Use **highlighting** (on a chart or on text) to direct attention to the specific point being discussed.
+- Cap it at **one or two full-size graphs per slide** — this naturally enforces the one-message-per-slide rule and prevents overcrowding.
+
+---
+
+## 3. Delivery
+
+### 3.1 Practice
+
+- Write a **script** — not to memorize, but as a guide for articulating your reasoning and insights fluently.
+- **Anticipate follow-up questions** and prepare answers before the presentation, not during it.
+- Rehearse under real conditions: standing up, using the actual slides, speaking out loud. Silent read-throughs don't surface the same problems.
+- Use rehearsal to catch:
+  - Filler words ("um," "so," "like")
+  - Lines that read fine on paper but sound wrong spoken
+  - Missing **transitions** between slides — build explicit linking statements
+  - Gaps in your answers to anticipated questions
+
+### 3.2 Delivery Mechanics
+
+- **Emotional state is contagious** — presenting self-assured reads as credible; nervous or confused reads as unconvincing, regardless of content quality.
+- **Attention span is roughly 5–20 minutes** regardless of setting — plan active re-engagement (eye contact, interactivity, direct questions to the room) rather than assuming sustained focus.
+- **Talk to the audience, not at them.** Treat the presentation as relationship-building — show empathy, act as a guide. Avoid phrases like "as you know" or "obviously," which can alienate anyone who doesn't already know and make it socially harder to ask for clarification.
+- **Respect the allocated time.** Going over causes audience impatience and a sharp drop in attention.
+- **Use pacing deliberately** — speaking a little faster is fine to convey urgency; follow it with a pause afterward to let the point land. Pauses generally aid comprehension.
+- **Always leave room for questions**, during or at the end — it signals openness to feedback and genuine interest in the audience's understanding.
+
+### 3.3 Body Language and Voice
+
+- The speaker is part of the message — use natural gestures (hand movement, pointing at the slide), facial expression, and smiling to create emphasis. This matters more for in-person delivery than online.
+- Vary **voice pace**: faster to convey urgency, excitement, or emotion; slower to flag importance, introduce a new idea, or reinforce a fundamental point.
+- Project enough to be heard in person; for online delivery, treat this as a mic/audio-setup check instead.
+- Intonation is language-dependent, so no universal rule applies — but the baseline is: **sound engaged.** If you don't sound interested in the material, the audience won't be either.
+
+### 3.4 Common Mistakes to Avoid
+
+- **Running long** and/or leaving no time for audience questions.
+- **Skipping the stated purpose** in the introduction — without it, the audience can't gauge why the findings matter, which undercuts the whole story.
+- **Withholding findings until the very end** instead of threading them throughout as a backbone for the message — the audience should be able to follow the argument as it builds, not receive a dump of results at the close.
+- **Presenting as a monologue** rather than engaging the audience. Counter this by:
+  - Opening with a strong self-introduction (who you are, why you're presenting)
+  - Stating key assumptions explicitly — the audience doesn't share your thought process, and naming them signals empathy
+  - Asking questions mid-presentation (ideally ones you already know the answer to, used as a hook into the next slide)
+  - Continuously tying what's on screen back to the central message so the audience can track the throughline
 
 ---
 
@@ -1304,6 +1380,14 @@ Before publishing a project:
 - [ ] A single central message sentence exists before slide-building starts, with matching opening/closing statements.
 - [ ] Methods/Analysis depth is scaled to (or skipped for) a non-technical audience.
 - [ ] Deck has ~5 sections max, sized to the actual time slot.
+- [ ] Each slide carries exactly one message; dense/multi-message slides have been split.
+- [ ] Color and font choices checked for contrast and color-vision-deficiency accessibility.
+- [ ] Every content slide has a concise, specific headline.
+- [ ] Text-heavy slides converted to visuals where possible; charts capped at one or two per slide.
+- [ ] Presentation has been rehearsed standing, out loud, with the actual slides — not just read silently.
+- [ ] Follow-up questions have been anticipated with prepared answers.
+- [ ] Introduction states the purpose explicitly; findings are threaded throughout rather than saved for the end.
+- [ ] Time budget is respected, with room reserved for audience questions.
 
 ---
 
