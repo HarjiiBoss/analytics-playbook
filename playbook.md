@@ -15,6 +15,7 @@
 | 1.0 | July 2026 | Initial playbook — five-phase workflow, core analysis principles, technical and documentation standards |
 | 2.0 | July 2026 | Added the Analytical Language & Evidence Standards section  |
 | 2.1 | July 2026 | Added the Report Structure & Prose Standards |
+| 2.2 | July 2026 | Added the Oral Presentation Planning |
 
 ---
 
@@ -1030,6 +1031,76 @@ A run-on is two or more independent clauses connected or punctuated incorrectly 
 
 ---
 
+# Oral Presentation Planning
+
+Just as it's a mistake to start writing code before deciding what the analysis needs to answer, it's a mistake to start writing slides before planning the presentation. Before opening a deck tool, decide: **purpose, audience, message, structure, outline** — in that order.
+
+---
+
+## 1. Define the Purpose
+
+Classify the presentation as one of three types before deciding content:
+
+| Purpose | Goal | Example |
+|---|---|---|
+| **Informative** | Share current findings/facts | Report current negative/positive rating split and the words associated with negative reviews |
+| **Instructional** | Teach colleagues how something was built | Explain how the sentiment analysis model was built |
+| **Persuasive** | Convince stakeholders to act | Convince stakeholders that action is needed on the volume of negative ratings |
+
+The purpose determines depth and content — an instructional deck leans into method; a persuasive deck leans into impact and recommendation.
+
+---
+
+## 2. Define the Audience — Role and Size
+
+Two separate dimensions to plan for:
+
+**Role** — technical colleague, manager/executive, or customer. Determines vocabulary and how much methodology to show.
+
+**Size/setting** — determines pacing, interactivity, and depth:
+
+| Setting | Example |
+|---|---|
+| Small meeting | ~10 people, e.g. the finance team |
+| Large meeting/conference | ~100 people, e.g. a software dept. all-hands |
+| Workshop/training | ~30 people, hands-on technical training for a customer's team |
+
+---
+
+## 3. Decide the Message — Before Building Any Slides
+
+Assumption to plan around: **the audience will forget ~90% of the presentation within a week.** So decide the one thing they should retain first, then work backward to decide what the deck needs to include to get them there.
+
+Three components, decided in this order:
+
+1. **Opening statement** — hooks the audience and previews the one takeaway. *e.g. "Negative ratings are scaring customers away from our website."*
+2. **Central message** — one sentence, the single thing the whole deck exists to support. *e.g. "Delayed shipping is the main cause of negative reviews, and immediate action is needed."*
+3. **Closing statement** — restates the arc and reinforces the central message. *e.g. "Sales are down. Negative reviews are climbing. Delayed shipping is the driver. Action is needed now."*
+
+Do not proceed to structure/outline until this one sentence exists.
+
+---
+
+## 4. Structure
+
+| Section | Content | Notes |
+|---|---|---|
+| **Introduction** | Background info, hook, glimpse of what's coming | Sets the opening statement |
+| **Methods / Analysis / Model outputs** | Technical detail | Depth scales to audience — **can be skipped entirely for non-technical audiences** |
+| **Conclusion** | Ties back to the introduction, call-to-action or next-step recommendations | Reinforces the central message |
+
+Attention is highest at the beginning and end — this structure is built to exploit that, not fight it.
+
+---
+
+## 5. Outline — Section Count and Timing
+
+- Aim for **~5 sections**, no more. Too many sections dilutes attention.
+- Typical shape (adapt names to the project): reason for the analysis → exploratory analysis → core analysis/model → conclusions → follow-up actions.
+- **Time budget drives scope, not the reverse** — decide how long you have before deciding how much to include, not after the deck is built.
+
+---
+
 # Technical Standards
 
 ---
@@ -1228,6 +1299,11 @@ Before publishing a project:
 - [ ] Report follows the standard Introduction → Body (Data/Method/Analysis/Results) → Conclusion structure.
 - [ ] Executive summary alone (1-3 pages) is sufficient for a decision-maker to act.
 - [ ] Prose checked against the Clarity Checklist (empty phrases, vague pronouns, active voice, redundant modifiers, run-on sentences).
+- [ ] Presentation purpose (informative / instructional / persuasive) is explicit before slides are built.
+- [ ] Audience role and setting size are identified and content is scaled accordingly.
+- [ ] A single central message sentence exists before slide-building starts, with matching opening/closing statements.
+- [ ] Methods/Analysis depth is scaled to (or skipped for) a non-technical audience.
+- [ ] Deck has ~5 sections max, sized to the actual time slot.
 
 ---
 
