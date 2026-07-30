@@ -13,7 +13,8 @@
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | July 2026 | Initial playbook — five-phase workflow, core analysis principles, technical and documentation standards |
-| 2.0 | July 2026 | Added the **Analytical Language & Evidence Standards** section — a full framework for calibrating insight language to the strength of the underlying evidence (association vs. causation, the Evidence Ladder, and when statistical modelling is actually necessary) |
+| 2.0 | July 2026 | Added the Analytical Language & Evidence Standards section  |
+| 2.1 | July 2026 | Added the Report Structure & Prose Standards |
 
 ---
 
@@ -918,6 +919,117 @@ A professional analyst is the person who can explain:
 
 ---
 
+# Report Structure & Prose Standards
+
+A well-calibrated insight can still fail to land if it's buried in the wrong report type, poorly structured, or written imprecisely. This section governs the *container* the analysis goes in — separate from the *evidence-calibration* rules that govern the language of the insight itself.
+
+---
+
+## 1. Choose the Right Report Type
+
+Before writing, classify the report along two independent axes.
+
+### Axis A — Content type
+
+| Type | Purpose | Structure | Length |
+|---|---|---|---|
+| **Informational** | States facts only, no analysis | No strict structure | Usually short |
+| **Analytical** | Includes analysis, relationships, recommendations | Strict structure (see below) | Varies |
+
+### Axis B — Depth
+
+| Type | Purpose | Audience | Length |
+|---|---|---|---|
+| **Final report** | Full technical detail, methods, visuals | Technical stakeholders who need to validate the work | Long |
+| **Summary report** | Key findings + recommendations, links back to the final report | Decision-makers who don't need technical detail | Short — under 5 pages |
+
+### Default for this portfolio
+
+Almost every project here (Telco, Fintech, Superstore, Logistics, Quantium) is **analytical** work aimed at a **decision-maker** audience. Default assumption going forward:
+
+> **Produce a summary analytical report as the primary deliverable, with the notebook/SQL/dashboard serving as the "final report" backup for technical readers who want to validate the work.**
+
+Only build a full final-report writeup when a technical stakeholder is the explicit audience.
+
+---
+
+## 2. Standard Report Structure
+
+For any analytical (final or summary) report, follow this structure:
+
+### Introduction
+- **Purpose** — one or two sentences on what the report shows.
+- **Context** — what motivated the analysis (e.g. "an increase in negative reviews," "a rise in defaulting customers over 5 years").
+- **Analysis question(s)** — the specific question(s) being answered.
+
+### Body
+- **Data** — description of the most relevant data used; tables where helpful.
+- **Method** — how the data was gathered/analyzed and which model or technique was used.
+- **Analysis** — selected data/model shown via visuals (e.g. distribution of key variables).
+- **Results** — the actual findings, described and explained, with supporting visuals.
+
+### Conclusion
+- Restate the analysis question(s).
+- Summarize the most important results.
+- State recommendations for next steps.
+
+**Note:** a *summary* report keeps Data down to essentials and puts most of the weight on Results and Recommendations, with a link to the full notebook/dashboard for anyone who wants the Method/Analysis detail.
+
+---
+
+## 3. Sizing Rule — the 1-3-25 Approach
+
+For business-context reports (as opposed to academic/journal-style reports), size the document as:
+
+- **1 page** — abstract
+- **3 pages max** — executive summary (findings + recommendations)
+- **25 pages max** — full detail
+
+The executive summary alone should be enough for a reader to understand the conclusions and decide whether the full report is worth reading.
+
+---
+
+## 4. Match the Report to How the Audience Actually Reads It
+
+| Reader type | Reading pattern | What to front-load for them |
+|---|---|---|
+| Time-limited but interested | Reads intro + conclusion, scans body for specific points | Make intro/conclusion self-contained |
+| Executive / decision-maker | Skims intro + conclusion looking for recommendations | Recommendations must be visible without reading the body |
+| Technical stakeholder | Focuses on the body | Method/Analysis sections must be complete enough to validate the work |
+
+Practical implication: **write the conclusion and recommendations first, then work backward** — if those two sections can't stand alone, the report isn't done yet.
+
+---
+
+## 5. Prose & Clarity Checklist
+
+This governs sentence-level writing quality — distinct from the Evidence Ladder rules, which govern the *certainty* of a claim. A claim can be perfectly evidence-calibrated and still be badly written. Check every report draft against these five rules:
+
+### a. Cut empty phrases
+Phrases that add no information should be removed outright: *"it is interesting to note that," "the fact that," "it should be pointed out that," "it is well known that," "it is obvious that."*
+
+> Weak: *It is interesting to note that the model shows an accuracy of 80%.*
+> Better: *The model shows an accuracy of 80%.*
+
+### b. Use concrete nouns, not vague pronouns
+Avoid overusing "this," "that," "it" when the referent isn't immediately clear — it adds cognitive load and can be genuinely ambiguous.
+
+> Weak: *This shows an accuracy of 80% when predicting customer churn.*
+> Better: *The model shows an accuracy of 80% when predicting customer churn.*
+
+### c. Prefer active voice in business reports
+Passive voice is standard in academic writing but reads as stuffy and indirect in a business report. Active voice puts the emphasis on the finding, not on hedging around who found it.
+
+### d. Cut redundant adjectives and adverbs
+Filler modifiers used for emphasis add words without adding meaning: *"the new," "done previously,"* etc. Remove them to keep the report concise.
+
+### e. Fix run-on sentences
+A run-on is two or more independent clauses connected or punctuated incorrectly (commonly joined by a comma where they shouldn't be). Fix by either:
+- splitting into two separate sentences, or
+- properly subordinating with a connector like *because* or *so*.
+
+---
+
 # Technical Standards
 
 ---
@@ -1112,6 +1224,11 @@ Before publishing a project:
 - [ ] No temporary files remain.
 - [ ] Results are reproducible from raw data.
 - [ ] **Insight language matches the Evidence Ladder level actually supported by the analysis.**
+- [ ] Report type (informational/analytical, final/summary) matches the actual audience and content.
+- [ ] Report follows the standard Introduction → Body (Data/Method/Analysis/Results) → Conclusion structure.
+- [ ] Executive summary alone (1-3 pages) is sufficient for a decision-maker to act.
+- [ ] Prose checked against the Clarity Checklist (empty phrases, vague pronouns, active voice, redundant modifiers, run-on sentences).
+- [ ] Insight language matches the Evidence Ladder level actually supported by the analysis. *(existing item — kept for continuity)*
 
 ---
 
