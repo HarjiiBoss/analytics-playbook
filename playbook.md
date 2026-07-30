@@ -1223,12 +1223,11 @@ Before publishing a project:
 - [ ] Repository structure is clean.
 - [ ] No temporary files remain.
 - [ ] Results are reproducible from raw data.
-- [ ] **Insight language matches the Evidence Ladder level actually supported by the analysis.**
+- [ ] Insight language matches the Evidence Ladder level actually supported by the analysis.
 - [ ] Report type (informational/analytical, final/summary) matches the actual audience and content.
 - [ ] Report follows the standard Introduction → Body (Data/Method/Analysis/Results) → Conclusion structure.
 - [ ] Executive summary alone (1-3 pages) is sufficient for a decision-maker to act.
 - [ ] Prose checked against the Clarity Checklist (empty phrases, vague pronouns, active voice, redundant modifiers, run-on sentences).
-- [ ] Insight language matches the Evidence Ladder level actually supported by the analysis. *(existing item — kept for continuity)*
 
 ---
 
