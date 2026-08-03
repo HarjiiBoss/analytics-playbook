@@ -1,30 +1,161 @@
-# Analytics Playbook
-### A Repeatable Framework for End-to-End Data Analytics Projects
+# Data Analysis Playbook
+### A Personal Standard Operating Procedure for End-to-End Analytics Projects
+
+> A practical, project-tested framework for planning, executing, validating, documenting, and communicating analytics projects—from business problem to business recommendation.
 
 **Author:** Taofeek Salami
 
-A practical, project-tested framework for planning, executing, documenting, and presenting end-to-end data analytics projects.
+---
 
-This repository captures the workflow I developed across multiple portfolio projects and refined through real analytical challenges. Rather than documenting a single project, it provides a reusable methodology that can be applied to almost any analytics problem—from business intelligence dashboards to exploratory analysis and decision support.
+## Overview
+
+Most analytics resources teach individual tools.
+
+This repository focuses on something different:
+
+> **How professional analytical work is performed.**
+
+The **Data Analysis Playbook** captures the workflow, standards, and decision-making framework I developed across multiple end-to-end analytics projects.
+
+Rather than documenting a single project, it serves as a reusable operating manual for approaching analytics work consistently, transparently, and reproducibly.
+
+Although the examples come from portfolio projects, the workflow is designed to scale naturally to professional analytics environments.
 
 ---
 
-# Purpose
+# Philosophy
 
-Most analytics tutorials teach individual tools.
+Professional analytics is not defined by the complexity of its models.
 
-This playbook focuses on **how to think and work as a data analyst** by providing a repeatable process for moving from a raw dataset to business-ready insights.
+It is defined by the consistency of its thinking.
 
-It emphasizes:
+Every project should:
 
-- Structured project planning
-- Reproducible analytical workflows
-- Clear documentation
-- Business-focused storytelling
-- Dashboard design standards
-- Reusable project templates
+- Start with a clearly defined business problem.
+- Select methods appropriate to the question.
+- Preserve analytical evidence.
+- Document assumptions.
+- Validate findings.
+- Communicate conclusions honestly.
+- Support better business decisions.
 
-The objective is consistency—not perfection.
+The objective is not impressive analysis.
+
+The objective is **trustworthy analysis**.
+
+---
+
+# What You'll Find
+
+## 📘 Data Analysis Playbook
+
+The core handbook covering the complete analytics lifecycle, including:
+
+- Business problem framing
+- Project planning
+- Data preparation
+- Exploratory analysis
+- Business analysis
+- Analytical method selection
+- Statistical analysis
+- Predictive modelling
+- Reporting
+- Dashboard design
+- Executive communication
+- Documentation
+- Quality assurance
+- Repository standards
+- Continuous improvement
+
+---
+
+## 📂 Templates
+
+Reusable templates for future analytics projects.
+
+Examples include:
+
+- README template
+- Phase documentation template
+- Data dictionary template
+- SQL header template
+- Tableau blueprint template
+
+The objective is to eliminate repetitive setup work while maintaining consistent project quality.
+
+---
+
+## 📊 Example Projects
+
+Practical implementations demonstrating how the playbook is applied in real analytics projects.
+
+Current examples include:
+
+- Fintech Credit Risk Analysis
+- Superstore Sales Analysis
+
+Additional examples will be added as the framework evolves.
+
+---
+
+# Workflow
+
+Every project follows the same high-level workflow.
+
+```text
+Business Problem
+        │
+        ▼
+Project Scoping
+        │
+        ▼
+Data Preparation
+        │
+        ▼
+Business Analysis
+        │
+        ▼
+Method Selection
+        │
+        ▼
+Advanced Analytics
+        │
+        ▼
+Validation
+        │
+        ▼
+Reporting
+        │
+        ▼
+Communication
+        │
+        ▼
+Publication
+```
+
+Each phase has:
+
+- clear objectives,
+- defined deliverables,
+- quality checkpoints,
+- and exit criteria.
+
+---
+
+# Core Principles
+
+Every project built using this framework follows the same principles.
+
+- Start with the business problem—not the data.
+- Select the simplest method capable of answering the question.
+- Preserve analytical evidence before modifying data.
+- Document assumptions explicitly.
+- Match conclusions to the strength of the evidence.
+- Validate before interpreting.
+- Communicate uncertainty honestly.
+- Design analysis for decision-making.
+- Prioritize transparency over unnecessary complexity.
+- Keep every project reproducible.
 
 ---
 
@@ -48,128 +179,95 @@ analytics-playbook/
 │   ├── phase_document_template.md
 │   ├── sql_header_template.sql
 │   ├── data_dictionary_template.md
+│   ├── assumption_register_template.md
 │   └── tableau_blueprint_template.md
 │
 ├── examples/
 │   ├── fintech_credit_risk/
-│   └── superstore/
+│   ├── superstore/
+│   └── ...
 │
 └── .gitignore
 ```
 
 ---
 
-# What's Included
-
-## Analytics Playbook
-
-The core methodology describing my complete analytics workflow, including:
-
-- Project planning
-- Data acquisition
-- Data cleaning
-- Exploratory analysis
-- SQL analysis
-- Feature engineering
-- Dashboard development
-- Documentation
-- Repository organization
-- Final delivery
-
----
-
-## Templates
-
-Reusable templates for future analytics projects.
-
-Current templates include:
-
-- README template
-- Phase documentation template
-- SQL file header template
-- Data dictionary template
-- Tableau blueprint template
-
-The goal is to eliminate repetitive setup work so every new project begins with a consistent foundation.
-
----
-
-## Example Projects
-
-Sample implementations showing how the playbook is applied in practice.
-
-Examples currently include:
-
-- Fintech Credit Risk Analysis
-- Superstore Sales Analysis
-
-Additional projects will be added as the framework evolves.
-
----
-
-# Core Principles
-
-Every project built using this playbook follows several guiding principles:
-
-- Start with the business problem before writing code.
-- Document every important analytical decision.
-- Never hide assumptions—state them explicitly.
-- Validate findings with evidence rather than intuition.
-- Keep projects reproducible from raw data to final dashboard.
-- Optimize for clarity over complexity.
-- Build reusable workflows instead of one-off analyses.
-
----
-
-# Recommended Workflow
-
-1. Define the business problem.
-2. Set up the project structure.
-3. Acquire and understand the data.
-4. Clean and validate the dataset.
-5. Perform exploratory analysis.
-6. Answer business questions using SQL.
-7. Extend the analysis with Python where necessary.
-8. Build executive dashboards.
-9. Document findings.
-10. Publish a reproducible project repository.
-
----
-
 # Who This Repository Is For
 
-This repository may be useful for:
+This repository is intended for anyone who wants a structured approach to analytics work, including:
 
 - Data Analysts
 - Business Intelligence Analysts
+- Product Analysts
+- CRM Analysts
+- Credit Risk Analysts
 - Analytics Engineers
 - Students building portfolios
-- Career switchers learning analytics
-- Anyone looking for a structured analytics workflow
+- Career changers entering analytics
 
 ---
 
-# Related Repositories
+# Relationship to the Financial Model Foundation
 
-This playbook supports the analytics projects published in my portfolio.
+This repository focuses on **how analytical work should be performed**.
 
-Example implementations include:
+Its companion repository, **Financial Model Foundation**, focuses on **the analytical methods and modelling concepts themselves**.
+
+Together they form a complementary learning system.
+
+| Repository | Focus |
+|------------|-------|
+| **Data Analysis Playbook** | Workflow, documentation, reporting, communication, operational standards |
+| **Financial Model Foundation** | Statistics, predictive modelling, forecasting, experimentation, financial analytics, analytical frameworks |
+
+---
+
+# Why This Repository Exists
+
+Many analytics portfolios demonstrate technical skills.
+
+Few demonstrate **how the work is actually organised, validated, documented, and communicated**.
+
+This repository attempts to bridge that gap by documenting a repeatable process that can be applied across industries, datasets, and business domains.
+
+The goal is not simply to complete analytics projects.
+
+The goal is to build projects that are:
+
+- Reproducible
+- Transparent
+- Technically defensible
+- Business-focused
+- Easy to maintain
+- Easy to review
+
+---
+
+# Related Projects
+
+This playbook serves as the operating framework behind the analytics projects published in my portfolio.
+
+Current implementations include:
 
 - Fintech Credit Risk Analysis
 - Superstore Sales Analysis
 
-Additional projects will be added over time as the methodology evolves.
+Future projects will continue to refine and expand the methodology.
 
 ---
 
 # License
 
-This repository is released under the MIT License.
+This project is released under the MIT License.
 
-You are welcome to use, adapt, and improve the templates and workflow with appropriate attribution.
+You are welcome to use, adapt, and improve the framework with appropriate attribution.
 
 ---
 
-> **Note**
->
-> This playbook is a living document. As new projects introduce better techniques, lessons learned, or improved practices, the methodology and templates will continue to evolve.
+## Continuous Improvement
+
+This playbook is intentionally a living document.
+
+As new projects introduce better analytical methods, documentation practices, or communication techniques, the framework will continue to evolve.
+
+Every improvement is recorded in the playbook's version history to ensure the methodology remains transparent, reproducible, and continuously refined.
