@@ -1,4 +1,4 @@
-# Phase 2.5 — Analytical Method Selection
+# Phase 3 — Analytical Method Selection
 
 > This document records the analytical reasoning used to determine whether advanced analytical methods are required after completing **Phase 2 — Business Analysis**.
 >
@@ -14,7 +14,7 @@
 |--------|-------|
 | Project | {{PROJECT_TITLE}} |
 | Repository | {{PROJECT_SLUG}} |
-| Phase | Phase 2.5 — Analytical Method Selection |
+| Phase | Phase 3 — Analytical Method Selection |
 | Status | Not Started |
 | Started | |
 | Completed | |
@@ -51,7 +51,7 @@ List the questions that could not be answered through descriptive or diagnostic 
 
 # Decision to Proceed
 
-Why is Phase 3 required?
+Why is Phase 4 required?
 
 Describe why descriptive analysis alone is insufficient.
 
@@ -216,4 +216,4 @@ Proceed only when:
 
 # Notes
 
-Use this section to document stakeholder discussions, methodological decisions, references to the Financial Model Foundation, or any considerations that may influence the analytical approach in Phase 3.
+Use this section to document stakeholder discussions, methodological decisions, references to the Financial Model Foundation, or any considerations that may influence the analytical approach in Phase 4.
