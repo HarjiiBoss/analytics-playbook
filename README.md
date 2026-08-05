@@ -161,35 +161,45 @@ Every project built using this framework follows the same principles.
 
 # Repository Structure
 
-```text
-analytics-playbook/
+```textanalytics-playbook/
 │
-├── README.md
-├── playbook.md
+├── README.md        
 ├── LICENSE
 │
-├── assets/
-│   ├── workflow_diagram.png
-│   ├── analytics_lifecycle.png
-│   ├── repository_structure.png
-│   └── dashboard_examples/
+├── playbook/
+│   └── DATA_ANALYSIS_PLAYBOOK.md
 │
 ├── templates/
 │   ├── README_template.md
-│   ├── phase_document_template.md
-│   ├── sql_header_template.sql
-│   ├── data_dictionary_template.md
-│   ├── assumption_register_template.md
-│   └── tableau_blueprint_template.md
+│   ├── PROJECT_INFO_template.md
+│   ├── .gitignore
+│   │
+│   ├── docs/
+│   │   ├── documentation_index_template.md
+│   │   ├── data_dictionary_template.md
+│   │   ├── project_glossary_template.md
+│   │   ├── assumption_register_template.md
+│   │   ├── cleaning_log_template.md
+│   │   ├── security_notes_template.md
+│   │   └── tableau_blueprint_template.md
+│   │
+│   ├── phases/
+│   │   ├── phase_00_setup_template.md
+│   │   ├── phase_01_data_preparation_template.md
+│   │   ├── phase_02_business_analysis_template.md
+│   │   ├── phase_03_method_selection_template.md
+│   │   ├── phase_04_advanced_analysis_template.md
+│   │   └── phase_05_reporting_template.md
+│   │
+│   ├── reports/
+│   │   ├── executive_summary_template.md
+│   │   └── presentation_notes_template.md
+│   │
+│   └── sql/
+│       └── sql_template.sql
 │
-├── examples/
-│   ├── fintech_credit_risk/
-│   ├── superstore/
-│   └── ...
-│
-└── .gitignore
+└── analytics_init.py
 ```
-
 ---
 
 # Who This Repository Is For
