@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.0  
+**Current Version:** 3.1  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** August 2026
 
@@ -81,7 +81,8 @@ If a technique increases complexity without improving these qualities, it should
 | 2.1 | July 2026 | Added Report Structure & Prose Standards |
 | 2.2 | July 2026 | Added Oral Presentation Planning |
 | 2.3 | July 2026 | Added Presentation Building & Delivery Standards |
-| **3.0** | August 2026 | Major restructuring. Added Method Selection Framework, Model Validation Standards, Business Metric Design Framework, Cross-Track Thinking, Model Documentation Standards, Analytical Reference Map, improved workflow architecture, and reduced redundancy throughout the playbook. |
+| 3.0 | August 2026 | Major restructuring. Added Method Selection Framework, Model Validation Standards, Business Metric Design Framework, Cross-Track Thinking, Model Documentation Standards, Analytical Reference Map, improved workflow architecture, and reduced redundancy throughout the playbook. |
+| **3.1** | August 2026 | Added Branching Strategy to Version Control Standards |
 
 ---
 
@@ -1864,6 +1865,38 @@ fix: correct missing value treatment
 
 refactor: optimise SQL joins
 ```
+
+## Branching Strategy
+
+Work on new phases, features, or extensions should happen on a
+dedicated branch — never directly on `main`.
+
+This keeps `main` permanently in a clean, portfolio-ready state,
+regardless of whether the repository is public or private.
+Repository visibility controls who can see the repo; it does not
+clean up commit history. Branching does.
+
+Standard flow:
+
+1. Create a feature branch before starting new work:
+   `git checkout -b phase-N-description`
+2. Commit normally while working on the branch.
+3. Push the branch: `git push -u origin phase-N-description`
+4. Open a Pull Request to merge into `main` once the work is
+   complete and reviewed.
+5. Squash commits during merge where useful, so `main` reflects
+   one clean, descriptive commit per completed unit of work.
+
+Recommended branch naming:
+
+​```
+phase-7-inference-prediction
+fix-tableau-color-mapping
+docs-update-data-dictionary
+​```
+
+`main` should always represent the current, complete, working
+state of the project.
 
 Commit messages should explain **why** the change was made.
 
