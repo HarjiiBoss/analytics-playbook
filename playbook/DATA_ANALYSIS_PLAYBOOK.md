@@ -1889,11 +1889,11 @@ Standard flow:
 
 Recommended branch naming:
 
-​```
+```
 phase-7-inference-prediction
 fix-tableau-color-mapping
 docs-update-data-dictionary
-​```
+```
 
 `main` should always represent the current, complete, working
 state of the project.
