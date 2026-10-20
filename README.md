@@ -226,7 +226,7 @@ analytics-playbook/
         └── sql_template.sql
 ```
 
-The phase 03–05 templates keep their original file names. `new_project.py` saves them as Phase 2.5, 3 and 4 documents to match the playbook's numbering.
+Phases are numbered 0 to 5, and each phase template's number matches its phase.
 
 ---
 

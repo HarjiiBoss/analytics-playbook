@@ -144,9 +144,9 @@ Set before any data was examined.
 
 - **Phase 1:**
 - **Phase 2:**
-- **Phase 2.5:**
 - **Phase 3:**
 - **Phase 4:**
+- **Phase 5:**
 
 ---
 
@@ -210,9 +210,9 @@ This table is the Phase 0 snapshot. Validation results are tracked in [docs/assu
 - [ ] Phase 0 — Scoping & Project Setup
 - [ ] Phase 1 — Data Loading, Cleaning & Exploration
 - [ ] Phase 2 — Business Analysis
-- [ ] Phase 2.5 — Analytical Method Selection
-- [ ] Phase 3 — Advanced Analytics & Modelling
-- [ ] Phase 4 — Reporting, Communication & Publication
+- [ ] Phase 3 — Analytical Method Selection
+- [ ] Phase 4 — Advanced Analytics & Modelling
+- [ ] Phase 5 — Reporting, Communication & Publication
 
 ---
 

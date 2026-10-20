@@ -83,33 +83,15 @@ DOCUMENTS = [
     (["phase_00_setup_template.md"], "docs/phase_00_setup.md"),
     (["phase_01_data_preparation_template.md"], "docs/phase_01_data_preparation.md"),
     (["phase_02_business_analysis_template.md"], "docs/phase_02_business_analysis.md"),
-    # The three templates below were written with the older numbering
-    # (3 = method selection, 4 = modelling, 5 = reporting). The playbook uses
-    # 2.5, 3 and 4, so these outputs get renumbered (see RENUMBER_OUTPUTS).
-    (["phase_03_method_selection_template.md"], "docs/phase_025_method_selection.md"),
-    (["phase_04_advanced_analysis_template.md"], "docs/phase_03_advanced_analysis.md"),
-    (["phase_05_reporting_template.md"], "docs/phase_04_reporting.md"),
+    (["phase_03_method_selection_template.md"], "docs/phase_03_method_selection.md"),
+    (["phase_04_advanced_analysis_template.md"], "docs/phase_04_advanced_analysis.md"),
+    (["phase_05_reporting_template.md"], "docs/phase_05_reporting.md"),
 ]
-
-RENUMBER_OUTPUTS = {
-    "docs/phase_025_method_selection.md",
-    "docs/phase_03_advanced_analysis.md",
-    "docs/phase_04_reporting.md",
-}
-PHASE_MAP = {"3": "2.5", "4": "3", "5": "4"}
-
-# Renumbering only happens if the template still carries its old-style heading.
-# Once a template is fixed, the script leaves its numbering alone.
-OLD_HEADINGS = {
-    "docs/phase_025_method_selection.md": "# Phase 3 — Analytical Method Selection",
-    "docs/phase_03_advanced_analysis.md": "# Phase 04 —",
-    "docs/phase_04_reporting.md": "# Phase 05 —",
-}
 
 # Values filled in later phases. Used only where a template asks for them.
 LATER_VALUES = {
-    "DASHBOARD_NAME": "To be defined in Phase 4",
-    "AUDIENCE": "To be defined in Phase 4",
+    "DASHBOARD_NAME": "To be defined in Phase 5",
+    "AUDIENCE": "To be defined in Phase 5",
 }
 
 # SQL stubs built from sql_template.sql: (file, phase number, phase name, phase title, purpose)
@@ -160,15 +142,6 @@ def render(text, values):
     for key, value in values.items():
         text = text.replace("{{" + key + "}}", value)
     return text
-
-
-def renumber_phases(text):
-    """Old numbering -> current numbering, in a single pass so changes never chain."""
-    return re.sub(
-        r"\bPhase 0?([345])\b(?!\.\d)",
-        lambda m: "Phase " + PHASE_MAP[m.group(1)],
-        text,
-    )
 
 
 def index_templates(templates_dir):
@@ -288,12 +261,6 @@ def build_files(index, values, extra_packages, warnings):
             warnings.append("No template found for " + output + " (looked for: " + ", ".join(names) + "). Skipped.")
             continue
         text = template.read_text(encoding="utf-8")
-        if output in RENUMBER_OUTPUTS:
-            if OLD_HEADINGS[output] in text:
-                text = renumber_phases(text)
-            else:
-                warnings.append(output + ": template already uses the v" + PLAYBOOK_VERSION
-                                + " numbering, so it was copied as it is.")
         files[output] = render(text, values)
 
     # Extra packages are added after the template's list, skipping any already there.

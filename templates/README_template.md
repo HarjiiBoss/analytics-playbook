@@ -6,7 +6,7 @@ Built with the Data Analysis Playbook v{{PLAYBOOK_VERSION}}.
 
 > **Status:** Phase 0 in progress. Findings will be added when the project is complete.
 
-<!-- Add an Executive Summary section (key findings, business impact, recommendations) in Phase 4, once the analysis is finished. Until then the status line above is enough. -->
+<!-- Add an Executive Summary section (key findings, business impact, recommendations) in Phase 5, once the analysis is finished. Until then the status line above is enough. -->
 
 ---
 
@@ -49,9 +49,9 @@ Full scoping (hypotheses, metric definitions, scope, risks and assumptions): [PR
 - [ ] Phase 0 — Scoping & Project Setup
 - [ ] Phase 1 — Data Loading, Cleaning & Exploration
 - [ ] Phase 2 — Business Analysis
-- [ ] Phase 2.5 — Analytical Method Selection
-- [ ] Phase 3 — Advanced Analytics & Modelling
-- [ ] Phase 4 — Reporting, Communication & Publication
+- [ ] Phase 3 — Analytical Method Selection
+- [ ] Phase 4 — Advanced Analytics & Modelling
+- [ ] Phase 5 — Reporting, Communication & Publication
 
 ---
 

@@ -83,7 +83,7 @@ If a technique increases complexity without improving these qualities, it should
 | 2.3 | July 2026 | Added Presentation Building & Delivery Standards |
 | 3.0 | August 2026 | Major restructuring. Added Method Selection Framework, Model Validation Standards, Business Metric Design Framework, Cross-Track Thinking, Model Documentation Standards, Analytical Reference Map, improved workflow architecture, and reduced redundancy throughout the playbook. |
 | 3.1 | August 2026 | Added Branching Strategy to Version Control Standards |
-| **3.2** | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
+| **3.2** | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Phases renumbered 0 to 5 (Analytical Method Selection, formerly Phase 2.5, is now Phase 3). Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
 
 ---
 
@@ -336,13 +336,13 @@ Phase 1 ─ Data Loading, Cleaning & Exploration
 Phase 2 ─ Business Analysis
         │
         ▼
-Phase 2.5 ─ Analytical Method Selection
+Phase 3 ─ Analytical Method Selection
         │
         ▼
-Phase 3 ─ Advanced Analytics & Modelling
+Phase 4 ─ Advanced Analytics & Modelling
         │
         ▼
-Phase 4 ─ Reporting, Communication & Publication
+Phase 5 ─ Reporting, Communication & Publication
 ```
 
 Although projects vary in complexity, they should follow this sequence unless there is a documented reason to do otherwise.
@@ -725,7 +725,7 @@ Proceed only when:
 
 ---
 
-# Phase 2.5 — Analytical Method Selection
+# Phase 3 — Analytical Method Selection
 
 ## Objective
 
@@ -782,7 +782,7 @@ Proceed only when the selected method has been justified and documented.
 
 ---
 
-# Phase 3 — Advanced Analytics & Modelling
+# Phase 4 — Advanced Analytics & Modelling
 
 ## Objective
 
@@ -792,7 +792,7 @@ Apply advanced analytical methods only when descriptive analysis cannot fully an
 
 ## Typical Activities
 
-Depending on the problem, Phase 3 may include:
+Depending on the problem, Phase 4 may include:
 
 ### Statistical Inference
 
@@ -898,7 +898,7 @@ Proceed only when:
 
 ---
 
-# Phase 4 — Reporting, Communication & Publication
+# Phase 5 — Reporting, Communication & Publication
 
 ## Objective
 
@@ -1681,11 +1681,11 @@ phase_01_data_preparation.md
 
 phase_02_business_analysis.md
 
-phase_025_method_selection.md
+phase_03_method_selection.md
 
-phase_03_advanced_analysis.md
+phase_04_advanced_analysis.md
 
-phase_04_reporting.md
+phase_05_reporting.md
 ```
 
 Documentation should explain both **what** was done and **why** it was done.

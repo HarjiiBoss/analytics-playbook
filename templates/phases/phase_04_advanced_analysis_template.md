@@ -1,4 +1,4 @@
-# Phase 04 — Advanced Analytics & Modelling
+# Phase 4 — Advanced Analytics & Modelling
 
 > This document records all advanced analytical work performed during **Phase 4 — Advanced Analytics & Modelling**.
 >
