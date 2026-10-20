@@ -1,6 +1,6 @@
 # Security Notes
 
-> Document security, privacy, and compliance considerations throughout the project.
+<!-- Document security, privacy, and compliance considerations throughout the project. -->
 
 ---
 

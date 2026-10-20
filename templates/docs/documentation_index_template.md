@@ -1,6 +1,6 @@
 # Documentation Index
 
-> This document serves as the central navigation page for all project documentation. It tracks the purpose, status, and location of each document created throughout the analytics project.
+<!-- This document serves as the central navigation page for all project documentation. It tracks the purpose, status, and location of each document created throughout the analytics project. -->
 
 ---
 

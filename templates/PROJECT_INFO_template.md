@@ -1,8 +1,6 @@
 # {{PROJECT_TITLE}}
 
-> **Project Information**
->
-> This document serves as the authoritative project charter for the analysis. It captures the business context, objectives, scope, assumptions, constraints, and planning decisions established during **Phase 0 — Scoping & Project Setup** of the Data Analysis Playbook.
+<!-- Project charter. This is the one place where the Phase 0 scoping decisions are recorded: business question, hypotheses, metrics, decision rules, scope, risks and assumptions. Other documents link here instead of repeating them. -->
 
 ---
 
@@ -24,23 +22,15 @@
 
 # Business Context
 
-Describe the business environment surrounding the project.
-
-Consider including:
-
-- Organization or industry background
-- Current business situation
-- Existing challenges
-- Why this analysis is being performed
-- Relevant operational context
+<!-- The business environment: the organisation or product, the current situation and why this analysis is needed. State where any description comes from if it cannot be verified. -->
 
 ---
 
 # Business Problem
 
-Clearly define the business problem.
+{{BUSINESS_PROBLEM}}
 
-The problem statement should describe **what needs to be solved**, not the analysis that will be performed.
+<!-- Describe what needs to be solved, not the analysis that will be performed. -->
 
 ---
 
@@ -48,52 +38,65 @@ The problem statement should describe **what needs to be solved**, not the analy
 
 {{BUSINESS_QUESTION}}
 
+**Decision supported:** <!-- The options the decision-maker will choose between. -->
+
 ---
 
 # Supporting Analytical Questions
 
-List the questions that must be answered to support the primary business question.
+<!-- The questions that must be answered to support the primary business question. -->
 
-- [ ]
-- [ ]
-- [ ]
-- [ ]
+-
+
+---
+
+# Hypotheses
+
+<!-- For experiments and statistical tests. State whether tests are one-sided or two-sided. Delete this section if no formal tests are planned. -->
+
+| Metric | Type | Null Hypothesis (H₀) | Alternative Hypothesis (H₁) |
+|--------|------|----------------------|-----------------------------|
+| | Primary | | |
+
+---
+
+# Decision Rules
+
+<!-- For experiments. Set before the data is downloaded or examined (Playbook Part II, Phase 0). Include: significance level, minimum effect of interest (δ) or why none could be justified, what each outcome means, whether guardrails can block the decision, and whether the author had seen published results for this dataset. Delete this section if the project does not test a change. -->
+
+Set before any data was examined.
+
+**Significance level:**
+
+**Minimum effect of interest:**
+
+| Outcome | Rule |
+|---------|------|
+| | |
+
+**Guardrail:**
+
+**Blinding:**
 
 ---
 
 # Stakeholders
 
-| Stakeholder | Role | Decision Supported |
-|-------------|------|--------------------|
-| | | |
+| Stakeholder | Role | Decision Supported | Needs from the Result |
+|-------------|------|--------------------|-----------------------|
+| | | | |
 
 ---
 
 # Business Objectives
 
-Describe what the organization hopes to achieve.
-
-- [ ]
-- [ ]
-- [ ]
+-
 
 ---
 
 # Success Criteria
 
-Define what constitutes a successful project.
-
-Examples may include:
-
-- Business questions answered
-- Decision supported
-- Dashboard delivered
-- Model validated
-- Documentation completed
-
-- [ ]
-- [ ]
-- [ ]
+-
 
 ---
 
@@ -101,25 +104,17 @@ Examples may include:
 
 ## Included
 
-Document what is included within the project.
+-
 
-- [ ]
-- [ ]
-- [ ]
+## Excluded
 
-### Excluded
-
-Document what is intentionally outside the project scope.
-
-- [ ]
-- [ ]
-- [ ]
+-
 
 ---
 
 # Expected Deliverables
 
-Select or modify as appropriate.
+<!-- Keep the items that apply. -->
 
 - [ ] README
 - [ ] Executive Summary
@@ -137,39 +132,46 @@ Select or modify as appropriate.
 
 # Available Data
 
-| Dataset | Source | Owner | Refresh Frequency | Status |
-|----------|--------|-------|-------------------|--------|
+| Dataset | Source | Publisher/uploader | Refresh Frequency | Status |
+|----------|--------|--------------------|-------------------|--------|
 | | | | | |
 
 ---
 
 # Planned Analytical Approach
 
-Describe the anticipated workflow.
+<!-- One bullet per phase: what will be done and why. -->
 
-Example:
-
-- Descriptive analysis
-- Business analysis
-- Statistical testing
-- Predictive modelling
-- Dashboard development
+- **Phase 1:**
+- **Phase 2:**
+- **Phase 2.5:**
+- **Phase 3:**
+- **Phase 4:**
 
 ---
 
 # Planned Success Metrics
 
-List the business metrics expected to evaluate success.
-
 | Metric | Business Meaning | Notes |
 |---------|------------------|-------|
 | | | |
 
+<!-- For each metric, add a block answering the six questions below. -->
+
+## [Metric name] ([primary / secondary / guardrail])
+
+| Question | Answer |
+|----------|--------|
+| What is measured? | |
+| Why does it matter? | |
+| How is it calculated? | |
+| What assumptions exist? | |
+| What are the limitations? | |
+| How will decisions change? | |
+
 ---
 
 # Known Risks
-
-Document risks identified during project planning.
 
 | Risk | Potential Impact | Mitigation |
 |------|------------------|------------|
@@ -179,52 +181,31 @@ Document risks identified during project planning.
 
 # Constraints
 
-Document known project limitations.
+<!-- Data, time, tool and resource limits, for example platform quotas or missing variables. -->
 
-Examples:
-
-- Limited historical data
-- Missing variables
-- Time constraints
-- Data quality concerns
-- Resource limitations
-
-- [ ]
-- [ ]
-- [ ]
+-
 
 ---
 
 # Initial Assumptions
 
-Record assumptions made before analysis begins.
-
 | Assumption | Reason | Validation Planned |
 |------------|--------|--------------------|
 | | | |
+
+This table is the Phase 0 snapshot. Validation results are tracked in [docs/assumption_register.md](docs/assumption_register.md).
 
 ---
 
 # Dependencies
 
-List anything required before analysis can begin.
+<!-- Anything required before analysis can begin: access, accounts, credentials, data. Tick each when it is in place. -->
 
-Examples:
-
-- Database access
-- API credentials
-- Data approval
-- Subject matter expertise
-
-- [ ]
-- [ ]
 - [ ]
 
 ---
 
 # Planned Workflow
-
-Track project progress.
 
 - [ ] Phase 0 — Scoping & Project Setup
 - [ ] Phase 1 — Data Loading, Cleaning & Exploration
@@ -237,7 +218,7 @@ Track project progress.
 
 # Project Notes
 
-Use this section to record important planning decisions, discussions, or observations made during project setup.
+<!-- Facts confirmed during the project, with where they were confirmed, kept separate from points that can only be taken from documentation. -->
 
 ---
 

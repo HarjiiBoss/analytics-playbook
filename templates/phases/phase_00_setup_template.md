@@ -1,14 +1,8 @@
 # Phase 0 — Scoping & Project Setup
 
-> This document records all planning activities completed during **Phase 0 — Scoping & Project Setup**. It should be completed before any data is loaded or analysis begins.
+This document records what was done and decided during Phase 0. The scoping decisions themselves (business question, hypotheses, metrics, decision rules, scope, risks and assumptions) are kept in [PROJECT_INFO.md](../PROJECT_INFO.md) so they exist in one place only.
 
----
-
-# Phase Objective
-
-Define the business problem, establish project scope, identify stakeholders, and prepare the project environment.
-
-A project should not proceed beyond this phase until the business problem is clearly understood and the required resources have been identified.
+<!-- Record what happened here and link to PROJECT_INFO.md for the decisions. Do not copy charter content into this file. -->
 
 ---
 
@@ -19,206 +13,54 @@ A project should not proceed beyond this phase until the business problem is cle
 | Status | Not Started |
 | Started | |
 | Completed | |
-| Owner | |
-| Last Updated | {{LAST_UPDATED}} |
+| Owner | {{AUTHOR}} |
+| Branch | `phase-0-scoping` |
 
 ---
 
-# Business Understanding
+# Decisions Made
 
-## Business Context
+<!-- One row per decision. State the decision in one line and point to the section of PROJECT_INFO.md that holds it. -->
 
-Describe the business environment, background, and circumstances that motivated this analysis.
+| Decision | Where it is recorded |
+|----------|----------------------|
+| | PROJECT_INFO.md → |
 
----
-
-## Business Problem
-
-Describe the business problem requiring analytical investigation.
+<!-- For experiments, state whether all decision rules were set before the dataset was downloaded or examined. -->
 
 ---
 
-## Primary Business Question
+# Environment Setup
 
-{{BUSINESS_QUESTION}}
-
----
-
-## Supporting Analytical Questions
-
--
-
--
-
--
+| Component | Setting |
+|-----------|---------|
+| Repository | `{{PROJECT_SLUG}}`, created with `new_project.py` from Playbook v{{PLAYBOOK_VERSION}} |
+| Branching | Work on `phase-N-description` branches, merged into `main` by pull request |
+| Python | Version in a project virtual environment (`.venv`), packages from `requirements.txt` |
+| Database / warehouse | |
+| Authentication | |
+| Configuration | `.env` (not committed) holds local settings. `.env.example` is committed as a template |
+| Connection test | |
 
 ---
 
-# Business Objectives
+# Issues and Resolutions
 
--
+<!-- Problems met during setup and how each was resolved. Delete the row if there were none. -->
 
--
-
--
-
----
-
-# Success Criteria
-
-Define how project success will be evaluated.
-
--
-
--
-
--
-
----
-
-# Stakeholders
-
-| Stakeholder | Role | Decision Supported |
-|-------------|------|--------------------|
+| Issue | What happened | Resolution |
+|-------|---------------|------------|
 | | | |
 
 ---
 
-# Expected Deliverables
+# Concept Notes
 
-- Executive Summary
-- Technical Report
-- SQL Scripts
-- Python Notebooks
-- Dashboard
-- Presentation
-- Supporting Documentation
-
----
-
-# Project Scope
-
-## Included
-
--
-
--
-
--
-
-## Excluded
-
--
-
--
-
--
-
----
-
-# Data Requirements
-
-| Dataset | Source | Owner | Expected Availability | Status |
-|----------|--------|-------|-----------------------|--------|
-| | | | | |
-
----
-
-# Assumptions
-
-Document assumptions made before analysis begins.
-
--
-
--
-
--
-
----
-
-# Constraints
-
-Document any known business, technical, legal, resource, or time constraints.
-
--
-
--
-
--
-
----
-
-# Risks
-
-Identify factors that may affect project delivery or analytical validity.
-
--
-
--
-
--
-
----
-
-# Dependencies
-
-Identify approvals, datasets, software, people, or resources required before work can begin.
-
--
-
--
-
--
-
----
-
-# Project Environment
-
-## Repository
-
-- [ ] Repository created
-- [ ] README initialized
-- [ ] Documentation structure created
-
----
-
-## Development Environment
-
-- [ ] Virtual environment created
-- [ ] Dependencies installed
-- [ ] `.env` configured
-- [ ] Database connection verified
-
----
-
-## Version Control
-
-- [ ] Git initialized
-- [ ] Initial commit created
-- [ ] Remote repository configured (if applicable)
-
----
-
-# Planned Workflow
-
-- [ ] Phase 0 — Scoping & Project Setup
-- [ ] Phase 1 — Data Loading, Cleaning & Exploration
-- [ ] Phase 2 — Business Analysis
-- [ ] Phase 2.5 — Analytical Method Selection
-- [ ] Phase 3 — Advanced Analytics & Modelling
-- [ ] Phase 4 — Reporting, Communication & Publication
-
----
-
-# Phase Notes
-
-Record important planning decisions, stakeholder discussions, approvals, or issues identified during this phase.
+<!-- Short explanations of concepts used for the first time in this project, written for a reader who has not met them. Delete this section if not needed. -->
 
 ---
 
 # Exit Checklist
-
-Proceed to **Phase 1** only when all applicable items have been completed.
 
 ## Business
 
@@ -227,35 +69,31 @@ Proceed to **Phase 1** only when all applicable items have been completed.
 - [ ] Success criteria agreed
 - [ ] Stakeholders identified
 - [ ] Project scope established
-
----
+- [ ] Decision rules set before data access (experiments)
 
 ## Data
 
-- [ ] Required datasets identified
-- [ ] Data ownership confirmed
+- [ ] Required dataset identified
+- [ ] Data ownership and licence confirmed
 - [ ] Data availability verified
-
----
 
 ## Technical
 
 - [ ] Repository structure created
 - [ ] Development environment configured
-- [ ] Version control initialized
-
----
+- [ ] Version control initialised and pushed
+- [ ] Database connection verified
 
 ## Documentation
 
-- [ ] Project Information completed
-- [ ] README initialized
+- [ ] PROJECT_INFO.md completed
+- [ ] README initialised
 - [ ] Phase documentation updated
+- [ ] Assumption register started
+- [ ] Security notes started
 
 ---
 
 # Phase Outcome
 
-Summarize the key decisions made during Phase 0 and confirm readiness to proceed to Phase 1.
-
----
+<!-- Two to four sentences: what Phase 0 settled and whether the project is ready for Phase 1. Note any checklist item moved to a later phase and why. -->

@@ -1,6 +1,8 @@
 # Data Dictionary
 
-> This document serves as the authoritative reference for all variables used throughout the project. It should be created during **Phase 1 — Data Loading, Cleaning & Exploration** and updated whenever new variables are introduced or existing variables are modified.
+Reference for every column in the project tables. Updated whenever a variable is added or changed.
+
+<!-- Create during Phase 1. Delete any section that does not apply and say why in one line (for example, "None. The data contains no dates"). -->
 
 ---
 
@@ -12,7 +14,7 @@
 | Dataset | |
 | Source | |
 | Owner | |
-| Version | |
+| Version | <!-- File checksum or extract identifier --> |
 | Extraction Date | |
 | Last Updated | {{LAST_UPDATED}} |
 
@@ -20,7 +22,7 @@
 
 # Dataset Summary
 
-Provide a brief description of the dataset, including its purpose and how it supports the project.
+<!-- What one row represents, how many rows, and which table later phases use. -->
 
 ---
 
@@ -34,8 +36,6 @@ Provide a brief description of the dataset, including its purpose and how it sup
 
 # Engineered Variables
 
-Document every variable created during the analysis.
-
 | Variable | Data Type | Business Objective | Creation Logic | Interpretation | Assumptions | Limitations |
 |----------|-----------|--------------------|----------------|----------------|-------------|-------------|
 | | | | | | | |
@@ -43,8 +43,6 @@ Document every variable created during the analysis.
 ---
 
 # Categorical Variables
-
-Record category definitions where applicable.
 
 | Variable | Categories | Notes |
 |----------|------------|------|
@@ -75,46 +73,25 @@ Record category definitions where applicable.
 
 # Primary Business Metrics
 
-Document important metrics used throughout the project.
-
-| Metric | Definition | Calculation | Business Purpose |
-|--------|------------|-------------|------------------|
-| | | | |
+Defined in [PROJECT_INFO.md](../PROJECT_INFO.md) → Planned Success Metrics.
 
 ---
 
 # Data Quality Notes
 
-Document important observations identified during profiling and cleaning.
+Recorded in [cleaning_log.md](cleaning_log.md).
 
-- Missing values:
--
-- Duplicate records:
--
-- Outliers:
--
-- Inconsistent values:
--
-- Other observations:
--
+<!-- One sentence summarising the main findings, with the detail left in the cleaning log. -->
 
 ---
 
 # Variable Relationships
 
-Document important relationships between variables that may influence interpretation or modelling.
-
--
-
--
-
--
+<!-- Relationships between variables that affect interpretation, such as variables recorded after assignment. -->
 
 ---
 
 # External Reference Tables
-
-Document lookup tables, mapping tables, or reference datasets used during the project.
 
 | Table | Purpose | Source |
 |-------|---------|--------|
@@ -124,16 +101,6 @@ Document lookup tables, mapping tables, or reference datasets used during the pr
 
 # Change Log
 
-Record significant updates made to the data dictionary.
-
 | Date | Change | Reason |
 |------|--------|--------|
 | | | |
-
----
-
-# Notes
-
-Record any additional information that improves understanding of the dataset or its variables.
-
----

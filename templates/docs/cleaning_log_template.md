@@ -1,6 +1,6 @@
 # Cleaning Log
 
-> This document records every significant data cleaning decision made throughout the project. It should be updated continuously during **Phase 1 — Data Loading, Cleaning & Exploration** to ensure transparency, reproducibility, and analytical defensibility.
+<!-- This document records every significant data cleaning decision made throughout the project. It should be updated continuously during **Phase 1 — Data Loading, Cleaning & Exploration** to ensure transparency, reproducibility, and analytical defensibility. -->
 
 ---
 

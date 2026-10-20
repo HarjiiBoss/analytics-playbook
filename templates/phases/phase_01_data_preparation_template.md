@@ -1,6 +1,6 @@
 # Phase 1 — Data Loading, Cleaning & Exploration
 
-> This document records all activities completed during **Phase 1 — Data Loading, Cleaning & Exploration**. The objective of this phase is to understand the available evidence, evaluate data quality, prepare the dataset for analysis, and generate initial hypotheses.
+<!-- This document records all activities completed during **Phase 1 — Data Loading, Cleaning & Exploration**. The objective of this phase is to understand the available evidence, evaluate data quality, prepare the dataset for analysis, and generate initial hypotheses. -->
 
 ---
 

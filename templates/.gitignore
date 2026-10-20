@@ -17,6 +17,16 @@ env/
 # --------------------------------------------------
 .env
 .env.*
+!.env.example
+
+# --------------------------------------------------
+# Cloud credentials (never commit)
+# --------------------------------------------------
+*service-account*.json
+*credentials*.json
+*-key.json
+*.pem
+*.key
 
 # --------------------------------------------------
 # Jupyter
@@ -62,6 +72,8 @@ data/processed/*
 outputs/*.html
 outputs/*.pdf
 outputs/*.png
+# Finished charts are named chart_*.png and are committed
+!outputs/chart_*.png
 
 # --------------------------------------------------
 # Python Build
