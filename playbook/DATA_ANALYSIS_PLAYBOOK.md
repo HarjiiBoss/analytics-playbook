@@ -2,9 +2,9 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.1  
+**Current Version:** 3.2  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
-**Last Updated:** August 2026
+**Last Updated:** October 2026
 
 ---
 
@@ -82,7 +82,8 @@ If a technique increases complexity without improving these qualities, it should
 | 2.2 | July 2026 | Added Oral Presentation Planning |
 | 2.3 | July 2026 | Added Presentation Building & Delivery Standards |
 | 3.0 | August 2026 | Major restructuring. Added Method Selection Framework, Model Validation Standards, Business Metric Design Framework, Cross-Track Thinking, Model Documentation Standards, Analytical Reference Map, improved workflow architecture, and reduced redundancy throughout the playbook. |
-| **3.1** | August 2026 | Added Branching Strategy to Version Control Standards |
+| 3.1 | August 2026 | Added Branching Strategy to Version Control Standards |
+| **3.2** | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
 
 ---
 
@@ -385,6 +386,27 @@ Document:
 - Known risks
 - Expected deliverables
 
+`PROJECT_INFO.md` is the project charter. It is the one place where these scoping decisions are recorded.
+
+---
+
+### Decision Rules for Experiments
+
+When the project tests a change (an A/B test or another controlled experiment), the rules for reading the result are fixed and written into `PROJECT_INFO.md` before the data is downloaded or examined.
+
+Record:
+
+- Primary metric (one only), secondary metrics and guardrail metrics
+- Hypotheses and whether each test is one-sided or two-sided
+- Significance level (α)
+- Minimum effect of interest (δ), or a statement that no business threshold could be justified
+- What each possible result means for the decision, including "collect more evidence"
+- Whether a guardrail can block the decision or is exploratory only
+- Planned exclusions and sensitivity checks
+- A statement of whether the author had seen published results for the same dataset
+
+Rules written after seeing the data can be adjusted, even unintentionally, to fit the result. If a rule has to change later, record the change and the reason in the charter's revision history and report it in the findings.
+
 ---
 
 ### Project Setup
@@ -422,7 +444,7 @@ Configure:
 - Git repository
 - Virtual environment
 - Dependencies
-- Environment variables (.env)
+- Environment variables (`.env`, not committed, with a committed `.env.example` listing the variable names without values)
 - Database connection
 - Folder structure
 
@@ -448,6 +470,7 @@ Create an initial README containing:
 - README initialized
 - Business problem documented
 - Stakeholders identified
+- Decision rules recorded (experiments)
 
 ---
 
@@ -457,6 +480,7 @@ Proceed only when:
 
 - Business question is clearly defined.
 - Success criteria are agreed.
+- For experiments, decision rules are recorded before data access.
 - Project structure is complete.
 - Required data has been identified.
 
@@ -495,6 +519,23 @@ Document:
 - Extraction date
 - Refresh frequency
 - Ownership
+- Licence and terms of use
+- Original publisher, where the data was re-uploaded by someone else
+
+### Data Provenance
+
+When the data arrives as a file, record its SHA-256 checksum at download and check it again before every load. A matching checksum shows that the file being analysed is the same file that was documented. A loading notebook should stop if the checksum differs.
+
+Record the checksum, file name, download date and row count in the README and the Phase 1 document.
+
+### Raw and Clean Layers
+
+Keep two layers of the data:
+
+- **Raw layer.** The source loaded unchanged. When the load would otherwise convert or reject values, load every column as text so nothing is altered before it has been profiled. The raw layer is never edited.
+- **Clean layer.** Built from the raw layer by a script (for example a `CREATE TABLE ... AS SELECT` statement or a notebook), with types applied and any flag columns added.
+
+Make loads repeatable: re-running a load replaces the table rather than appending to it, so either layer can be rebuilt from the repository at any time.
 
 ---
 
@@ -561,6 +602,20 @@ Never silently:
 
 Document every decision.
 
+Prefer flagging unusual records with a flag column over removing them. The decision to exclude belongs in the analysis, where it can be tested as a sensitivity check.
+
+### Reconcile Raw and Clean
+
+After building the clean layer, compare it with the raw layer:
+
+- Row counts
+- Distinct keys
+- Category counts
+- Totals of numeric columns
+- Counts of values that failed type conversion
+
+Every difference must be explained by a logged cleaning decision. Record the reconciliation result in the cleaning log.
+
 ---
 
 ## Step 5 — Build Supporting Documentation
@@ -593,7 +648,9 @@ The objective is to generate hypotheses—not conclusions.
 
 ## Deliverables
 
-- Clean dataset
+- Raw and clean data layers
+- Provenance record (source, licence, checksum)
+- Raw-to-clean reconciliation
 - Data dictionary
 - EDA notebook
 - Cleaning documentation
@@ -1578,12 +1635,18 @@ project/
 │
 ├── README.md
 │
+├── PROJECT_INFO.md
+│
 ├── .gitignore
+│
+├── .env.example
 │
 └── requirements.txt
 ```
 
 Projects should remain organised from the first commit to the final publication.
+
+New projects are created with `tools/new_project.py` in the playbook repository. It builds this structure from the templates in `templates/`, so the playbook, the templates and the tool are versioned together. Run it with `--dry-run` first.
 
 ---
 
@@ -1618,12 +1681,32 @@ phase_01_data_preparation.md
 
 phase_02_business_analysis.md
 
+phase_025_method_selection.md
+
 phase_03_advanced_analysis.md
 
 phase_04_reporting.md
 ```
 
 Documentation should explain both **what** was done and **why** it was done.
+
+## Single Source of Truth
+
+Each fact or decision is recorded in one authoritative document. Other documents link to it instead of repeating it, so copies cannot drift apart.
+
+| Content | Authoritative document |
+|---------|------------------------|
+| Business question, hypotheses, metrics, decision rules, scope, risks | `PROJECT_INFO.md` |
+| Assumptions and their validation status | `docs/assumption_register.md` |
+| Variables, types and valid values | `docs/data_dictionary.md` |
+| Data quality issues and cleaning decisions | `docs/cleaning_log.md` |
+| Terms and definitions | `docs/project_glossary.md` |
+| What happened in a phase: work done, issues, results | `docs/phase_NN_*.md` |
+| How to reproduce the project | `README.md` |
+
+Phase documents record what happened during the phase and link to the charter for the decisions themselves. `PROJECT_INFO.md` → Initial Assumptions is a Phase 0 snapshot; the assumption register is the version kept up to date.
+
+When a fact changes, update the authoritative document and check the documents that link to it.
 
 ---
 
@@ -1638,8 +1721,7 @@ Each variable should include:
 - Business meaning
 - Valid values (where applicable)
 - Missingness
-- Cleaning decisions
-- Notes
+- Cleaning decisions (with a pointer to the cleaning log entry)
 
 Engineered variables should additionally document:
 
@@ -1660,9 +1742,25 @@ Each assumption should include:
 | Field | Description |
 |-------|-------------|
 | Assumption | Statement being assumed |
+| Category | Business / Data / Analytical / Technical |
 | Reason | Why the assumption was necessary |
 | Potential Impact | How results may change if the assumption is incorrect |
-| Validation Status | Tested / Untested |
+| Validation Status | One of the statuses below, with the date and evidence |
+
+Validation statuses:
+
+| Status | Meaning |
+|--------|---------|
+| Untested | Not yet evaluated |
+| Partially Validated | Some supporting evidence exists, but uncertainty remains |
+| Validated | Evidence supports the assumption within the scope of the project |
+| Rejected | Evidence shows the assumption was incorrect |
+| No Longer Applicable | No longer relevant after a change in scope or method |
+| Not testable | A pre-specified decision, a framing choice, or a claim the available data cannot confirm or reject. Recorded for transparency, with the reason |
+
+A status changes only after the check has been carried out. "Not testable" is not a weaker form of "Untested": it records that no check is possible, so the limitation must be carried into the findings.
+
+Assumptions that would change the conclusion if wrong are listed separately as high-risk, each with a mitigation plan.
 
 Separating assumptions from observations improves transparency and helps reviewers assess analytical risk.
 
@@ -1694,6 +1792,8 @@ Each SQL script should begin with:
 - Author
 - Last Updated
 - Status
+
+Comment SQL by the same standard as Python code (see Code Comment Standard below).
 
 Where appropriate, use:
 
@@ -1752,6 +1852,41 @@ General principles:
 - Never overwrite raw data.
 
 Code should communicate intent as clearly as results.
+
+## Notebook Header Standard
+
+Every notebook opens with one Markdown cell:
+
+```markdown
+# [Project Title]
+
+## [Project Subtitle]
+
+**Notebook:** NN_name.ipynb  
+**Phase:** N — [Phase name]  
+**Source:** [Dataset name, file, row count and original publisher]  
+**Author:** [Name]  
+**Date:** YYYY-MM-DD  
+
+## [Notebook purpose as a heading]
+
+[One paragraph: what this notebook does, what it reads and what it produces.]
+```
+
+The header lets a reader identify the notebook, its phase and its data without running it. Keep step numbers from external workflow documents out of the header, since those documents are not part of the repository.
+
+## Code Comment Standard
+
+Comments explain **why** a step is done and what non-obvious calls do. They do not repeat what the code already says.
+
+- Comment each import with what it is used for.
+- Comment settings and constants with where the value comes from (for example, how an expected row count was confirmed).
+- Explain parameters whose effect is not obvious from their name (for example, a load job's write disposition).
+- Explain each check: what it tests and what a failure would mean.
+- In SQL, give each query a numbered heading comment stating the question it answers.
+- Where a tool or service is used for the first time in a project, explain the concept briefly, so a reader new to it can follow.
+
+A reader who has not seen the project should be able to follow the code from the comments and Markdown alone.
 
 ---
 
@@ -1928,8 +2063,9 @@ Never commit:
 
 Use:
 
-- `.gitignore`
-- `.env`
+- `.gitignore`, including credential file patterns (`*.pem`, `*.key`, service account JSON files)
+- `.env` for local settings, with a committed `.env.example` that lists the variable names only
+- the platform's own login (for example, application default credentials) instead of key files in the project folder
 - anonymised datasets
 - secure credential storage
 
