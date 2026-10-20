@@ -1,6 +1,6 @@
 # Tableau Dashboard Blueprint
 
-> Plan the dashboard before building it. Every visual should support a business decision.
+<!-- Plan the dashboard before building it. Every visual should support a business decision. -->
 
 ---
 

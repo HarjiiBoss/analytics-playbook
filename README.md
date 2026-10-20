@@ -75,13 +75,31 @@ Reusable templates for future analytics projects.
 
 Examples include:
 
-- README template
-- Phase documentation template
-- Data dictionary template
+- README and project charter (PROJECT_INFO) templates
+- Phase documentation templates
+- Data dictionary, glossary, assumption register and cleaning log templates
 - SQL header template
+- Notebook template with the standard header
 - Tableau blueprint template
+- `.gitignore` and `.env.example`
 
 The objective is to eliminate repetitive setup work while maintaining consistent project quality.
+
+---
+
+## 🛠 Starting a New Project
+
+`tools/new_project.py` creates a new project from the templates in this repository: folder structure, filled-in documents, SQL and notebook stubs, a first commit on `main`, the GitHub repository, and a `phase-0-scoping` branch.
+
+```bash
+git clone https://github.com/HarjiiBoss/analytics-playbook.git
+cd analytics-playbook
+git pull                     # use the latest templates
+python3 tools/new_project.py --dry-run --title "Project Title"
+python3 tools/new_project.py --title "Project Title" --industry "Industry" --domain "Domain"
+```
+
+Projects are created in `~/projects/` unless `--parent-dir` is given. The tool stops if the chosen folder is inside another Git repository. Creating the GitHub repository needs the GitHub CLI (`gh`) logged in; use `--no-github` to skip that step.
 
 ---
 
@@ -161,45 +179,55 @@ Every project built using this framework follows the same principles.
 
 # Repository Structure
 
-```textanalytics-playbook/
+```text
+analytics-playbook/
 │
-├── README.md        
-├── LICENSE
+├── README.md
 │
 ├── playbook/
 │   └── DATA_ANALYSIS_PLAYBOOK.md
 │
-├── templates/
-│   ├── README_template.md
-│   ├── PROJECT_INFO_template.md
-│   ├── .gitignore
-│   │
-│   ├── docs/
-│   │   ├── documentation_index_template.md
-│   │   ├── data_dictionary_template.md
-│   │   ├── project_glossary_template.md
-│   │   ├── assumption_register_template.md
-│   │   ├── cleaning_log_template.md
-│   │   ├── security_notes_template.md
-│   │   └── tableau_blueprint_template.md
-│   │
-│   ├── phases/
-│   │   ├── phase_00_setup_template.md
-│   │   ├── phase_01_data_preparation_template.md
-│   │   ├── phase_02_business_analysis_template.md
-│   │   ├── phase_03_method_selection_template.md
-│   │   ├── phase_04_advanced_analysis_template.md
-│   │   └── phase_05_reporting_template.md
-│   │
-│   ├── reports/
-│   │   ├── executive_summary_template.md
-│   │   └── presentation_notes_template.md
-│   │
-│   └── sql/
-│       └── sql_template.sql
+├── tools/
+│   └── new_project.py
 │
-└── analytics_init.py
+└── templates/
+    ├── README_template.md
+    ├── PROJECT_INFO_template.md
+    ├── .gitignore
+    ├── .env.example
+    ├── LICENSE
+    ├── requirements.txt
+    │
+    ├── docs/
+    │   ├── documentation_index_template.md
+    │   ├── data_dictionary_template.md
+    │   ├── project_glossary_template.md
+    │   ├── assumption_register_template.md
+    │   ├── cleaning_log_template.md
+    │   ├── security_notes_template.md
+    │   └── tableau_blueprint_template.md
+    │
+    ├── notebooks/
+    │   └── notebook_template.ipynb
+    │
+    ├── phases/
+    │   ├── phase_00_setup_template.md
+    │   ├── phase_01_data_preparation_template.md
+    │   ├── phase_02_business_analysis_template.md
+    │   ├── phase_03_method_selection_template.md
+    │   ├── phase_04_advanced_analysis_template.md
+    │   └── phase_05_reporting_template.md
+    │
+    ├── reports/
+    │   ├── executive_summary_template.md
+    │   └── presentation_notes_template.md
+    │
+    └── sql/
+        └── sql_template.sql
 ```
+
+Phases are numbered 0 to 5, and each phase template's number matches its phase.
+
 ---
 
 # Who This Repository Is For

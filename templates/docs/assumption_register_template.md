@@ -1,31 +1,24 @@
 # Assumption Register
 
-> This document records every significant assumption introduced during the project. Assumptions should be documented as soon as they are made and updated whenever they are validated, revised, or no longer apply.
+This register tracks every significant assumption in the project, from when it is made until it is validated, revised or retired. The Phase 0 snapshot is in [PROJECT_INFO.md](../PROJECT_INFO.md) → Initial Assumptions; this register is the version kept up to date. A status changes only after the check has actually been carried out.
 
-> Observations, evidence, and assumptions should always remain clearly separated.
+<!-- Keep assumptions separate from observations. Each status entry gives the date and the evidence, for example the query or notebook cell that checked it. -->
 
----
+| ID | Assumption | Category | Reason | Phase | Potential Impact | Validation Status | Owner |
+|----|------------|----------|--------|-------|------------------|-------------------|-------|
+| A-001 | | | | | | Untested | {{AUTHOR}} |
 
-# Purpose
-
-Analytical work often requires assumptions because information is incomplete, unavailable, or uncertain.
-
-Documenting assumptions improves:
-
-- Transparency
-- Reproducibility
-- Analytical defensibility
-- Risk assessment
-
-Every assumption should explain **why it was necessary** and **how it may influence interpretation**.
+<!-- Category: Business, Data, Analytical or Technical. -->
 
 ---
 
-# Assumption Register
+# High-Risk Assumptions
 
-| ID | Assumption | Reason | Phase | Potential Impact | Validation Status | Owner |
-|----|------------|--------|-------|------------------|-------------------|-------|
-| A-001 | | | | | Untested | |
+<!-- Assumptions that would change the conclusion or recommendation if wrong. -->
+
+| ID | Reason for High Risk | Mitigation Plan |
+|----|----------------------|-----------------|
+| | | |
 
 ---
 
@@ -38,89 +31,7 @@ Every assumption should explain **why it was necessary** and **how it may influe
 | Validated | Evidence supports the assumption within the scope of the project. |
 | Rejected | Evidence indicates the assumption was incorrect. |
 | No Longer Applicable | The assumption is no longer relevant due to changes in scope or analysis. |
-
----
-
-# High-Risk Assumptions
-
-List assumptions that could materially affect analytical conclusions or business recommendations if they prove incorrect.
-
-| Assumption | Reason for High Risk | Mitigation Plan |
-|------------|----------------------|-----------------|
-| | | |
-
----
-
-# Business Assumptions
-
-Record assumptions related to business processes, stakeholder expectations, or operational context.
-
-| Assumption | Justification | Validation Status |
-|------------|---------------|-------------------|
-| | | |
-
----
-
-# Data Assumptions
-
-Record assumptions made about the data itself.
-
-Examples may include:
-
-- Data completeness
-- Data accuracy
-- Representativeness
-- Timestamp reliability
-- Business rule consistency
-
-| Assumption | Justification | Validation Status |
-|------------|---------------|-------------------|
-| | | |
-
----
-
-# Analytical Assumptions
-
-Record assumptions introduced by analytical methods.
-
-Examples may include:
-
-- Statistical assumptions
-- Modelling assumptions
-- Forecasting assumptions
-- Experimental assumptions
-
-| Assumption | Method | Validation Status |
-|------------|--------|-------------------|
-| | | |
-
----
-
-# Assumptions Requiring Future Validation
-
-Identify assumptions that cannot currently be tested but should be revisited later.
-
-| Assumption | Why Validation Is Deferred | Planned Validation |
-|------------|----------------------------|--------------------|
-| | | |
-
----
-
-# Relationship to Other Documentation
-
-Assumptions should be consistent with:
-
-- Project Information
-- Cleaning Log
-- Data Dictionary
-- Phase Documentation
-- Analytical Report
-
----
-
-# Notes
-
-Record additional context, discussions, or decisions related to project assumptions.
+| Not testable | A pre-specified decision or framing that data cannot confirm or reject. Recorded for transparency. |
 
 ---
 
@@ -133,5 +44,3 @@ Before completing the project, confirm:
 - [ ] Validation status has been updated where applicable.
 - [ ] High-risk assumptions have been identified.
 - [ ] Business recommendations acknowledge any unresolved assumptions.
-
----
