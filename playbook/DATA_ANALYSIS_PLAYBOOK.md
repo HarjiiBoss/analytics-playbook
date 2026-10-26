@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.2  
+**Current Version:** 3.3  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -83,7 +83,8 @@ If a technique increases complexity without improving these qualities, it should
 | 2.3 | July 2026 | Added Presentation Building & Delivery Standards |
 | 3.0 | August 2026 | Major restructuring. Added Method Selection Framework, Model Validation Standards, Business Metric Design Framework, Cross-Track Thinking, Model Documentation Standards, Analytical Reference Map, improved workflow architecture, and reduced redundancy throughout the playbook. |
 | 3.1 | August 2026 | Added Branching Strategy to Version Control Standards |
-| **3.2** | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Phases renumbered 0 to 5 (Analytical Method Selection, formerly Phase 2.5, is now Phase 3). Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
+| 3.2 | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Phases renumbered 0 to 5 (Analytical Method Selection, formerly Phase 2.5, is now Phase 3). Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
+| **3.3** | October 2026 | Added date-range reconciliation and explicit date locale (Phase 1), Plausibility Checks (Principle 7), Figures in Text (Single Source of Truth), figure and metric-definition checks (Final Quality Review, Quality Assurance), and Principle 9 on AI-assisted work. Based on a full audit of the portfolio. |
 
 ---
 
@@ -613,6 +614,9 @@ After building the clean layer, compare it with the raw layer:
 - Category counts
 - Totals of numeric columns
 - Counts of values that failed type conversion
+- Date range: parsed dates fall inside the period the source documents, and they run in the same order as any ordered key (invoice or ID numbers)
+
+Set the date format or locale explicitly at import. A date read in the wrong format can still load as a valid date with day and month swapped, and only days 1–12 survive; the rest arrive blank. A row count that drops sharply when blank dates are removed is a sign of this, not a cleaning result.
 
 Every difference must be explained by a logged cleaning decision. Record the reconciliation result in the cleaning log.
 
@@ -935,6 +939,8 @@ Before publication, confirm that:
 - Results are reproducible.
 - Documentation is complete.
 - Deliverables are internally consistent.
+- Every figure on the page, README and dashboard matches the output it comes from (checked with the cross-check script, not by eye).
+- Each metric's name matches its definition: a rate is not a share, revenue lost is not revenue at risk, and a margin states which costs it deducts.
 
 ---
 
@@ -1165,6 +1171,18 @@ Examples include:
 
 Validation is part of the analysis—not an optional final step.
 
+### Plausibility Checks
+
+A result can pass every technical check and still be wrong. Before interpreting, check that values behave as the business would expect.
+
+| Check | How | Failure it catches |
+|-------|-----|--------------------|
+| Joins | Joined values should vary with what drives them (for example, cost with distance). Check the correlation or a scatter plot before using a joined value | A join that attaches unrelated records |
+| Filters | Print the row count before and after every filter, and confirm it matches what the code comment says the filter does | A filter described in a comment but never applied |
+| Aggregates | Counts are whole numbers; totals summed by group add up to the overall total; a KPI uses the same filter as its label | Fractional "customer counts"; a KPI averaged over a Top N |
+| Dates | Monthly counts follow the documented period with no unexplained gaps or spikes | A date import error |
+| Extreme values | Any result far outside the rest is investigated before it is reported as a finding | A data or join error presented as a business problem |
+
 ---
 
 # Principle 8 — Communicate Business Meaning
@@ -1182,6 +1200,19 @@ Explain:
 > The model correctly classified approximately nine out of ten historical cases and could help prioritize high-risk customers for manual review.
 
 Every analytical result should conclude with its business implication.
+
+---
+
+# Principle 9 — Treat AI-Assisted Work as Unverified Until Checked
+
+AI tools write figures and conclusions that read as correct whether or not they are. Treat their output as the work of a new colleague: useful, and checked before it is trusted.
+
+- Trace every figure an AI tool writes to the output that computed it.
+- Ask the tool to verify against the files, not from memory or earlier conversation.
+- Have claims checked by a step that did not write them: a script, a second review, or a re-run.
+- Record in the phase document which parts were AI-assisted and how they were verified.
+
+The standard is the same as for any analyst's work: nothing is published until it has been checked against the evidence it claims to come from.
 
 ---
 
@@ -1706,6 +1737,10 @@ Each fact or decision is recorded in one authoritative document. Other documents
 
 Phase documents record what happened during the phase and link to the charter for the decisions themselves. `PROJECT_INFO.md` → Initial Assumptions is a Phase 0 snapshot; the assumption register is the version kept up to date.
 
+### Figures in Text
+
+Every figure quoted in a README, phase document, page, dashboard text or SQL comment comes from an output that computed it. In notebooks, write findings as f-strings that read from the result, never as typed numbers. When a result changes, re-run and copy the new figure; do not edit a number by hand.
+
 When a fact changes, update the authoritative document and check the documents that link to it.
 
 ---
@@ -2103,6 +2138,14 @@ Before publication, verify:
 - □ Cleaning log complete
 - □ Assumption register complete
 - □ Documentation index updated
+
+---
+
+## Figures
+
+- □ Cross-check script run: every number on the page and README found in the repository outputs
+- □ Dashboard text boxes contain no typed figures that are not in the data
+- □ No figure is typed next to the code that computes it
 
 ---
 
