@@ -103,6 +103,25 @@ Projects are created in `~/projects/` unless `--parent-dir` is given. The tool s
 
 ---
 
+## 🔎 Checking Figures Before Publishing
+
+`tools/check_figures.py` checks that every number in a project's README and pages can be found in the project's own outputs: notebook results, SQL code, CSV exports and PDF query results. Run it before opening the final pull request (Playbook Part II, Phase 5 → Final Quality Review).
+
+```bash
+python3 tools/check_figures.py ~/projects/project-name
+python3 tools/check_figures.py ~/projects/project-name --text README.md docs/index.html docs/executive_summary.md
+```
+
+It lists every figure it could not find, with the sentence around it, and exits with code 1 if there are any. For each one:
+
+- **Typed or drifted** (the output says something else): correct the text from the output.
+- **Derived and correct** (a sum, ratio or annualised figure checked by hand): add it to a `.figures-allow` file in the project, one per line with the reason, for example `£1.67M  # monthly_revenue_lost x 12`.
+- **Not a finding** (a version or section number): add it to `.figures-allow` the same way.
+
+The tool checks that a number exists in the outputs, not that it describes the right thing, so the meaning of each claim is still reviewed by eye. Numbers typed inside notebook strings or SQL comments do not count as evidence. PDF results need `pypdf` (`pip install pypdf`) or the `pdftotext` command.
+
+---
+
 ## 📊 Example Projects
 
 Practical implementations demonstrating how the playbook is applied in real analytics projects.
@@ -188,7 +207,8 @@ analytics-playbook/
 │   └── DATA_ANALYSIS_PLAYBOOK.md
 │
 ├── tools/
-│   └── new_project.py
+│   ├── new_project.py
+│   └── check_figures.py
 │
 └── templates/
     ├── README_template.md
