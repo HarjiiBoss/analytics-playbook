@@ -61,9 +61,11 @@ Translate each business question into measurable analytical questions.
 
 Identify the KPIs and business metrics used in this phase.
 
-| Metric | Definition | Business Purpose |
-|--------|------------|------------------|
-| | | |
+| Metric | Definition | Unit of Analysis | Denominator | Time Window | Business Purpose |
+|--------|------------|------------------|-------------|-------------|------------------|
+| | | | | | |
+
+<!-- A rate divides by the group's own size; a share divides by the total. Name each metric by what it divides by (Playbook Principle 6). -->
 
 ---
 
@@ -220,7 +222,10 @@ Proceed only when:
 
 - [ ] Primary business questions have been answered descriptively.
 - [ ] Findings are supported by analytical evidence.
-- [ ] Business metrics have been documented.
+- [ ] Business metrics have been documented, each with its unit of analysis, denominator and time window.
+- [ ] Plausibility checks passed: row counts after every filter, joins checked against what drives them, additive totals reconcile, distinct counts not summed across groups, extreme values investigated.
+- [ ] Each metric's name matches its definition (rate or share, lost or at risk).
+- [ ] No segment defined using the outcome is described as predicting it.
 - [ ] Remaining unanswered questions have been identified.
 - [ ] Any need for advanced analytical methods has been clearly justified.
 

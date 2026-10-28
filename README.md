@@ -118,6 +118,8 @@ It lists every figure it could not find, with the sentence around it, and exits 
 - **Derived and correct** (a sum, ratio or annualised figure checked by hand): add it to a `.figures-allow` file in the project, one per line with the reason, for example `£1.67M  # monthly_revenue_lost x 12`.
 - **Not a finding** (a version or section number): add it to `.figures-allow` the same way.
 
+`new_project.py` creates an empty `.figures-allow` with these instructions at the top.
+
 The tool checks that a number exists in the outputs, not that it describes the right thing, so the meaning of each claim is still reviewed by eye. Numbers typed inside notebook strings or SQL comments do not count as evidence. PDF results need `pypdf` (`pip install pypdf`) or the `pdftotext` command.
 
 ---

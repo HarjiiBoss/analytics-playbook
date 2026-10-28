@@ -113,3 +113,21 @@ Full scoping (hypotheses, metric definitions, scope, risks and assumptions): [PR
 # License
 
 The code and documentation in this repository are released under the MIT License. <!-- State the dataset's own licence or terms, or say they are unknown. -->
+
+---
+
+## Published Surfaces
+
+<!-- Every place these findings appear outside this repository. When a figure changes, update each one and the date (Playbook Part V → Published Surfaces). -->
+
+| Surface | Link | Last checked |
+|---------|------|--------------|
+| Project page | | |
+| Portfolio site card | | |
+| GitHub profile README | | |
+| Resume | — | |
+| LinkedIn post | | |
+
+## Corrections
+
+<!-- Dated notes of any figure corrected after publication: what changed, old and new values, and why. Delete this section until there is one. -->

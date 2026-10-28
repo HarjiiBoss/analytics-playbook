@@ -157,9 +157,12 @@ Confirm the repository is complete and reproducible.
 - [ ] Dashboard exported
 - [ ] Output files saved
 - [ ] Screenshots included (where appropriate)
-- [ ] Requirements file updated
+- [ ] Requirements file updated, with exact versions pinned
+- [ ] Every notebook run from a restarted kernel
+- [ ] No debug cells or absolute local paths
+- [ ] Raw data access documented (source, licence, checksum); raw files not committed
 - [ ] .gitignore verified
-- [ ] No credentials committed
+- [ ] No credentials committed, including in the full Git history
 
 ---
 
@@ -173,7 +176,12 @@ Complete before publishing or sharing the project.
 - [ ] Assumptions documented
 - [ ] Limitations documented
 - [ ] Visualizations verified
-- [ ] Dashboard reviewed
+- [ ] Dashboard reviewed, including Chart Integrity (zero baselines, axes, filter scope, no typed figures)
+- [ ] `tools/check_figures.py` passes on README, project page and executive summary
+- [ ] Each metric's name matches its definition
+- [ ] Every external figure has a linked source
+- [ ] Published Surfaces table in the README filled in, each surface checked and dated
+- [ ] Executive summary written first; README, dashboard text and presentation built from it
 - [ ] README finalized
 - [ ] Documentation complete
 - [ ] Repository reproducible
