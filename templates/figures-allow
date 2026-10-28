@@ -1,0 +1,4 @@
+# .figures-allow — figures checked by hand that tools/check_figures.py cannot find in the outputs.
+# One figure per line, written as it appears in the text, then '#' and how it was derived. Example:
+#   £1.67M   # monthly_revenue_lost (139,130.85) x 12, Phase 3 notebook cell 14
+# List a figure only after checking the calculation. A typed or drifted figure is fixed, not listed.

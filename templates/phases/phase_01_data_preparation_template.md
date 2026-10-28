@@ -34,6 +34,14 @@ Document every dataset used during this phase.
 |----------|--------|-------|-----------------|-------------------|------|
 | | | | | | |
 
+## Provenance
+
+| File | Licence | Original Publisher | SHA-256 Checksum | Download Date | Row Count |
+|------|---------|--------------------|------------------|---------------|-----------|
+| | | | | | |
+
+<!-- The loading notebook stops if the checksum differs (Playbook Phase 1 → Data Provenance). -->
+
 ---
 
 # Dataset Overview
@@ -126,6 +134,25 @@ Summarize the major cleaning activities performed during this phase.
 | Activity | Reason | Related Documentation |
 |----------|--------|-----------------------|
 | | | Cleaning Log |
+
+---
+
+# Raw-to-Clean Reconciliation
+
+<!-- Every difference must be explained by a logged cleaning decision (Playbook Phase 1 → Reconcile Raw and Clean). -->
+
+| Check | Raw | Clean | Difference | Explained by |
+|-------|-----|-------|------------|--------------|
+| Row count | | | | |
+| Distinct keys | | | | |
+| Category counts | | | | |
+| Numeric column totals | | | | |
+| Values that failed type conversion | | | | |
+| Date range (earliest – latest) | | | | |
+
+Date format or locale set at import: <!-- for example, "English (United States), m/d/yyyy" -->
+
+Dates checked against an ordered key (invoice or ID numbers): <!-- yes / not applicable, with the result -->
 
 ---
 
@@ -259,6 +286,7 @@ Proceed to **Phase 2 — Business Analysis** only when:
 - [ ] Invalid values investigated
 - [ ] Outliers reviewed
 - [ ] Timestamp integrity verified
+- [ ] Date format or locale set explicitly at import, and the date range matches the documented period
 
 ---
 
@@ -267,6 +295,8 @@ Proceed to **Phase 2 — Business Analysis** only when:
 - [ ] Cleaning decisions documented
 - [ ] Raw data preserved
 - [ ] Processed dataset created
+- [ ] Raw-to-clean reconciliation recorded, with every difference explained
+- [ ] Checksum recorded and checked by the loading notebook
 
 ---
 

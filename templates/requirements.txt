@@ -1,3 +1,5 @@
+# Pin exact versions before publishing (Playbook Part V, Reproducibility Standard):
+#   pip freeze, then keep only the packages this project imports, as name==version
 pandas
 numpy
 matplotlib

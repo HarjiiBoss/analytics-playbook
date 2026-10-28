@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.3  
+**Current Version:** 3.4  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -84,7 +84,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.0 | August 2026 | Major restructuring. Added Method Selection Framework, Model Validation Standards, Business Metric Design Framework, Cross-Track Thinking, Model Documentation Standards, Analytical Reference Map, improved workflow architecture, and reduced redundancy throughout the playbook. |
 | 3.1 | August 2026 | Added Branching Strategy to Version Control Standards |
 | 3.2 | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Phases renumbered 0 to 5 (Analytical Method Selection, formerly Phase 2.5, is now Phase 3). Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
-| **3.3** | October 2026 | Added date-range reconciliation and explicit date locale (Phase 1), Plausibility Checks (Principle 7), Figures in Text (Single Source of Truth), figure and metric-definition checks (Final Quality Review, Quality Assurance), and Principle 9 on AI-assisted work. Based on a full audit of the portfolio. |
+| 3.3 | October 2026 | Added date-range reconciliation and explicit date locale (Phase 1), Plausibility Checks (Principle 7), Figures in Text (Single Source of Truth), figure and metric-definition checks (Final Quality Review, Quality Assurance), and Principle 9 on AI-assisted work. Based on a full audit of the portfolio. |
+| **3.4** | October 2026 | Templates and the scaffolding tool brought level with the playbook. Added Published Surfaces and Corrections and Withdrawals, Predictive Claims, Reporting Statistical Results, Chart Integrity, external-figure sourcing, unit of analysis and denominator in metric definitions, reproducibility details (seeds, pinned versions, restarted kernel, no local paths), client work under Security, the Phase 5 order of work (executive summary first), a Figures Quoted notebook cell and a pull request template. Fixed the aggregates check for distinct counts and the accuracy example in Principle 8. Removed duplicated sections so each standard is stated once. |
 
 ---
 
@@ -412,29 +413,7 @@ Rules written after seeing the data can be adjusted, even unintentionally, to fi
 
 ### Project Setup
 
-Create the project structure.
-
-```
-project/
-
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── docs/
-│
-├── notebooks/
-│
-├── sql/
-│
-├── outputs/
-│
-├── tableau/
-│
-├── README.md
-│
-└── .gitignore
-```
+Create the project with `tools/new_project.py`, which builds the structure in Part V → Repository Standards from the templates. Run it with `--dry-run` first.
 
 ---
 
@@ -912,20 +891,18 @@ A technically excellent analysis has little value if stakeholders cannot underst
 
 ---
 
+## Order of Work
+
+1. Write the executive summary first. It holds the findings, figures and recommendation in their final wording.
+2. Build the README, dashboard text and presentation from the executive summary, so every deliverable says the same thing.
+3. Plan the dashboard before building it (Part V → Dashboard Build Standards).
+4. Before making the repository public, scan the full Git history for secrets (not only the current files) and run every notebook from a restarted kernel.
+
+---
+
 ## Standard Deliverables
 
-Every completed project should include, where appropriate:
-
-- Executive summary
-- README
-- Technical documentation
-- SQL scripts
-- Python notebooks
-- Dashboards
-- Data dictionary
-- Visualizations
-- Supporting datasets
-- Presentation materials
+See Part V → Standard Deliverables.
 
 ---
 
@@ -939,8 +916,10 @@ Before publication, confirm that:
 - Results are reproducible.
 - Documentation is complete.
 - Deliverables are internally consistent.
-- Every figure on the page, README and dashboard matches the output it comes from (checked with the cross-check script, not by eye).
+- Every figure on the page, README and dashboard matches the output it comes from (checked with `tools/check_figures.py`, not by eye).
 - Each metric's name matches its definition: a rate is not a share, revenue lost is not revenue at risk, and a margin states which costs it deducts.
+- Every figure not computed from the project's data (a benchmark, an industry rate) has a linked source, or is removed.
+- Every published surface listed in the README shows the same figures (see Published Surfaces).
 
 ---
 
@@ -1083,6 +1062,23 @@ This playbook defines six evidence levels.
 
 Claims should never exceed the highest level supported by the analysis.
 
+### Predictive Claims
+
+A claim that a variable or segment *predicts* an outcome (level 5) needs two things:
+
+- Every input was known before the outcome happened. A feature recorded at or after the outcome (tenure at churn, a flag set when an account closed) leaks the answer into the prediction.
+- Performance was measured on data the model or rule did not see while it was built: a hold-out set, or a later time period.
+
+A segment defined using the outcome, or using variables shaped by it, describes the outcome. It does not predict it. Report it as "customers in this profile churned at X%", not as a high-risk group identified in advance.
+
+### Reporting Statistical Results
+
+- **Effect size first.** Report the size of the difference and its confidence interval, then the p-value. "Statistically significant" on its own says nothing about how large the difference is.
+- **Practical significance.** State whether the effect is large enough to matter for the decision, against a threshold set before the analysis where possible.
+- **Multiple comparisons.** When many segments, metrics or cut-offs are tested, some will pass by chance. Decide the primary comparison in advance; treat the rest as exploratory, or apply a correction (Bonferroni, or Benjamini-Hochberg for many tests) and say which.
+- **No conditioning on what the treatment changed.** In an experiment, do not split or filter by a variable measured after assignment (activity, rounds played, whether a user reached a feature). The treatment can change who is in each group, so the comparison is no longer randomised. Compare everyone as assigned (intent-to-treat).
+- **Balance before outcomes.** Check the split between groups (a sample ratio test) before reading any outcome.
+
 ---
 
 # Evidence Calibration Examples
@@ -1137,18 +1133,24 @@ A well-designed metric often delivers more business value than a sophisticated m
 
 # Business Metric Design Framework
 
-Every important metric should answer six questions.
+Every important metric should answer these questions.
 
 | Question | Example |
 |----------|---------|
 | What is being measured? | Customer retention |
 | Why is it important? | Revenue protection |
 | How is it calculated? | Retained customers / starting customers |
+| What is one unit? | One customer (not one order or one order line) |
+| What is the denominator? | Customers active at the start of the period |
+| Over what time window? | Calendar month |
+| In what units or currency? | Percentage of customers |
 | What assumptions exist? | Active customer definition |
 | What are the limitations? | Doesn't measure customer satisfaction |
 | How will decisions change? | Identify segments requiring retention efforts |
 
 Metrics should exist because they support decisions—not because they are easy to calculate.
+
+A rate and a share are different metrics. A rate divides by the group's own size (churned customers ÷ customers on that contract); a share divides by the total (that contract's churned customers ÷ all churned customers). Name each one by what it divides by.
 
 ---
 
@@ -1179,7 +1181,9 @@ A result can pass every technical check and still be wrong. Before interpreting,
 |-------|-----|--------------------|
 | Joins | Joined values should vary with what drives them (for example, cost with distance). Check the correlation or a scatter plot before using a joined value | A join that attaches unrelated records |
 | Filters | Print the row count before and after every filter, and confirm it matches what the code comment says the filter does | A filter described in a comment but never applied |
-| Aggregates | Counts are whole numbers; totals summed by group add up to the overall total; a KPI uses the same filter as its label | Fractional "customer counts"; a KPI averaged over a Top N |
+| Additive totals | Sums such as revenue or order counts, split by group or period, add back to the overall total | Rows lost or double counted in a join or filter |
+| Distinct counts | Counts are whole numbers and are never summed across groups or periods: the same customer can appear in several months, so monthly distinct customers do not add up to total customers. Count distinct over the full scope instead | Fractional "customer counts" from `1/COUNTIF`; totals inflated by summing monthly distinct counts |
+| KPI scope | A KPI is calculated over the same rows its label describes | A KPI averaged over a Top N filter |
 | Dates | Monthly counts follow the documented period with no unexplained gaps or spikes | A date import error |
 | Extreme values | Any result far outside the rest is investigated before it is reported as a finding | A data or join error presented as a business problem |
 
@@ -1193,11 +1197,13 @@ They care about decisions.
 
 Instead of reporting only:
 
-> Accuracy = 91%.
+> AUC = 0.83.
 
 Explain:
 
-> The model correctly classified approximately nine out of ten historical cases and could help prioritize high-risk customers for manual review.
+> At the chosen threshold, the model flagged 72% of the borrowers who went on to default, and about one in five flagged borrowers did default. That is a short list for manual review that still covers most of the losses.
+
+Avoid accuracy when the outcome is rare. If 6.7% of borrowers default, a model that predicts "no default" for everyone is 93% accurate and catches no one. Report recall and precision at a stated threshold instead.
 
 Every analytical result should conclude with its business implication.
 
@@ -1487,11 +1493,19 @@ Every dashboard should include:
 - supporting visualizations
 - filters
 - clear titles
-- concise annotations
+- concise business commentary
 
 Avoid unnecessary visual complexity.
 
 Decorative elements should never compete with analytical information.
+
+## Chart Integrity
+
+- Bar charts start at zero. A line chart may start elsewhere, with the axis labelled.
+- Axes are automatic unless a fixed range is needed; a fixed range is stated in the chart or its caption.
+- Every KPI and chart uses the filters its title describes. A KPI on a page filtered to a Top N reports the Top N only, and says so.
+- Text boxes contain no typed figures. Figures in dashboard text come from calculated fields.
+- Colours are checked for contrast and colour blindness; red is reserved for severity.
 
 ---
 
@@ -1741,7 +1755,17 @@ Phase documents record what happened during the phase and link to the charter fo
 
 Every figure quoted in a README, phase document, page, dashboard text or SQL comment comes from an output that computed it. In notebooks, write findings as f-strings that read from the result, never as typed numbers. When a result changes, re-run and copy the new figure; do not edit a number by hand.
 
+A figure that does not come from the project's data (an industry benchmark, a market rate, a published average) needs a source linked beside it. A benchmark without a source is removed, however familiar it sounds.
+
+Check figures with `tools/check_figures.py`. A derived figure checked by hand (a sum, ratio or annualised value) is listed in the project's `.figures-allow` file with the calculation beside it, so the next check passes and the reason is on record.
+
 When a fact changes, update the authoritative document and check the documents that link to it.
+
+### Published Surfaces
+
+Findings are repeated outside the repository: the project page, the portfolio site card, the GitHub profile README, the resume, LinkedIn posts and dashboard text. Single source of truth cannot reach these, so they are listed instead.
+
+The project README ends with a **Published Surfaces** table: each place the findings appear, its link, and the date it was last checked. When a figure changes, every surface in the table is updated in the same piece of work, and the dates are refreshed.
 
 ---
 
@@ -1755,6 +1779,7 @@ Each variable should include:
 - Data type
 - Business meaning
 - Valid values (where applicable)
+- Units or currency, as recorded in the source (do not convert a currency without stating the rate and date)
 - Missingness
 - Cleaning decisions (with a pointer to the cleaning log entry)
 
@@ -1885,6 +1910,8 @@ General principles:
 - Avoid hidden state.
 - Load secrets from `.env`.
 - Never overwrite raw data.
+- Set a random seed for anything random (sampling, bootstrap, train/test splits, model fitting) in the configuration cell, so a re-run gives the same result.
+- Build paths from the project root. No absolute local paths (`/Users/...`) and no debug cells such as `os.getcwd()` in a published notebook.
 
 Code should communicate intent as clearly as results.
 
@@ -1925,22 +1952,13 @@ A reader who has not seen the project should be able to follow the code from the
 
 ---
 
-# Dashboard Standards
+# Dashboard Build Standards
 
-Dashboards should answer one primary business question.
+Design standards are in Part IV → Dashboard Standards, Dashboard Design Principles and Chart Integrity. When building:
 
-Each dashboard should contain:
-
-- KPI summary
-- Supporting charts
-- Interactive filters
-- Clear titles
-- Business commentary
-- Navigation (where multiple dashboards exist)
-
-Every visual should support a decision.
-
-If a chart does not influence understanding or decision-making, remove it.
+- Plan the dashboard in `docs/tableau_blueprint.md` before building it.
+- Add navigation where there is more than one dashboard.
+- Save the packaged workbook (`.twbx`) in `tableau/` and export a preview image for the README.
 
 ---
 
@@ -1948,17 +1966,7 @@ If a chart does not influence understanding or decision-making, remove it.
 
 ## SQL
 
-```
-00_setup.sql
-
-01_cleaning.sql
-
-02_customer_segmentation.sql
-
-03_churn_analysis.sql
-
-04_validation.sql
-```
+See SQL Standards above: files are numbered by phase (`00_setup.sql`, `01_data_preparation.sql`, `02_business_analysis.sql` and so on).
 
 ---
 
@@ -2053,7 +2061,8 @@ Standard flow:
 2. Commit normally while working on the branch.
 3. Push the branch: `git push -u origin phase-N-description`
 4. Open a Pull Request to merge into `main` once the work is
-   complete and reviewed.
+   complete and reviewed. New projects include `.github/pull_request_template.md`,
+   so every pull request opens with the phase exit checks.
 5. Squash commits during merge where useful, so `main` reflects
    one clean, descriptive commit per completed unit of work.
 
@@ -2084,6 +2093,12 @@ Another analyst should be able to reproduce the project using only:
 
 Projects requiring undocumented manual steps are not considered reproducible.
 
+Before publication:
+
+- Pin exact package versions in `requirements.txt` (`pip freeze`, trimmed to the packages the project imports).
+- Restart the kernel and run every notebook from top to bottom; the published outputs are the ones from that run.
+- Re-run SQL from the raw layer and confirm the row counts match the phase documents.
+
 ---
 
 # Security Standards
@@ -2103,6 +2118,12 @@ Use:
 - the platform's own login (for example, application default credentials) instead of key files in the project folder
 - anonymised datasets
 - secure credential storage
+
+### Client Work
+
+- Get the client's written permission before using any part of a client project in a portfolio, and agree what can be shown.
+- Client data, client names and deliverables stay out of public repositories unless the client agrees. Describe the work in general terms ("an independent client") instead.
+- Keep client files in a private location, and delete or return them when the engagement ends if the agreement says so.
 
 Security is part of analytical professionalism.
 
@@ -2125,9 +2146,10 @@ Before publication, verify:
 ## Code
 
 - □ SQL executes without errors
-- □ Notebooks run from top to bottom
+- □ Notebooks run from top to bottom after a kernel restart
+- □ Random seeds set; package versions pinned
 - □ No hidden dependencies
-- □ No temporary code remains
+- □ No temporary code, debug cells or absolute local paths remain
 
 ---
 
@@ -2143,9 +2165,11 @@ Before publication, verify:
 
 ## Figures
 
-- □ Cross-check script run: every number on the page and README found in the repository outputs
+- □ `tools/check_figures.py` passes: every number on the page and README found in the repository outputs or listed in `.figures-allow`
 - □ Dashboard text boxes contain no typed figures that are not in the data
 - □ No figure is typed next to the code that computes it
+- □ Every external figure has a linked source
+- □ Every published surface in the README's Published Surfaces table checked and dated
 
 ---
 
@@ -2155,6 +2179,7 @@ Before publication, verify:
 - □ Visuals consistent with analysis
 - □ Filters functioning
 - □ Business commentary accurate
+- □ Chart Integrity checks passed (zero baselines, axes, filter scope)
 
 ---
 
@@ -2168,6 +2193,27 @@ Before publication, verify:
 
 ---
 
+# Corrections and Withdrawals
+
+Published work is corrected openly, not silently.
+
+**Correct** when a figure or claim is wrong but the analysis still answers its question:
+
+1. Fix the figure at its source (the notebook or query), re-run, and update the authoritative document.
+2. Add a dated **Corrections** note to the README: what changed, the old and new values, and why.
+3. Update every surface in the Published Surfaces table.
+
+**Withdraw** when the error undermines the analysis itself (for example, a date import error that removed most of the rows):
+
+1. Replace the README's opening with a dated correction notice that states the error, its effect and that the findings should not be used.
+2. Mark the project as withdrawn on the project page, and remove it from the portfolio site, the profile README and the resume.
+3. Keep the repository public with the notice, so the history stays honest, unless the data licence requires otherwise.
+4. If the question is still worth answering, rebuild it as a new project rather than patching the old one.
+
+Record each correction or withdrawal in the phase document where the error was made, and add the lesson to this playbook if a standard would have caught it.
+
+---
+
 # Standard Deliverables
 
 Every completed analytics project should include, where appropriate:
@@ -2175,8 +2221,8 @@ Every completed analytics project should include, where appropriate:
 - README
 - SQL scripts
 - Python notebooks
-- Raw data
-- Processed datasets
+- Raw data access: source link, licence, checksum and download steps (raw files are not committed)
+- Processed datasets, where the licence allows
 - Dashboard
 - Dashboard screenshots
 - Executive summary
@@ -2240,6 +2286,8 @@ Whenever a project introduces:
 - or a clearer communication technique,
 
 the playbook should be updated and the change recorded in the Version History.
+
+A version change updates the templates in `templates/` and `PLAYBOOK_VERSION` in `tools/new_project.py` in the same pull request. A rule that exists only in the playbook text is skipped when the phase documents are filled in.
 
 Continuous improvement should be intentional rather than reactive.
 

@@ -245,6 +245,12 @@ Proceed only when:
 
 - [ ] The selected analytical method has been completed.
 - [ ] Results have been validated.
+- [ ] Effect sizes reported with confidence intervals, not p-values alone.
+- [ ] Practical significance stated against the threshold set in advance.
+- [ ] Multiple comparisons handled: primary comparison fixed in advance, others marked exploratory or corrected.
+- [ ] No split or filter on a variable measured after assignment (experiments).
+- [ ] Predictive inputs were known before the outcome; performance measured on held-out data.
+- [ ] Random seeds set for every random step.
 - [ ] Findings are supported by evidence.
 - [ ] Business implications have been clearly explained.
 - [ ] Assumptions and limitations have been documented.

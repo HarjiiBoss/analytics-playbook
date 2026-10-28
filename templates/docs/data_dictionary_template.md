@@ -16,6 +16,7 @@ Reference for every column in the project tables. Updated whenever a variable is
 | Owner | |
 | Version | <!-- File checksum or extract identifier --> |
 | Extraction Date | |
+| Currency / Units | <!-- As recorded in the source --> |
 | Last Updated | {{LAST_UPDATED}} |
 
 ---
