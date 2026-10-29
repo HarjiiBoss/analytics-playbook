@@ -66,6 +66,10 @@ data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
+# Provenance files from the Dataset Library are committed; the data files are not
+!data/raw/SOURCE.txt
+!data/raw/SHA256SUMS.txt
+
 # --------------------------------------------------
 # Outputs
 # --------------------------------------------------

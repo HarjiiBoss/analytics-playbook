@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.4).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.5).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -12,21 +12,27 @@ What it does, in order:
   1. Builds the folder structure from Part V (Repository Standards).
   2. Fills the templates with the project details and writes them into the project,
      including the first notebook with its header filled in.
-  3. Initialises Git and makes the first commit on main.
-  4. Creates the GitHub repository and pushes main (needs the GitHub CLI, `gh`, logged in).
-  5. Switches to a phase-0-scoping branch, so no work happens on main (Branching Strategy).
+  3. With --data: checks the dataset's checksums, copies its SOURCE.txt and SHA256SUMS.txt
+     into data/raw/ (these are committed) and links the data files there (these are not).
+  4. Initialises Git and makes the first commit on main.
+  5. Creates the GitHub repository and pushes main (needs the GitHub CLI, `gh`, logged in).
+  6. Switches to a phase-0-scoping branch, so no work happens on main (Branching Strategy).
 
 Examples:
   python3 tools/new_project.py --dry-run --title "GA4 Ecommerce Funnel"
   python3 tools/new_project.py --title "GA4 Ecommerce Funnel" --industry "Ecommerce" \
       --domain "Web Analytics" --visibility private
+  python3 tools/new_project.py --title "Online Retail CRM Analysis" --domain "CRM Analytics" \
+      --data ~/datasets/online-retail-ii
 
 Always run with --dry-run first. It prints everything it would do and changes nothing.
 """
 
 import argparse
 import datetime
+import hashlib
 import json
+import os
 import re
 import shlex
 import shutil
@@ -34,7 +40,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.4"
+PLAYBOOK_VERSION = "3.5"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -47,6 +53,12 @@ DEFAULT_TEMPLATES = PLAYBOOK_ROOT / "templates"
 # Projects are created outside the playbook repository by default, so a project
 # can never end up nested inside another Git repository.
 DEFAULT_PARENT_DIR = Path.home() / "projects"
+
+# Dataset Library (Playbook Phase 1 → Dataset Library): each source has its own folder
+# under ~/datasets/ holding the data, a SOURCE.txt note and a SHA256SUMS.txt file.
+# The two provenance files are copied into the project and committed; the data files
+# are linked, never copied or committed (data/raw/* is in .gitignore).
+PROVENANCE_FILES = ["SOURCE.txt", "SHA256SUMS.txt"]
 
 # Folders from the playbook's repository structure, plus assets/ and reports/
 # which the README template lists.
@@ -197,6 +209,62 @@ def inside_git_repo(path):
     return None
 
 
+def sha256(path):
+    """SHA-256 of a file, read in 1 MB blocks so multi-gigabyte files do not fill memory."""
+    digest = hashlib.sha256()
+    with open(path, "rb") as f:
+        for block in iter(lambda: f.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def check_dataset(data_dir):
+    """Stop unless the dataset folder has both provenance files and every checksum matches.
+    Returns the top-level entries to link into data/raw/ (data files or folders of them)."""
+    missing = [name for name in PROVENANCE_FILES if not (data_dir / name).is_file()]
+    if missing:
+        sys.exit("Dataset folder " + str(data_dir) + " is missing " + " and ".join(missing)
+                 + ".\nRecord the provenance files at download first (Playbook Phase 1 → Dataset Library).")
+
+    print("\nDataset")
+    print("  " + str(data_dir))
+    # Each line of SHA256SUMS.txt is "<checksum>  <path relative to the dataset folder>",
+    # the format written by `shasum -a 256`.
+    lines = [l for l in (data_dir / "SHA256SUMS.txt").read_text(encoding="utf-8").splitlines() if l.strip()]
+    if not lines:
+        sys.exit("SHA256SUMS.txt in " + str(data_dir) + " is empty.")
+    for line in lines:
+        expected, name = line.split(maxsplit=1)
+        name = name.lstrip("*")            # shasum marks binary mode with a leading *
+        path = data_dir / name
+        if not path.is_file():
+            sys.exit("Listed in SHA256SUMS.txt but not found: " + str(path))
+        actual = sha256(path)
+        if actual != expected.lower():
+            sys.exit("Checksum differs for " + name + "\n  recorded " + expected + "\n  found    " + actual
+                     + "\nThe file has changed since it was documented. Find out why before using it.")
+        print("  checksum OK  " + name)
+
+    # Link every top-level entry except the provenance files and hidden files (.DS_Store).
+    return sorted(p for p in data_dir.iterdir()
+                  if p.name not in PROVENANCE_FILES and not p.name.startswith("."))
+
+
+def link_dataset(project_dir, data_dir, entries, dry_run):
+    """Copy the provenance files into data/raw/ and link the data there, so notebooks read
+    data/raw/<file> on every machine and no path to ~/datasets is written into the code."""
+    raw = project_dir / "data" / "raw"
+    print("\nData (data/raw/)")
+    for name in PROVENANCE_FILES:
+        print("  copy  " + name + "  (committed)")
+        if not dry_run:
+            shutil.copy2(data_dir / name, raw / name)
+    for entry in entries:
+        print("  link  " + entry.name + " -> " + str(entry) + "  (ignored by Git)")
+        if not dry_run:
+            os.symlink(entry, raw / entry.name)
+
+
 # ----------------------------------------------------------------------------
 # Main steps
 # ----------------------------------------------------------------------------
@@ -218,6 +286,8 @@ def parse_args():
     p.add_argument("--visibility", choices=["private", "public"], default="private",
                    help="GitHub repo visibility. Default: private")
     p.add_argument("--no-github", action="store_true", help="Skip creating the GitHub repository")
+    p.add_argument("--data", help="Dataset folder in the Dataset Library, e.g. ~/datasets/olist. "
+                                   "Must hold SOURCE.txt and SHA256SUMS.txt")
     p.add_argument("--extra-packages", default="",
                    help="Comma-separated extra packages for requirements.txt")
     p.add_argument("--dry-run", action="store_true", help="Show what would happen, change nothing")
@@ -378,12 +448,22 @@ def main():
         sys.exit("The parent folder is inside an existing Git repository: " + str(enclosing)
                  + "\nChoose a parent folder outside it with --parent-dir.")
 
+    # Check the dataset before anything is created, so a bad checksum leaves nothing half-built.
+    data_dir, data_entries = None, []
+    if args.data:
+        data_dir = Path(args.data).expanduser().resolve()
+        if not data_dir.is_dir():
+            sys.exit("Dataset folder not found: " + str(data_dir))
+        data_entries = check_dataset(data_dir)
+
     warnings = []
-    print(("DRY RUN - nothing will be created\n" if args.dry_run else "") + "Project folder: " + str(project_dir))
+    print(("\n" if args.data else "") + ("DRY RUN - nothing will be created\n" if args.dry_run else "") + "Project folder: " + str(project_dir))
     print("Templates: " + str(templates_dir))
 
     files = build_files(index, values, args.extra_packages, warnings)
     write_project(project_dir, files, args.dry_run)
+    if data_dir is not None:
+        link_dataset(project_dir, data_dir, data_entries, args.dry_run)
     setup_git(project_dir, slug, values["PROJECT_TITLE"], args, warnings)
 
     print("\nSummary")
@@ -396,7 +476,10 @@ def main():
     print("  1. cd " + str(project_dir))
     print("  2. python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt")
     print("  3. cp .env.example .env, then add the settings the project needs")
-    print("  4. Complete PROJECT_INFO.md and docs/phase_00_setup.md")
+    if data_dir is not None:
+        print("  4. Complete PROJECT_INFO.md (Available Data from data/raw/SOURCE.txt) and docs/phase_00_setup.md")
+    else:
+        print("  4. Complete PROJECT_INFO.md and docs/phase_00_setup.md")
     print("  5. When the Phase 0 exit checklist is done: push the " + FIRST_BRANCH
           + " branch and open a pull request into main")
 

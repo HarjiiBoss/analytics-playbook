@@ -97,7 +97,10 @@ cd analytics-playbook
 git pull                     # use the latest templates
 python3 tools/new_project.py --dry-run --title "Project Title"
 python3 tools/new_project.py --title "Project Title" --industry "Industry" --domain "Domain"
+python3 tools/new_project.py --title "Project Title" --domain "Domain" --data ~/datasets/<source>
 ```
+
+`--data` points to a folder in the Dataset Library (Playbook Phase 1 → Dataset Library). The tool checks every checksum in its `SHA256SUMS.txt` before creating anything, copies `SOURCE.txt` and `SHA256SUMS.txt` into `data/raw/` to be committed, and links the data files there without committing them.
 
 Projects are created in `~/projects/` unless `--parent-dir` is given. The tool stops if the chosen folder is inside another Git repository. Creating the GitHub repository needs the GitHub CLI (`gh`) logged in; use `--no-github` to skip that step.
 
