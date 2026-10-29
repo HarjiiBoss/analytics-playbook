@@ -3,17 +3,19 @@
 check_figures.py
 
 Checks that every number a reader sees in a project's write-up can be found in the
-project's own outputs (Playbook v3.3, Single Source of Truth → Figures in Text).
+project's own outputs (Playbook v3.4, Single Source of Truth → Figures in Text).
 
 What it does, in order:
   1. Reads the reader-facing text: README.md, docs/index.html and docs/executive_summary.md
      by default, or the files given with --text.
   2. Pulls out every significant number: decimals, percentages, money, values with K/M/x/pp,
      and whole numbers of three or more digits. Years (1900-2099) are skipped.
-  3. Collects every number from the outputs: notebook outputs and code, SQL code, and CSV,
-     TXT, JSON and PDF files anywhere in the project (PDFs need pypdf or pdftotext). Not used as evidence: Markdown and HTML (they
-     are the write-up being checked), SQL comments, notebook Markdown cells, numbers inside
-     string literals, and printed numbers that the printing cell typed in a string literal.
+  3. Collects every number from the outputs: notebook outputs and code, SQL code, CSV, TXT,
+     JSON and PDF files, and the numeric cells of Excel workbooks, anywhere in the project
+     (PDFs need pypdf or pdftotext; workbooks need openpyxl). Not used as evidence: Markdown
+     and HTML (they are the write-up being checked), SQL comments, notebook Markdown cells,
+     numbers inside string literals, printed numbers that the printing cell typed in a string
+     literal, and numbers typed inside text cells of a workbook (a label such as "Churn 26.54%").
   4. Reports each text number that no output value rounds to, with the sentence around it.
 
 A number counts as found when an output value rounds to it at the same number of decimals,
@@ -46,7 +48,8 @@ import sys
 from pathlib import Path
 
 DEFAULT_TEXT = ["README.md", "docs/index.html", "docs/executive_summary.md"]
-EVIDENCE_SUFFIXES = {".ipynb", ".sql", ".csv", ".txt", ".json", ".pdf"}
+EVIDENCE_SUFFIXES = {".ipynb", ".sql", ".csv", ".txt", ".json", ".pdf", ".xlsx", ".xlsm"}
+SIZE_LIMITED = {".csv", ".txt", ".json", ".xlsx", ".xlsm"}
 SKIP_DIRS = {".git", ".ipynb_checkpoints", "__pycache__", ".venv", "venv", "node_modules", ".virtual_documents"}
 
 # A number in text: optional currency, digits with optional thousands commas and decimals,
@@ -131,6 +134,34 @@ def pdf_text(path):
     return None
 
 
+def workbook_text(path):
+    """Numbers held in the numeric cells of every sheet of an Excel workbook.
+
+    Formula cells are read as the value Excel last calculated and saved (data_only=True), so a
+    KPI built with =COUNTIF(...)/COUNTA(...) counts as computed evidence. Text cells are left
+    out: a number typed into a label or a title is written by hand, like a string literal in a
+    notebook. A formula with no saved value (a workbook written by a script and never opened
+    in Excel) contributes nothing. Returns None when openpyxl is not installed.
+    """
+    try:
+        from openpyxl import load_workbook
+    except ImportError:
+        return None
+    try:
+        wb = load_workbook(path, read_only=True, data_only=True)
+    except Exception:            # a damaged or password-protected workbook is skipped, not fatal
+        return ""
+    numbers = []
+    for sheet in wb.worksheets:
+        for row in sheet.iter_rows(values_only=True):
+            for cell in row:
+                # bool is a subclass of int in Python, so TRUE/FALSE cells are excluded explicitly
+                if isinstance(cell, (int, float)) and not isinstance(cell, bool):
+                    numbers.append(repr(float(cell)))
+    wb.close()
+    return " ".join(numbers)
+
+
 def sql_without_comments(text):
     """SQL code only: comments often hold typed insights, which are not evidence."""
     text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
@@ -145,8 +176,8 @@ def evidence_values(project, text_files, max_csv_mb):
             continue
         if SKIP_DIRS & set(path.relative_to(project).parts) or path in text_files:
             continue
-        if path.suffix.lower() in (".csv", ".txt", ".json") and path.stat().st_size > max_csv_mb * 1e6:
-            skipped.append(path)
+        if path.suffix.lower() in SIZE_LIMITED and path.stat().st_size > max_csv_mb * 1e6:
+            skipped.append((path, f"larger than {max_csv_mb:g} MB"))
             continue
         suffix = path.suffix.lower()
         if suffix == ".ipynb":
@@ -154,7 +185,12 @@ def evidence_values(project, text_files, max_csv_mb):
         elif suffix == ".pdf":
             content = pdf_text(path)
             if content is None:
-                skipped.append(path)    # no PDF reader installed: pip install pypdf
+                skipped.append((path, "no PDF reader; run: pip install pypdf"))
+                continue
+        elif suffix in (".xlsx", ".xlsm"):
+            content = workbook_text(path)
+            if content is None:
+                skipped.append((path, "no Excel reader; run: pip install openpyxl"))
                 continue
         elif suffix == ".sql":
             content = sql_without_comments(path.read_text(encoding="utf-8", errors="ignore"))
@@ -233,7 +269,8 @@ def main():
     parser.add_argument("project", type=Path, help="Path to the project repository")
     parser.add_argument("--text", nargs="+", help="Reader-facing files to check, relative to the project (default: %(default)s)",
                         default=DEFAULT_TEXT)
-    parser.add_argument("--max-csv-mb", type=float, default=20, help="Skip CSV/TXT/JSON evidence files larger than this (default: 20)")
+    parser.add_argument("--max-csv-mb", type=float, default=20,
+                        help="Skip CSV/TXT/JSON/Excel evidence files larger than this (default: 20)")
     parser.add_argument("--quiet", action="store_true", help="Print only the summary")
     args = parser.parse_args()
 
@@ -260,8 +297,7 @@ def main():
                 target.append((key[0], display, context))
 
     print(f"Checked {checked} figures in {len(text_files)} file(s) against {len(used)} output file(s).")
-    for path in skipped:
-        why = "no PDF reader; run: pip install pypdf" if path.suffix.lower() == ".pdf" else f"larger than {args.max_csv_mb:g} MB"
+    for path, why in skipped:
         print(f"  skipped ({why}): {path.relative_to(project)}")
     if allowed and not args.quiet:
         print(f"\nAllowed by .figures-allow ({len(allowed)}):")

@@ -105,7 +105,7 @@ Projects are created in `~/projects/` unless `--parent-dir` is given. The tool s
 
 ## 🔎 Checking Figures Before Publishing
 
-`tools/check_figures.py` checks that every number in a project's README and pages can be found in the project's own outputs: notebook results, SQL code, CSV exports and PDF query results. Run it before opening the final pull request (Playbook Part II, Phase 5 → Final Quality Review).
+`tools/check_figures.py` checks that every number in a project's README and pages can be found in the project's own outputs: notebook results, SQL code, CSV exports, PDF query results and the numeric cells of Excel workbooks. Run it before opening the final pull request (Playbook Part II, Phase 5 → Final Quality Review).
 
 ```bash
 python3 tools/check_figures.py ~/projects/project-name
@@ -120,7 +120,7 @@ It lists every figure it could not find, with the sentence around it, and exits 
 
 `new_project.py` creates an empty `.figures-allow` with these instructions at the top.
 
-The tool checks that a number exists in the outputs, not that it describes the right thing, so the meaning of each claim is still reviewed by eye. Numbers typed inside notebook strings or SQL comments do not count as evidence. PDF results need `pypdf` (`pip install pypdf`) or the `pdftotext` command.
+The tool checks that a number exists in the outputs, not that it describes the right thing, so the meaning of each claim is still reviewed by eye. Numbers typed inside notebook strings, SQL comments or text cells of a workbook do not count as evidence. PDF results need `pypdf` (`pip install pypdf`) or the `pdftotext` command; Excel workbooks need `openpyxl`, which is in the project `requirements.txt`. A workbook's formulas count by the values Excel last saved, so save the workbook in Excel before running the check.
 
 ---
 
