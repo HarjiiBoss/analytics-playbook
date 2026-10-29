@@ -133,4 +133,4 @@ A decision-maker should be able to read only this section and understand:
 - what should be done next,
 - and why those actions matter.
 
-Keep this section to approximately **150–250 words**.
+Keep this section to two or three short paragraphs, readable in about a minute.

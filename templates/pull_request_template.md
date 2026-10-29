@@ -13,7 +13,8 @@
 ## Checks
 
 - [ ] Phase exit checklist complete in the phase document
-- [ ] Notebooks run from a restarted kernel; outputs are from that run
+- [ ] Notebooks run from a restarted kernel; outputs are from that run (`python3 tools/check_notebooks.py --execute` at the end of a phase)
+- [ ] Pre-commit hooks pass (`pre-commit run --all-files`); any `--no-verify` commit explained below
 - [ ] Row counts after each filter match the phase document
 - [ ] `tools/check_figures.py` passes (Phase 5, or any change to README.md or docs/)
 - [ ] Each metric's name matches its definition

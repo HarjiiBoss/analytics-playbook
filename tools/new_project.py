@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.5).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.6).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -14,9 +14,12 @@ What it does, in order:
      including the first notebook with its header filled in.
   3. With --data: checks the dataset's checksums, copies its SOURCE.txt and SHA256SUMS.txt
      into data/raw/ (these are committed) and links the data files there (these are not).
-  4. Initialises Git and makes the first commit on main.
-  5. Creates the GitHub repository and pushes main (needs the GitHub CLI, `gh`, logged in).
-  6. Switches to a phase-0-scoping branch, so no work happens on main (Branching Strategy).
+  4. Copies the playbook's check tools into tools/ and writes .pre-commit-config.yaml, so the
+     checks travel with the project (and run in CI later) without needing this repository.
+  5. Initialises Git, installs the pre-commit hooks if pre-commit is available, and makes the
+     first commit on main.
+  6. Creates the GitHub repository and pushes main (needs the GitHub CLI, `gh`, logged in).
+  7. Switches to a phase-0-scoping branch, so no work happens on main (Branching Strategy).
 
 Examples:
   python3 tools/new_project.py --dry-run --title "GA4 Ecommerce Funnel"
@@ -40,7 +43,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.5"
+PLAYBOOK_VERSION = "3.6"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -59,6 +62,11 @@ DEFAULT_PARENT_DIR = Path.home() / "projects"
 # The two provenance files are copied into the project and committed; the data files
 # are linked, never copied or committed (data/raw/* is in .gitignore).
 PROVENANCE_FILES = ["SOURCE.txt", "SHA256SUMS.txt"]
+
+# Check tools copied from this repository's tools/ into each project's tools/. The
+# pre-commit hooks call them there. A project keeps the version it was created with;
+# to update one, copy the newer file across in its own pull request.
+PROJECT_TOOLS = ["check_figures.py", "check_notebooks.py"]
 
 # Folders from the playbook's repository structure, plus assets/ and reports/
 # which the README template lists.
@@ -85,6 +93,7 @@ DOCUMENTS = [
     (["requirements.txt"], "requirements.txt"),
     (["figures-allow", ".figures-allow"], ".figures-allow"),
     (["pull_request_template.md"], ".github/pull_request_template.md"),
+    (["pre-commit-config.yaml", ".pre-commit-config.yaml"], ".pre-commit-config.yaml"),
     (["documentation_index_template.md"], "docs/documentation_index.md"),
     (["data_dictionary_template.md"], "docs/data_dictionary.md"),
     (["project_glossary_template.md"], "docs/project_glossary.md"),
@@ -360,7 +369,16 @@ def build_files(index, values, extra_packages, warnings):
         merged.update({"NOTEBOOK_NAME": filename, "PHASE": phase, "NOTEBOOK_PURPOSE": purpose})
         files["notebooks/" + filename] = render_notebook(notebook_template.read_text(encoding="utf-8"), merged)
 
+    for name in PROJECT_TOOLS:
+        source = PLAYBOOK_ROOT / "tools" / name
+        if source.is_file():
+            files["tools/" + name] = source.read_text(encoding="utf-8")
+        else:
+            warnings.append("tools/" + name + " not found in the playbook repository. Skipped.")
+
     for output, text in files.items():
+        if output.startswith("tools/"):
+            continue  # tool code is copied as it is, and may contain {{ }} on purpose
         leftover = sorted(set(re.findall(r"\{\{[A-Z_]+\}\}", text)))
         if leftover:
             warnings.append(output + " still contains unfilled placeholders: " + ", ".join(leftover))
@@ -398,6 +416,12 @@ def setup_git(project_dir, slug, title, args, warnings):
         return
     run(["git", "init"], project_dir, dry_run)
     run(["git", "symbolic-ref", "HEAD", "refs/heads/main"], project_dir, dry_run)
+    # Hooks are installed before the first commit, so even that commit is checked.
+    if shutil.which("pre-commit") is None:
+        warnings.append("pre-commit is not installed, so the hooks are not active yet. "
+                        "From the project folder: pip install pre-commit && pre-commit install")
+    elif not run(["pre-commit", "install"], project_dir, dry_run):
+        warnings.append("`pre-commit install` failed (reason above). Run it again from the project folder.")
     run(["git", "add", "-A"], project_dir, dry_run)
     if not run(["git", "commit", "-m", COMMIT_MESSAGE], project_dir, dry_run):
         warnings.append("The first commit failed. Check `git config user.name` and `user.email`.")
