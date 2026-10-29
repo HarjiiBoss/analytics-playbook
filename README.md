@@ -246,7 +246,8 @@ analytics-playbook/
     │   ├── assumption_register_template.md
     │   ├── cleaning_log_template.md
     │   ├── security_notes_template.md
-    │   └── tableau_blueprint_template.md
+    │   ├── tableau_blueprint_template.md
+    │   └── learning_notes_template.md
     │
     ├── notebooks/
     │   └── notebook_template.ipynb

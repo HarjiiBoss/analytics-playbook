@@ -60,6 +60,19 @@ This document records what was done and decided during Phase 0. The scoping deci
 
 ---
 
+# Methods Explained
+
+<!-- The reasoning behind this phase, written so the project can be reread from start to finish without the chat (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition used in this phase; delete the example block if the phase used none. Plain language, with a worked example where it helps. -->
+
+### [Method, rule or definition]
+
+- **What it is:**
+- **Why this one:** the alternatives considered, and why they were not used
+- **How to read the result:**
+- **Worked example:**
+
+---
+
 # Exit Checklist
 
 ## Business
@@ -70,6 +83,7 @@ This document records what was done and decided during Phase 0. The scoping deci
 - [ ] Stakeholders identified
 - [ ] Project scope established
 - [ ] Decision rules set before data access (experiments)
+- [ ] Analysis rules set before any outcome data, each with its reason (observational projects)
 
 ## Data
 
@@ -91,6 +105,7 @@ This document records what was done and decided during Phase 0. The scoping deci
 - [ ] Phase documentation updated
 - [ ] Assumption register started
 - [ ] Security notes started
+- [ ] Methods Explained filled in for every method, rule or definition used in this phase, and the phase's learning notes added to `docs/learning_notes.md`
 
 ---
 

@@ -231,6 +231,19 @@ Select the final project status.
 
 ---
 
+# Methods Explained
+
+<!-- The reasoning behind this phase, written so the project can be reread from start to finish without the chat (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition used in this phase; delete the example block if the phase used none. Plain language, with a worked example where it helps. -->
+
+### [Method, rule or definition]
+
+- **What it is:**
+- **Why this one:** the alternatives considered, and why they were not used
+- **How to read the result:**
+- **Worked example:**
+
+---
+
 # Exit Checklist
 
 The project is complete only when:
@@ -242,6 +255,7 @@ The project is complete only when:
 - [ ] Documentation is up to date.
 - [ ] The repository is reproducible.
 - [ ] The project is ready for publication or stakeholder delivery.
+- [ ] Methods Explained filled in for every method, rule or definition used in this phase, and the phase's learning notes added to `docs/learning_notes.md`
 
 ---
 

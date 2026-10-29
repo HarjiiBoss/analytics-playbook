@@ -12,7 +12,7 @@
 
 ## Checks
 
-- [ ] Phase exit checklist complete in the phase document
+- [ ] Phase exit checklist complete in the phase document, including Methods Explained and the phase's learning notes
 - [ ] Notebooks run from a restarted kernel; outputs are from that run (`python3 tools/check_notebooks.py --execute` at the end of a phase)
 - [ ] Pre-commit hooks pass (`pre-commit run --all-files`); any `--no-verify` commit explained below
 - [ ] Row counts after each filter match the phase document
