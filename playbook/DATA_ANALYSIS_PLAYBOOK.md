@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.4  
+**Current Version:** 3.5  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -85,7 +85,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.1 | August 2026 | Added Branching Strategy to Version Control Standards |
 | 3.2 | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Phases renumbered 0 to 5 (Analytical Method Selection, formerly Phase 2.5, is now Phase 3). Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
 | 3.3 | October 2026 | Added date-range reconciliation and explicit date locale (Phase 1), Plausibility Checks (Principle 7), Figures in Text (Single Source of Truth), figure and metric-definition checks (Final Quality Review, Quality Assurance), and Principle 9 on AI-assisted work. Based on a full audit of the portfolio. |
-| **3.4** | October 2026 | Templates and the scaffolding tool brought level with the playbook. Added Published Surfaces and Corrections and Withdrawals, Predictive Claims, Reporting Statistical Results, Chart Integrity, external-figure sourcing, unit of analysis and denominator in metric definitions, reproducibility details (seeds, pinned versions, restarted kernel, no local paths), client work under Security, the Phase 5 order of work (executive summary first), a Figures Quoted notebook cell and a pull request template. Fixed the aggregates check for distinct counts and the accuracy example in Principle 8. Removed duplicated sections so each standard is stated once. |
+| 3.4 | October 2026 | Templates and the scaffolding tool brought level with the playbook. Added Published Surfaces and Corrections and Withdrawals, Predictive Claims, Reporting Statistical Results, Chart Integrity, external-figure sourcing, unit of analysis and denominator in metric definitions, reproducibility details (seeds, pinned versions, restarted kernel, no local paths), client work under Security, the Phase 5 order of work (executive summary first), a Figures Quoted notebook cell and a pull request template. Fixed the aggregates check for distinct counts and the accuracy example in Principle 8. Removed duplicated sections so each standard is stated once. |
+| **3.5** | October 2026 | Added the Dataset Library (Phase 1): raw data kept outside the repositories in `~/datasets/`, one folder per source with its source note and checksums recorded at download, and linked into a project by `new_project.py --data`. The notebook template checks the checksums before loading. |
 
 ---
 
@@ -507,6 +508,20 @@ Document:
 When the data arrives as a file, record its SHA-256 checksum at download and check it again before every load. A matching checksum shows that the file being analysed is the same file that was documented. A loading notebook should stop if the checksum differs.
 
 Record the checksum, file name, download date and row count in the README and the Phase 1 document.
+
+### Dataset Library
+
+Raw data for portfolio projects is kept outside the project repositories, in `~/datasets/`:
+
+- **One folder per source, not per project.** Project numbers change, and one source can serve more than one project.
+- **Recorded at download, before the data is opened:**
+  - `SOURCE.txt`: where the data came from, the download date, the licence or terms, and any citation the licence requires
+  - `SHA256SUMS.txt`: the output of `shasum -a 256` on every data file
+- **An index, `~/datasets/DATASETS.md`,** lists each folder, the project it is planned for, its licence and whether the raw files may be published.
+
+`new_project.py --data ~/datasets/<source>` checks every checksum, copies the two provenance files into `data/raw/` and links the data files there. The provenance files are committed. The data files are not: `data/raw/*` is in `.gitignore`, and some sources forbid republishing the data at all. Notebooks read from `data/raw/`, so no path to `~/datasets` is written into the code, and anyone who places the files in `data/raw/` can re-run the project.
+
+When a source updates its files, download them into a new folder (for example with the release or date in its name) rather than overwriting the old one, so a finished project can still be re-run against the data it used.
 
 ### Raw and Clean Layers
 
