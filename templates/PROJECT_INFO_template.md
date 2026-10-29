@@ -70,11 +70,25 @@ Set before any data was examined.
 
 **Minimum effect of interest:**
 
-| Outcome | Rule |
-|---------|------|
-| | |
+| Outcome | Rule | Reason |
+|---------|------|--------|
+| | | |
 
 **Guardrail:**
+
+**Blinding:**
+
+---
+
+# Analysis Rules
+
+<!-- For observational projects (no randomised change), in place of Decision Rules above. Set before any query or notebook returns outcome data (Playbook Part II, Phase 0 → Analysis Rules for Observational Projects). Typical rules: minimum segment size, how many comparisons are corrected and how, the size of difference worth acting on. Every rule has its reason; a judgement call is stated as one. Delete this section for experiments. -->
+
+Set before any outcome data was examined.
+
+| Rule | Value | Reason |
+|------|-------|--------|
+| | | |
 
 **Blinding:**
 

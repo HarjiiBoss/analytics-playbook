@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.6).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.6.1).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -43,7 +43,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.6"
+PLAYBOOK_VERSION = "3.6.1"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -103,6 +103,7 @@ DOCUMENTS = [
     (["tableau_blueprint_template.md"], "docs/tableau_blueprint.md"),
     (["executive_summary_template.md"], "docs/executive_summary.md"),
     (["presentation_notes_template.md"], "docs/presentation_notes.md"),
+    (["learning_notes_template.md"], "docs/learning_notes.md"),
     (["phase_00_setup_template.md"], "docs/phase_00_setup.md"),
     (["phase_01_data_preparation_template.md"], "docs/phase_01_data_preparation.md"),
     (["phase_02_business_analysis_template.md"], "docs/phase_02_business_analysis.md"),

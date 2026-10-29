@@ -24,6 +24,7 @@
 | phase_05_reporting.md | Phase 5 documentation | ☐ Not Started | |
 | executive_summary.md | Executive summary | ☐ Not Started | |
 | presentation_notes.md | Presentation planning | ☐ Not Started | |
+| learning_notes.md | Ideas worth remembering, by phase | ☐ Not Started | |
 
 ---
 

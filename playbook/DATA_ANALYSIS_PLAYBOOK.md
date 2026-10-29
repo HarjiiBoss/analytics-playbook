@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.6  
+**Current Version:** 3.6.1  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -87,7 +87,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.3 | October 2026 | Added date-range reconciliation and explicit date locale (Phase 1), Plausibility Checks (Principle 7), Figures in Text (Single Source of Truth), figure and metric-definition checks (Final Quality Review, Quality Assurance), and Principle 9 on AI-assisted work. Based on a full audit of the portfolio. |
 | 3.4 | October 2026 | Templates and the scaffolding tool brought level with the playbook. Added Published Surfaces and Corrections and Withdrawals, Predictive Claims, Reporting Statistical Results, Chart Integrity, external-figure sourcing, unit of analysis and denominator in metric definitions, reproducibility details (seeds, pinned versions, restarted kernel, no local paths), client work under Security, the Phase 5 order of work (executive summary first), a Figures Quoted notebook cell and a pull request template. Fixed the aggregates check for distinct counts and the accuracy example in Principle 8. Removed duplicated sections so each standard is stated once. |
 | 3.5 | October 2026 | Added the Dataset Library (Phase 1): raw data kept outside the repositories in `~/datasets/`, one folder per source with its source note and checksums recorded at download, and linked into a project by `new_project.py --data`. The notebook template checks the checksums before loading. |
-| **3.6** | October 2026 | Added Automated Checks (Part V): pre-commit hooks set up by `new_project.py` (large files, private keys, merge markers, notebook checks, figures in text) and `tools/check_notebooks.py`, including a fresh-kernel run at the end of each phase. Added Project-Type Modules for experiments (from Project 9) and credit risk (from Project 8). |
+| 3.6 | October 2026 | Added Automated Checks (Part V): pre-commit hooks set up by `new_project.py` (large files, private keys, merge markers, notebook checks, figures in text) and `tools/check_notebooks.py`, including a fresh-kernel run at the end of each phase. Added Project-Type Modules for experiments (from Project 9) and credit risk (from Project 8). |
+| **3.6.1** | October 2026 | Added Reasoning in the Project Files (Documentation Standards): a Methods Explained section in every phase document and `docs/learning_notes.md`, created by `new_project.py`. Added Analysis Rules for Observational Projects (Phase 0) with a Reason for every rule, from Project 10. |
 
 ---
 
@@ -410,6 +411,17 @@ Record:
 - A statement of whether the author had seen published results for the same dataset
 
 Rules written after seeing the data can be adjusted, even unintentionally, to fit the result. If a rule has to change later, record the change and the reason in the charter's revision history and report it in the findings.
+
+### Analysis Rules for Observational Projects
+
+A project that compares groups without a randomised change (funnel segments, cohorts, customer types) still fixes its rules before any query or notebook returns outcome data, in the charter's Analysis Rules section:
+
+- Minimum size of each rate's denominator before a segment is compared
+- How many comparisons are corrected together, and the correction used (Principle 4 → Reporting Statistical Results)
+- The size of difference worth acting on, and how it combines with the correction
+- The blinding statement
+
+Each rule records its value and its reason. Where a value is a judgement with no cost or business data behind it, the reason says so.
 
 ---
 
@@ -1805,9 +1817,20 @@ phase_03_method_selection.md
 phase_04_advanced_analysis.md
 
 phase_05_reporting.md
+
+learning_notes.md
 ```
 
 Documentation should explain both **what** was done and **why** it was done.
+
+## Reasoning in the Project Files
+
+The reasons for a project's decisions are kept in the project files, not only in the conversation or notes where they were worked out. Someone rereading the repository, the author included, should be able to follow every decision without the chat.
+
+- **Methods Explained**, in each phase document: for every method, rule or definition used in the phase, what it is, why it was chosen over the alternatives, how to read its result, and a worked example where it helps.
+- **Reasons beside rules:** every Decision Rule or Analysis Rule in `PROJECT_INFO.md` carries its reason.
+- **`docs/learning_notes.md`:** three to five ideas from each phase worth remembering, written at the end of the phase.
+- Notebooks follow the Notebook Header and Code Comment Standards.
 
 ## Single Source of Truth
 
