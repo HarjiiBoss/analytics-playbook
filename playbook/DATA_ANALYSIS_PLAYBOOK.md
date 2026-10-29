@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.5  
+**Current Version:** 3.6  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -86,7 +86,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.2 | October 2026 | Added decision rules fixed before data access (Phase 0), data provenance, raw and clean layers and raw-to-clean reconciliation (Phase 1), Single Source of Truth (Documentation Standards), the Not testable status (Assumption Register), and the Notebook Header and Code Comment Standards. Phases renumbered 0 to 5 (Analytical Method Selection, formerly Phase 2.5, is now Phase 3). Templates simplified to match, and the project scaffolding tool moved into the playbook repository. |
 | 3.3 | October 2026 | Added date-range reconciliation and explicit date locale (Phase 1), Plausibility Checks (Principle 7), Figures in Text (Single Source of Truth), figure and metric-definition checks (Final Quality Review, Quality Assurance), and Principle 9 on AI-assisted work. Based on a full audit of the portfolio. |
 | 3.4 | October 2026 | Templates and the scaffolding tool brought level with the playbook. Added Published Surfaces and Corrections and Withdrawals, Predictive Claims, Reporting Statistical Results, Chart Integrity, external-figure sourcing, unit of analysis and denominator in metric definitions, reproducibility details (seeds, pinned versions, restarted kernel, no local paths), client work under Security, the Phase 5 order of work (executive summary first), a Figures Quoted notebook cell and a pull request template. Fixed the aggregates check for distinct counts and the accuracy example in Principle 8. Removed duplicated sections so each standard is stated once. |
-| **3.5** | October 2026 | Added the Dataset Library (Phase 1): raw data kept outside the repositories in `~/datasets/`, one folder per source with its source note and checksums recorded at download, and linked into a project by `new_project.py --data`. The notebook template checks the checksums before loading. |
+| 3.5 | October 2026 | Added the Dataset Library (Phase 1): raw data kept outside the repositories in `~/datasets/`, one folder per source with its source note and checksums recorded at download, and linked into a project by `new_project.py --data`. The notebook template checks the checksums before loading. |
+| **3.6** | October 2026 | Added Automated Checks (Part V): pre-commit hooks set up by `new_project.py` (large files, private keys, merge markers, notebook checks, figures in text) and `tools/check_notebooks.py`, including a fresh-kernel run at the end of each phase. Added Project-Type Modules for experiments (from Project 9) and credit risk (from Project 8). |
 
 ---
 
@@ -941,6 +942,64 @@ Before publication, confirm that:
 ## Exit Condition
 
 The project is complete only when another analyst could reproduce the analysis and a business stakeholder could confidently act on its findings.
+
+---
+
+# Project-Type Modules
+
+The workflow above applies to every project. A module adds the checks that one type of project needs at each phase, learned from a finished project. A module is written only after a project of that type is complete, and points to the general standard instead of repeating it. Method detail (formulas, worked examples) belongs in the matching track of the financial-model-foundation repository.
+
+## Experiment (A/B test), from Project 9
+
+**Phase 0**
+- Fix the Decision Rules for Experiments (Phase 0) before the data is downloaded.
+- Name the unit of randomisation (user, session, account) and make the unit of analysis the same.
+- Work out the smallest effect the available sample can detect at the chosen α and power. If it is larger than the minimum effect of interest, say so before analysing.
+- Where the data allows, add monetisation guardrails next to retention (payer conversion, spend per user, ad impressions per user), so a retention win is not a revenue loss.
+
+**Phase 1**
+- Each unit is assigned once and appears in one group only.
+- Run the sample ratio test before reading any outcome (Principle 4 → Reporting Statistical Results).
+- Confirm how each outcome flag is defined in the source (for example, what "retained on day 7" counts) and the period it covers.
+
+**Phase 2**
+- Describe the groups only by variables fixed at or before assignment.
+- Report guardrail metrics beside the primary metric, marked as blocking or exploratory as the charter says.
+
+**Phase 4**
+- Compare everyone as assigned (intent-to-treat). Never split by a variable the treatment could change, such as activity after assignment.
+- Report the effect size with its confidence interval before the p-value, and the primary comparison separately from exploratory ones.
+- State how long the test ran and whether a novelty effect could explain an early difference.
+
+**Phase 5**
+- Report the result as the decision the charter's rules give, including "collect more evidence", and report the sample ratio test.
+
+## Credit Risk, from Project 8
+
+**Phase 0**
+- Define default before looking at default rates: the event (for example 90+ days past due, charge-off or repossession), the observation point and the outcome window. Write it into `PROJECT_INFO.md`; every rate in the project uses it.
+- Name the unit (borrower, loan or account) and the population exclusions.
+- List the money fields the data has (balance, limit, recoveries, losses). Without them, say in the charter that expected loss cannot be computed, rather than building a proxy and calling it exposure.
+
+**Phase 1**
+- Treat sentinel values (96 and 98 in late-payment counts, 9999 for a missing score) as codes: flag them and keep them out of averages.
+- Keep a large block of missing values (missing income, say) as its own category instead of imputing it, and report its default rate.
+- Flag impossible values (age 0, utilisation above any plausible limit) and record each decision in the cleaning log.
+
+**Phase 2**
+- Report every default rate with its numerator and denominator, and flag segments too small to trust.
+- Keep late-payment measures separate from the default target. A share of borrowers with a 90+ day late payment on record is not a default rate unless default is defined that way.
+- Check that rates move in the expected order across ordered bands (age, income, utilisation) and explain any band that does not.
+
+**Phase 4**
+- Split the data before designing bins, cut-offs, tiers or overrides, and design them on the training part only. Rules set on all the data make the test-set result optimistic.
+- When the data has dates, validate on a later period (out-of-time) as well as a random hold-out.
+- Report AUC and Gini with the confusion matrix, recall and precision at the threshold used, and check calibration before calling any score a probability of default. Class weighting changes the scores' scale.
+- Compute expected loss (PD × LGD × EAD) only from real balances and losses. Measure LGD only on defaults that have been resolved.
+- A tier or profile built by looking at who defaulted describes past default; it is not a prediction (Principle 4 → Predictive Claims).
+
+**Phase 5**
+- State the default definition beside the first default rate in every published surface.
 
 ---
 
@@ -2165,6 +2224,7 @@ Before publication, verify:
 - □ Random seeds set; package versions pinned
 - □ No hidden dependencies
 - □ No temporary code, debug cells or absolute local paths remain
+- □ `pre-commit run --all-files` passes; `tools/check_notebooks.py --execute` passes
 
 ---
 
@@ -2205,6 +2265,30 @@ Before publication, verify:
 - □ `.gitignore` verified
 - □ Outputs exported
 - □ Final datasets saved
+
+---
+
+# Automated Checks
+
+Checks that a computer can make run on every commit, so a slip is caught before it reaches `main`. `new_project.py` sets them up in every new project: it copies `tools/check_figures.py` and `tools/check_notebooks.py` into the project and writes `.pre-commit-config.yaml`.
+
+| Check | Runs | Catches |
+|-------|------|---------|
+| Large files (5 MB) | Every commit | Raw data committed by accident |
+| Private keys | Every commit | Keys, including the one inside a cloud service-account JSON file |
+| Merge markers | Every commit | Unresolved `<<<<<<<` conflicts |
+| `check_notebooks.py` | Commits that change a notebook | Empty cells, cells never run or run out of order, saved errors, absolute local paths |
+| `check_figures.py` | Commits that change `README.md` or `docs/` | Figures in the write-up that no output holds (Figures in Text) |
+| `check_notebooks.py --execute` | By hand, at the end of each phase | A notebook that fails when run top to bottom from a fresh kernel |
+
+Rules:
+
+- Install the hooks once per clone: `pip install pre-commit && pre-commit install`. The first run downloads the hook code once and reuses it after that.
+- A failed hook means the commit did not happen. Fix the cause and commit again.
+- `git commit --no-verify` skips the hooks. Use it only when a check is wrong for a good reason, and say why in the pull request.
+- Notebook outputs are kept, not stripped: they are the evidence `check_figures.py` reads.
+- A project keeps the copies of the tools it was created with. To use a newer version, copy the file from the playbook repository in its own pull request.
+- The checks do not judge meaning. A correct number attached to the wrong group still passes, so the meaning of every claim is still reviewed by eye (Principle 9).
 
 ---
 

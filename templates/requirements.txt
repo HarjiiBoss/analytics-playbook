@@ -11,3 +11,5 @@ jupyterlab
 python-dotenv
 sqlalchemy
 openpyxl
+pre-commit
+nbclient

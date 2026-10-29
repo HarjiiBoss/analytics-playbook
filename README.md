@@ -127,6 +127,18 @@ The tool checks that a number exists in the outputs, not that it describes the r
 
 ---
 
+## ✅ Automated Checks
+
+New projects come with pre-commit hooks (Playbook Part V → Automated Checks). On every commit they stop large files, private keys and merge markers; on a notebook change they run `tools/check_notebooks.py` (empty cells, cells run out of order, saved errors, absolute local paths); on a README or `docs/` change they run `tools/check_figures.py`.
+
+```bash
+pip install pre-commit && pre-commit install    # once per clone
+pre-commit run --all-files                      # check everything now
+python3 tools/check_notebooks.py --execute      # end of each phase: run every notebook from a fresh kernel
+```
+
+---
+
 ## 📊 Example Projects
 
 Practical implementations demonstrating how the playbook is applied in real analytics projects.
@@ -213,7 +225,8 @@ analytics-playbook/
 │
 ├── tools/
 │   ├── new_project.py
-│   └── check_figures.py
+│   ├── check_figures.py
+│   └── check_notebooks.py
 │
 └── templates/
     ├── README_template.md
@@ -222,6 +235,9 @@ analytics-playbook/
     ├── .env.example
     ├── LICENSE
     ├── requirements.txt
+    ├── figures-allow
+    ├── pre-commit-config.yaml
+    ├── pull_request_template.md
     │
     ├── docs/
     │   ├── documentation_index_template.md
