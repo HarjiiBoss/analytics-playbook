@@ -224,6 +224,7 @@ Proceed only when:
 - [ ] A validation strategy has been defined.
 - [ ] Expected outputs align with the business decision.
 - [ ] Methods Explained filled in for every method, rule or definition used in this phase
+- [ ] `python3 tools/check_phase.py 3` passes (includes every notebook run from a fresh kernel)
 
 ---
 

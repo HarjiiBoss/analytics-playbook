@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.6.2  
+**Current Version:** 3.6.3  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -89,7 +89,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.5 | October 2026 | Added the Dataset Library (Phase 1): raw data kept outside the repositories in `~/datasets/`, one folder per source with its source note and checksums recorded at download, and linked into a project by `new_project.py --data`. The notebook template checks the checksums before loading. |
 | 3.6 | October 2026 | Added Automated Checks (Part V): pre-commit hooks set up by `new_project.py` (large files, private keys, merge markers, notebook checks, figures in text) and `tools/check_notebooks.py`, including a fresh-kernel run at the end of each phase. Added Project-Type Modules for experiments (from Project 9) and credit risk (from Project 8). |
 | 3.6.1 | October 2026 | Added Reasoning in the Project Files (Documentation Standards): a Methods Explained section in every phase document and `docs/learning_notes.md`, created by `new_project.py`. Added Analysis Rules for Observational Projects (Phase 0) with a Reason for every rule, from Project 10. |
-| **3.6.2** | October 2026 | Added Public and Private Content (Repository Standards): learning notes move to the private financial-model-foundation repository, Published Surfaces moves from the README to `docs/published_surfaces.md`, and `tools/check_publication.py` checks a repository before it goes public. Methods Explained rewritten as a decision record for a reviewer. |
+| 3.6.2 | October 2026 | Added Public and Private Content (Repository Standards): learning notes move to the private financial-model-foundation repository, Published Surfaces moves from the README to `docs/published_surfaces.md`, and `tools/check_publication.py` checks a repository before it goes public. Methods Explained rewritten as a decision record for a reviewer. |
+| **3.6.3** | October 2026 | Added `tools/check_phase.py`, one command that runs every check due at the end of a phase, and a line for it in each phase exit checklist and the pull request template. Added `guide/QUICKSTART.md` (with a Word copy): setting up, starting a project, and which check to run when and from which folder. `check_publication.py` no longer reads the check tools themselves. |
 
 ---
 
@@ -2311,7 +2312,7 @@ Before publication, verify:
 
 # Automated Checks
 
-Checks that a computer can make run on every commit, so a slip is caught before it reaches `main`. `new_project.py` sets them up in every new project: it copies `tools/check_figures.py` and `tools/check_notebooks.py` into the project and writes `.pre-commit-config.yaml`.
+Checks that a computer can make run on every commit, so a slip is caught before it reaches `main`. `new_project.py` sets them up in every new project: it copies `check_figures.py`, `check_notebooks.py`, `check_publication.py` and `check_phase.py` into the project's `tools/` and writes `.pre-commit-config.yaml`.
 
 | Check | Runs | Catches |
 |-------|------|---------|
@@ -2322,6 +2323,7 @@ Checks that a computer can make run on every commit, so a slip is caught before 
 | `check_figures.py` | Commits that change `README.md` or `docs/` | Figures in the write-up that no output holds (Figures in Text) |
 | `check_publication.py` | By hand, at the end of Phase 5, before the repository goes public | Template comments and placeholders, absolute local paths, private notes (Public and Private Content) |
 | `check_notebooks.py --execute` | By hand, at the end of each phase | A notebook that fails when run top to bottom from a fresh kernel |
+| `check_phase.py N` | By hand, at the end of phase N, before its pull request | Runs the checks due at that phase in one go: pre-commit hooks on every file, then (Phases 1–5) notebooks from a fresh kernel, then (Phase 5) figures in text and the publication check. Also lists unticked Exit Checklist boxes |
 
 Rules:
 

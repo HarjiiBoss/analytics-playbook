@@ -39,7 +39,7 @@ LOCAL_PATH = re.compile(r"(/Users/[^/\s\"']+|/home/[^/\s\"']+|[A-Za-z]:\\\\?User
 PRIVATE = re.compile(r"(^|/)learning_notes[^/]*\.md$")
 TEXT_SUFFIXES = {".md", ".ipynb", ".py", ".sql", ".txt", ".csv", ".json", ".html", ".twb", ".yaml", ".yml", ".toml", ".cfg"}
 SKIP = {"tools/check_publication.py"}  # this file contains the patterns it looks for
-SKIP_DIRS = (".github/",)               # the PR template's comments are prompts for each PR, on purpose
+SKIP_DIRS = (".github/", "tools/")      # PR template comments are prompts on purpose; tools/ holds the checks themselves, whose patterns would match
 
 
 def tracked_files():
