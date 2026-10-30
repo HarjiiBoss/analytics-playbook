@@ -241,6 +241,7 @@ Proceed only when:
 - [ ] Remaining unanswered questions have been identified.
 - [ ] Any need for advanced analytical methods has been clearly justified.
 - [ ] Methods Explained filled in for every method, rule or definition used in this phase
+- [ ] `python3 tools/check_phase.py 2` passes (includes every notebook run from a fresh kernel)
 
 ---
 

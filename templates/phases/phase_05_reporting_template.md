@@ -256,6 +256,7 @@ The project is complete only when:
 - [ ] The repository is reproducible.
 - [ ] The project is ready for publication or stakeholder delivery.
 - [ ] Methods Explained filled in for every method, rule or definition used in this phase
+- [ ] `python3 tools/check_phase.py 5` passes (adds figures in text and the publication check)
 
 ---
 

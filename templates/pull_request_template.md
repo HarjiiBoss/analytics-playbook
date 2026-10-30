@@ -13,10 +13,8 @@
 ## Checks
 
 - [ ] Phase exit checklist complete in the phase document, including Methods Explained
-- [ ] Notebooks run from a restarted kernel; outputs are from that run (`python3 tools/check_notebooks.py --execute` at the end of a phase)
-- [ ] Pre-commit hooks pass (`pre-commit run --all-files`); any `--no-verify` commit explained below
+- [ ] `python3 tools/check_phase.py N` passes for the phase this pull request finishes (pre-commit hooks, notebooks from a fresh kernel; in Phase 5 also figures and publication); any `--no-verify` commit explained below
 - [ ] Row counts after each filter match the phase document
-- [ ] `tools/check_figures.py` passes (Phase 5, or any change to README.md or docs/)
 - [ ] Each metric's name matches its definition
 - [ ] No credentials, raw data files, debug cells or absolute local paths
 - [ ] `docs/published_surfaces.md` updated if any published figure changed

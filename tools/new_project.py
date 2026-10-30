@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.6.2).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.6.3).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -43,7 +43,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.6.2"
+PLAYBOOK_VERSION = "3.6.3"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -66,7 +66,7 @@ PROVENANCE_FILES = ["SOURCE.txt", "SHA256SUMS.txt"]
 # Check tools copied from this repository's tools/ into each project's tools/. The
 # pre-commit hooks call them there. A project keeps the version it was created with;
 # to update one, copy the newer file across in its own pull request.
-PROJECT_TOOLS = ["check_figures.py", "check_notebooks.py", "check_publication.py"]
+PROJECT_TOOLS = ["check_figures.py", "check_notebooks.py", "check_publication.py", "check_phase.py"]
 
 # Private learning notes (Playbook Part V → Public and Private Content) live in the private
 # financial-model-foundation repository, one file per project, made from its _template.md.

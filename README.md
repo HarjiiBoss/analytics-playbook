@@ -87,58 +87,30 @@ The objective is to eliminate repetitive setup work while maintaining consistent
 
 ---
 
-## 🛠 Starting a New Project
+## 🚀 Using the Playbook
 
-`tools/new_project.py` creates a new project from the templates in this repository: folder structure, filled-in documents, SQL and notebook stubs, a first commit on `main`, the GitHub repository, and a `phase-0-scoping` branch.
+**Start with [`guide/QUICKSTART.md`](guide/QUICKSTART.md)** ([Word copy](guide/Playbook_Quick_Start.docx)): one-time setup, starting a project, the loop for each phase, and which check to run when and from which folder.
+
+In short:
 
 ```bash
-git clone https://github.com/HarjiiBoss/analytics-playbook.git
-cd analytics-playbook
-git pull                     # use the latest templates
-python3 tools/new_project.py --dry-run --title "Project Title"
-python3 tools/new_project.py --title "Project Title" --industry "Industry" --domain "Domain"
+# From ~/analytics-playbook: create a project
+python3 tools/new_project.py --dry-run --title "Project Title" --domain "Domain" --data ~/datasets/<source>
 python3 tools/new_project.py --title "Project Title" --domain "Domain" --data ~/datasets/<source>
+
+# From the project folder: at the end of each phase N (0 to 5)
+python3 tools/check_phase.py N
 ```
 
-`--data` points to a folder in the Dataset Library (Playbook Phase 1 → Dataset Library). The tool checks every checksum in its `SHA256SUMS.txt` before creating anything, copies `SOURCE.txt` and `SHA256SUMS.txt` into `data/raw/` to be committed, and links the data files there without committing them.
+| Tool | What it does |
+|---|---|
+| `new_project.py` | Builds a project from the templates: folders, documents, notebook and SQL stubs, check tools, pre-commit hooks, the GitHub repository and a `phase-0-scoping` branch |
+| `check_phase.py` | Runs every check due at the end of a phase and lists unticked Exit Checklist boxes |
+| `check_notebooks.py` | Notebook problems: empty cells, cells out of order, saved errors, local paths; with `--execute`, a run from a fresh kernel |
+| `check_figures.py` | Figures in the README and pages that no output holds |
+| `check_publication.py` | Template text, local paths and private notes left before the repository goes public |
 
-Projects are created in `~/projects/` unless `--parent-dir` is given. The tool stops if the chosen folder is inside another Git repository. Creating the GitHub repository needs the GitHub CLI (`gh`) logged in; use `--no-github` to skip that step.
-
----
-
-## 🔎 Checking Figures Before Publishing
-
-`tools/check_figures.py` checks that every number in a project's README and pages can be found in the project's own outputs: notebook results, SQL code, CSV exports, PDF query results and the numeric cells of Excel workbooks. Run it before opening the final pull request (Playbook Part II, Phase 5 → Final Quality Review).
-
-```bash
-python3 tools/check_figures.py ~/projects/project-name
-python3 tools/check_figures.py ~/projects/project-name --text README.md docs/index.html docs/executive_summary.md
-```
-
-It lists every figure it could not find, with the sentence around it, and exits with code 1 if there are any. For each one:
-
-- **Typed or drifted** (the output says something else): correct the text from the output.
-- **Derived and correct** (a sum, ratio or annualised figure checked by hand): add it to a `.figures-allow` file in the project, one per line with the reason, for example `£1.67M  # monthly_revenue_lost x 12`.
-- **Not a finding** (a version or section number): add it to `.figures-allow` the same way.
-
-`new_project.py` creates an empty `.figures-allow` with these instructions at the top.
-
-The tool checks that a number exists in the outputs, not that it describes the right thing, so the meaning of each claim is still reviewed by eye. Numbers typed inside notebook strings, SQL comments or text cells of a workbook do not count as evidence. PDF results need `pypdf` (`pip install pypdf`) or the `pdftotext` command; Excel workbooks need `openpyxl`, which is in the project `requirements.txt`. A workbook's formulas count by the values Excel last saved, so save the workbook in Excel before running the check.
-
----
-
-## ✅ Automated Checks
-
-New projects come with pre-commit hooks (Playbook Part V → Automated Checks). On every commit they stop large files, private keys and merge markers; on a notebook change they run `tools/check_notebooks.py` (empty cells, cells run out of order, saved errors, absolute local paths); on a README or `docs/` change they run `tools/check_figures.py`.
-
-```bash
-pip install pre-commit && pre-commit install    # once per clone
-pre-commit run --all-files                      # check everything now
-python3 tools/check_notebooks.py --execute      # end of each phase: run every notebook from a fresh kernel
-python3 tools/check_publication.py              # end of Phase 5, before the repository goes public
-```
-
-Learning notes are private: `new_project.py` starts them in `~/financial-model-foundation/04-learning-notes/<project>.md`, outside the project repository.
+The pre-commit hooks run the notebook and figure checks on every commit. Learning notes are private: `new_project.py` starts them in `~/financial-model-foundation/04-learning-notes/<project>.md`, outside the project repository.
 
 ---
 
@@ -223,11 +195,16 @@ analytics-playbook/
 │
 ├── README.md
 │
+├── guide/
+│   ├── QUICKSTART.md
+│   └── Playbook_Quick_Start.docx
+│
 ├── playbook/
 │   └── DATA_ANALYSIS_PLAYBOOK.md
 │
 ├── tools/
 │   ├── new_project.py
+│   ├── check_phase.py
 │   ├── check_figures.py
 │   ├── check_notebooks.py
 │   └── check_publication.py

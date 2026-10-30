@@ -268,6 +268,7 @@ Proceed only when:
 - [ ] Assumptions and limitations have been documented.
 - [ ] Recommendations are ready for stakeholder communication.
 - [ ] Methods Explained filled in for every method, rule or definition used in this phase
+- [ ] `python3 tools/check_phase.py 4` passes (includes every notebook run from a fresh kernel)
 
 ---
 

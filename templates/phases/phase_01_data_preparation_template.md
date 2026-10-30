@@ -319,6 +319,7 @@ Proceed to **Phase 2 — Business Analysis** only when:
 - [ ] Assumption Register updated
 - [ ] Phase documentation complete
 - [ ] Methods Explained filled in for every method, rule or definition used in this phase
+- [ ] `python3 tools/check_phase.py 1` passes (includes every notebook run from a fresh kernel)
 
 ---
 
