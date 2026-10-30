@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.6.3  
+**Current Version:** 3.6.4  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -90,7 +90,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.6 | October 2026 | Added Automated Checks (Part V): pre-commit hooks set up by `new_project.py` (large files, private keys, merge markers, notebook checks, figures in text) and `tools/check_notebooks.py`, including a fresh-kernel run at the end of each phase. Added Project-Type Modules for experiments (from Project 9) and credit risk (from Project 8). |
 | 3.6.1 | October 2026 | Added Reasoning in the Project Files (Documentation Standards): a Methods Explained section in every phase document and `docs/learning_notes.md`, created by `new_project.py`. Added Analysis Rules for Observational Projects (Phase 0) with a Reason for every rule, from Project 10. |
 | 3.6.2 | October 2026 | Added Public and Private Content (Repository Standards): learning notes move to the private financial-model-foundation repository, Published Surfaces moves from the README to `docs/published_surfaces.md`, and `tools/check_publication.py` checks a repository before it goes public. Methods Explained rewritten as a decision record for a reviewer. |
-| **3.6.3** | October 2026 | Added `tools/check_phase.py`, one command that runs every check due at the end of a phase, and a line for it in each phase exit checklist and the pull request template. Added `guide/QUICKSTART.md` (with a Word copy): setting up, starting a project, and which check to run when and from which folder. `check_publication.py` no longer reads the check tools themselves. |
+| 3.6.3 | October 2026 | Added `tools/check_phase.py`, one command that runs every check due at the end of a phase, and a line for it in each phase exit checklist and the pull request template. Added `guide/QUICKSTART.md` (with a Word copy): setting up, starting a project, and which check to run when and from which folder. `check_publication.py` no longer reads the check tools themselves. |
+| **3.6.4** | October 2026 | Added provenance for data that stays in a warehouse (Phase 1 → Data Provenance): `new_project.py --source bigquery` adds the BigQuery packages, the BigQuery settings in `.env.example`, a `SOURCE.txt` to fill in, and a Warehouse Snapshot Check in the loading notebook in place of the checksum check. The project `.gitignore` ignores `.virtual_documents/` and `Untitled*.ipynb`. From Project 10 planning. |
 
 ---
 
@@ -524,6 +525,8 @@ When the data arrives as a file, record its SHA-256 checksum at download and che
 
 Record the checksum, file name, download date and row count in the README and the Phase 1 document.
 
+When the data stays in a warehouse and is queried in place (for example a BigQuery public dataset), there is no file to checksum. Record a snapshot of the source tables instead: each table's name, row count and last-modified time, saved as `data/raw/WAREHOUSE_SNAPSHOT.csv` on the first run and committed. The loading notebook compares the tables with the snapshot on every run and stops if a table was added, removed or changed size. A new last-modified time with the same row count is reported, not stopped, because the source may have been rewritten without changing its contents. `new_project.py --source bigquery` sets this up, together with a `data/raw/SOURCE.txt` to fill in (source, publisher, terms of use, date accessed, coverage) and a byte cap on every query (`BQ_MAX_BYTES_BILLED` in `.env`), so a mistaken query fails instead of using quota.
+
 ### Dataset Library
 
 Raw data for portfolio projects is kept outside the project repositories, in `~/datasets/`:
@@ -534,7 +537,7 @@ Raw data for portfolio projects is kept outside the project repositories, in `~/
   - `SHA256SUMS.txt`: the output of `shasum -a 256` on every data file
 - **An index, `~/datasets/DATASETS.md`,** lists each folder, the project it is planned for, its licence and whether the raw files may be published.
 
-`new_project.py --data ~/datasets/<source>` checks every checksum, copies the two provenance files into `data/raw/` and links the data files there. The provenance files are committed. The data files are not: `data/raw/*` is in `.gitignore`, and some sources forbid republishing the data at all. Notebooks read from `data/raw/`, so no path to `~/datasets` is written into the code, and anyone who places the files in `data/raw/` can re-run the project.
+For downloaded files, `new_project.py --data ~/datasets/<source>` checks every checksum, copies the two provenance files into `data/raw/` and links the data files there. The provenance files are committed. The data files are not: `data/raw/*` is in `.gitignore`, and some sources forbid republishing the data at all. Notebooks read from `data/raw/`, so no path to `~/datasets` is written into the code, and anyone who places the files in `data/raw/` can re-run the project.
 
 When a source updates its files, download them into a new folder (for example with the release or date in its name) rather than overwriting the old one, so a finished project can still be re-run against the data it used.
 
