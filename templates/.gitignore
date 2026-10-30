@@ -32,6 +32,9 @@ env/
 # Jupyter
 # --------------------------------------------------
 .ipynb_checkpoints/
+# JupyterLab code-completion copies, and notebooks never renamed (scratch work)
+.virtual_documents/
+Untitled*.ipynb
 
 # --------------------------------------------------
 # IDEs
@@ -73,6 +76,8 @@ docs/learning_notes*.md
 # Provenance files from the Dataset Library are committed; the data files are not
 !data/raw/SOURCE.txt
 !data/raw/SHA256SUMS.txt
+# Warehouse sources (new_project.py --source bigquery): the table snapshot is committed instead
+!data/raw/WAREHOUSE_SNAPSHOT.csv
 
 # --------------------------------------------------
 # Outputs

@@ -12,7 +12,7 @@ A Word copy of this page is in [`Playbook_Quick_Start.docx`](Playbook_Quick_Star
 |---|---|---|
 | `~/analytics-playbook` | The playbook, templates and tools. New projects are created from here | Public repository |
 | `~/projects/<project-name>` | Each project made by `new_project.py` | One repository per project |
-| `~/datasets/<source>` | Raw data, with `SOURCE.txt` and `SHA256SUMS.txt` | Never committed |
+| `~/datasets/<source>` | Downloaded raw data, with `SOURCE.txt` and `SHA256SUMS.txt` (data in BigQuery stays there) | Never committed |
 | `~/financial-model-foundation/04-learning-notes` | Private learning notes and interview prep, one file per project | Private repository |
 
 Two folders, two kinds of command:
@@ -62,6 +62,7 @@ Run from `~/analytics-playbook`.
    ```bash
    python3 tools/new_project.py --title "Project Title" --industry "Industry" --domain "Credit Risk" --data ~/datasets/<source>
    ```
+   If the data stays in BigQuery instead of being downloaded, use `--source bigquery` in place of `--data`. It adds the BigQuery packages, the BigQuery settings in `.env.example`, a `data/raw/SOURCE.txt` to fill in, and a loading notebook that checks the tables against a snapshot instead of a checksum.
 4. Go into the project and set up its Python environment:
    ```bash
    cd ~/projects/<project-name>
@@ -69,6 +70,7 @@ Run from `~/analytics-playbook`.
    pip install -r requirements.txt
    cp .env.example .env
    ```
+   For a BigQuery project, also log in once per computer with `gcloud auth application-default login`, and fill in `GCP_PROJECT_ID` and `BQ_SOURCE_DATASET` in `.env`.
 5. Confirm the setup is right:
    ```bash
    python3 tools/check_phase.py 0

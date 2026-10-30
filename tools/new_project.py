@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.6.3).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.6.4).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -14,6 +14,9 @@ What it does, in order:
      including the first notebook with its header filled in.
   3. With --data: checks the dataset's checksums, copies its SOURCE.txt and SHA256SUMS.txt
      into data/raw/ (these are committed) and links the data files there (these are not).
+     With --source bigquery (data that stays in BigQuery): adds the BigQuery packages,
+     the BigQuery settings in .env.example, a SOURCE.txt to fill in, and the Warehouse
+     Snapshot Check in the loading notebook in place of the checksum check.
   4. Copies the playbook's check tools into tools/ and writes .pre-commit-config.yaml, so the
      checks travel with the project (and run in CI later) without needing this repository.
   5. Initialises Git, installs the pre-commit hooks if pre-commit is available, and makes the
@@ -27,6 +30,8 @@ Examples:
       --domain "Web Analytics" --visibility private
   python3 tools/new_project.py --title "Online Retail CRM Analysis" --domain "CRM Analytics" \
       --data ~/datasets/online-retail-ii
+  python3 tools/new_project.py --title "GA4 E-Commerce Funnel & Retention Analysis" \
+      --slug ga4-ecommerce-funnel-analysis --domain "Product Analytics" --source bigquery
 
 Always run with --dry-run first. It prints everything it would do and changes nothing.
 """
@@ -43,7 +48,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.6.3"
+PLAYBOOK_VERSION = "3.6.4"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -62,6 +67,27 @@ DEFAULT_PARENT_DIR = Path.home() / "projects"
 # The two provenance files are copied into the project and committed; the data files
 # are linked, never copied or committed (data/raw/* is in .gitignore).
 PROVENANCE_FILES = ["SOURCE.txt", "SHA256SUMS.txt"]
+
+# Data that stays in a warehouse (Playbook Phase 1 → Data Provenance) has no file to
+# checksum. --source bigquery sets the project up for it: the client packages, the
+# settings the loading notebook reads from .env, and a SOURCE.txt to fill in. The
+# notebook's Warehouse Snapshot Check writes data/raw/WAREHOUSE_SNAPSHOT.csv on its first run.
+SOURCES = ["files", "bigquery"]
+BIGQUERY_PACKAGES = ["google-cloud-bigquery", "db-dtypes", "google-cloud-bigquery-storage"]
+BIGQUERY_ENV = """
+# BigQuery (new_project.py --source bigquery)
+GCP_PROJECT_ID=your-gcp-project-id
+BQ_SOURCE_DATASET=bigquery-public-data.dataset_name
+# Each query fails instead of scanning more than this many bytes (1 GB)
+BQ_MAX_BYTES_BILLED=1000000000
+"""
+BIGQUERY_SOURCE_TXT = """Source:        """ + NOT_SET + """  (project.dataset, e.g. bigquery-public-data.<dataset>)
+Publisher:     """ + NOT_SET + """
+Terms of use:  """ + NOT_SET + """  (link to the dataset's terms or licence)
+Accessed:      """ + NOT_SET + """  (date of the first query)
+Coverage:      """ + NOT_SET + """  (tables and date range used)
+Snapshot:      data/raw/WAREHOUSE_SNAPSHOT.csv, written by the loading notebook on its first run
+"""
 
 # Check tools copied from this repository's tools/ into each project's tools/. The
 # pre-commit hooks call them there. A project keeps the version it was created with;
@@ -195,10 +221,14 @@ def find_template(index, accepted_names):
     return None
 
 
-def render_notebook(text, values):
-    """Fill placeholders cell by cell, so a value containing quotes cannot break the JSON."""
+def render_notebook(text, values, source="files"):
+    """Fill placeholders cell by cell, so a value containing quotes cannot break the JSON.
+    Cells marked for a data source (metadata playbook_source) are kept only for that source."""
     notebook = json.loads(text)
+    notebook["cells"] = [c for c in notebook["cells"]
+                         if c.get("metadata", {}).get("playbook_source", source) == source]
     for cell in notebook["cells"]:
+        cell.get("metadata", {}).pop("playbook_source", None)
         source = "".join(cell["source"])
         cell["source"] = render(source, values).splitlines(True)
     return json.dumps(notebook, indent=1, ensure_ascii=False) + "\n"
@@ -303,6 +333,9 @@ def parse_args():
     p.add_argument("--no-github", action="store_true", help="Skip creating the GitHub repository")
     p.add_argument("--data", help="Dataset folder in the Dataset Library, e.g. ~/datasets/olist. "
                                    "Must hold SOURCE.txt and SHA256SUMS.txt")
+    p.add_argument("--source", choices=SOURCES, default="files",
+                   help="Where the data lives. files (default): downloaded files, checked by checksum. "
+                        "bigquery: tables queried in BigQuery, checked against a table snapshot")
     p.add_argument("--notes-dir", default=str(DEFAULT_NOTES_DIR),
                    help="Private learning-notes folder (outside the project). Default: "
                         "~/financial-model-foundation/04-learning-notes")
@@ -341,8 +374,10 @@ def build_values(details):
     return values
 
 
-def build_files(index, values, extra_packages, warnings):
+def build_files(index, values, extra_packages, warnings, source="files"):
     """Return {output path: file text}. Nothing is written here."""
+    if source == "bigquery":
+        extra_packages = ",".join(BIGQUERY_PACKAGES + [extra_packages])
     files = {}
 
     for names, output in DOCUMENTS:
@@ -360,6 +395,11 @@ def build_files(index, values, extra_packages, warnings):
         if extras:
             files["requirements.txt"] = files["requirements.txt"].rstrip("\n") + "\n" + "\n".join(extras) + "\n"
 
+    if source == "bigquery":
+        if ".env.example" in files:
+            files[".env.example"] = files[".env.example"].rstrip("\n") + "\n" + BIGQUERY_ENV
+        files["data/raw/SOURCE.txt"] = render(BIGQUERY_SOURCE_TXT, values)
+
     sql_template = find_template(index, ["sql_template.sql"])
     if sql_template is None:
         warnings.append("No sql_template.sql found. SQL stubs skipped.")
@@ -376,7 +416,7 @@ def build_files(index, values, extra_packages, warnings):
         filename, phase, purpose = NOTEBOOK_STUB
         merged = dict(values)
         merged.update({"NOTEBOOK_NAME": filename, "PHASE": phase, "NOTEBOOK_PURPOSE": purpose})
-        files["notebooks/" + filename] = render_notebook(notebook_template.read_text(encoding="utf-8"), merged)
+        files["notebooks/" + filename] = render_notebook(notebook_template.read_text(encoding="utf-8"), merged, source)
 
     for name in PROJECT_TOOLS:
         source = PLAYBOOK_ROOT / "tools" / name
@@ -501,6 +541,8 @@ def main():
 
     # Check the dataset before anything is created, so a bad checksum leaves nothing half-built.
     data_dir, data_entries = None, []
+    if args.data and args.source != "files":
+        sys.exit("--data is for downloaded files; leave it out with --source " + args.source + ".")
     if args.data:
         data_dir = Path(args.data).expanduser().resolve()
         if not data_dir.is_dir():
@@ -511,7 +553,8 @@ def main():
     print(("\n" if args.data else "") + ("DRY RUN - nothing will be created\n" if args.dry_run else "") + "Project folder: " + str(project_dir))
     print("Templates: " + str(templates_dir))
 
-    files = build_files(index, values, args.extra_packages, warnings)
+    print("Data source: " + args.source)
+    files = build_files(index, values, args.extra_packages, warnings, args.source)
     write_project(project_dir, files, args.dry_run)
     if data_dir is not None:
         link_dataset(project_dir, data_dir, data_entries, args.dry_run)
@@ -528,6 +571,9 @@ def main():
     print("  1. cd " + str(project_dir))
     print("  2. python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt")
     print("  3. cp .env.example .env, then add the settings the project needs")
+    if args.source == "bigquery":
+        print("  3b. gcloud auth application-default login (once per computer), then fill GCP_PROJECT_ID and"
+              " BQ_SOURCE_DATASET in .env, and data/raw/SOURCE.txt")
     if data_dir is not None:
         print("  4. Complete PROJECT_INFO.md (Available Data from data/raw/SOURCE.txt) and docs/phase_00_setup.md")
     else:
