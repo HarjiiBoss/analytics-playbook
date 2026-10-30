@@ -105,6 +105,7 @@ Full scoping (hypotheses, metric definitions, scope, risks and assumptions): [PR
 | [docs/assumption_register.md](docs/assumption_register.md) | Assumptions and their validation status |
 | [docs/security_notes.md](docs/security_notes.md) | Security checks and data handling |
 | [docs/documentation_index.md](docs/documentation_index.md) | Index of all project documents |
+| [docs/published_surfaces.md](docs/published_surfaces.md) | Every place the findings appear outside this repository |
 
 <!-- Add each phase document to this table when its phase starts. -->
 
@@ -115,18 +116,6 @@ Full scoping (hypotheses, metric definitions, scope, risks and assumptions): [PR
 The code and documentation in this repository are released under the MIT License. <!-- State the dataset's own licence or terms, or say they are unknown. -->
 
 ---
-
-## Published Surfaces
-
-<!-- Every place these findings appear outside this repository. When a figure changes, update each one and the date (Playbook Part V → Published Surfaces). -->
-
-| Surface | Link | Last checked |
-|---------|------|--------------|
-| Project page | | |
-| Portfolio site card | | |
-| GitHub profile README | | |
-| Resume | — | |
-| LinkedIn post | | |
 
 ## Corrections
 

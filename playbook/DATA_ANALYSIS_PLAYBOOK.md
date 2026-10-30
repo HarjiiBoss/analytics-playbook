@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.6.1  
+**Current Version:** 3.6.2  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** October 2026
 
@@ -88,7 +88,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.4 | October 2026 | Templates and the scaffolding tool brought level with the playbook. Added Published Surfaces and Corrections and Withdrawals, Predictive Claims, Reporting Statistical Results, Chart Integrity, external-figure sourcing, unit of analysis and denominator in metric definitions, reproducibility details (seeds, pinned versions, restarted kernel, no local paths), client work under Security, the Phase 5 order of work (executive summary first), a Figures Quoted notebook cell and a pull request template. Fixed the aggregates check for distinct counts and the accuracy example in Principle 8. Removed duplicated sections so each standard is stated once. |
 | 3.5 | October 2026 | Added the Dataset Library (Phase 1): raw data kept outside the repositories in `~/datasets/`, one folder per source with its source note and checksums recorded at download, and linked into a project by `new_project.py --data`. The notebook template checks the checksums before loading. |
 | 3.6 | October 2026 | Added Automated Checks (Part V): pre-commit hooks set up by `new_project.py` (large files, private keys, merge markers, notebook checks, figures in text) and `tools/check_notebooks.py`, including a fresh-kernel run at the end of each phase. Added Project-Type Modules for experiments (from Project 9) and credit risk (from Project 8). |
-| **3.6.1** | October 2026 | Added Reasoning in the Project Files (Documentation Standards): a Methods Explained section in every phase document and `docs/learning_notes.md`, created by `new_project.py`. Added Analysis Rules for Observational Projects (Phase 0) with a Reason for every rule, from Project 10. |
+| 3.6.1 | October 2026 | Added Reasoning in the Project Files (Documentation Standards): a Methods Explained section in every phase document and `docs/learning_notes.md`, created by `new_project.py`. Added Analysis Rules for Observational Projects (Phase 0) with a Reason for every rule, from Project 10. |
+| **3.6.2** | October 2026 | Added Public and Private Content (Repository Standards): learning notes move to the private financial-model-foundation repository, Published Surfaces moves from the README to `docs/published_surfaces.md`, and `tools/check_publication.py` checks a repository before it goes public. Methods Explained rewritten as a decision record for a reviewer. |
 
 ---
 
@@ -947,7 +948,7 @@ Before publication, confirm that:
 - Every figure on the page, README and dashboard matches the output it comes from (checked with `tools/check_figures.py`, not by eye).
 - Each metric's name matches its definition: a rate is not a share, revenue lost is not revenue at risk, and a margin states which costs it deducts.
 - Every figure not computed from the project's data (a benchmark, an industry rate) has a linked source, or is removed.
-- Every published surface listed in the README shows the same figures (see Published Surfaces).
+- Every surface in `docs/published_surfaces.md` shows the same figures (see Published Surfaces).
 
 ---
 
@@ -1745,6 +1746,23 @@ This section defines the operational standards that govern how analytical work i
 
 # Repository Standards
 
+## Public and Private Content
+
+A public repository is read by recruiters, hiring managers and clients, often for a minute or two. Every file in it is written for that reader. Before a repository goes public, decide for each kind of content where it belongs:
+
+| Content | Where it lives | Why |
+|---------|----------------|-----|
+| Findings, charter, phase records, Methods Explained, Corrections | Project repository | The evidence and reasoning a reviewer checks |
+| Published Surfaces list | `docs/published_surfaces.md` | Bookkeeping; kept out of the README so it ends on findings |
+| Learning notes and interview preparation | Private financial-model-foundation repository, `04-learning-notes/<project>.md` | Study material, not professional output |
+| Raw data, credentials, local paths | Nowhere in the repository | Licensing, security and privacy |
+
+`tools/check_publication.py` checks a project before it goes public: leftover template comments and placeholders, absolute local paths in any tracked text file, and private notes committed by mistake. It runs at the end of Phase 5, not as a commit hook, because comments and placeholders are expected while the work is in progress.
+
+Every new template section is given a reader before it is added: if the section is for the author rather than the reader of the findings, it goes in the private repository.
+
+## Directory Structure
+
 Every project should follow a consistent directory structure.
 
 ```
@@ -1818,7 +1836,7 @@ phase_04_advanced_analysis.md
 
 phase_05_reporting.md
 
-learning_notes.md
+published_surfaces.md
 ```
 
 Documentation should explain both **what** was done and **why** it was done.
@@ -1827,9 +1845,9 @@ Documentation should explain both **what** was done and **why** it was done.
 
 The reasons for a project's decisions are kept in the project files, not only in the conversation or notes where they were worked out. Someone rereading the repository, the author included, should be able to follow every decision without the chat.
 
-- **Methods Explained**, in each phase document: for every method, rule or definition used in the phase, what it is, why it was chosen over the alternatives, how to read its result, and a worked example where it helps.
+- **Methods Explained**, in each phase document: a decision record for a reviewer. For every method, rule or definition used in the phase: the decision and its settings, the alternatives considered and why they were not used, and how to read the result. Stated once and plainly; background on how a method works belongs in financial-model-foundation, not in the project.
 - **Reasons beside rules:** every Decision Rule or Analysis Rule in `PROJECT_INFO.md` carries its reason.
-- **`docs/learning_notes.md`:** three to five ideas from each phase worth remembering, written at the end of the phase.
+- **Learning notes** are private and kept outside the project (see Public and Private Content).
 - Notebooks follow the Notebook Header and Code Comment Standards.
 
 ## Single Source of Truth
@@ -1862,7 +1880,7 @@ When a fact changes, update the authoritative document and check the documents t
 
 Findings are repeated outside the repository: the project page, the portfolio site card, the GitHub profile README, the resume, LinkedIn posts and dashboard text. Single source of truth cannot reach these, so they are listed instead.
 
-The project README ends with a **Published Surfaces** table: each place the findings appear, its link, and the date it was last checked. When a figure changes, every surface in the table is updated in the same piece of work, and the dates are refreshed.
+`docs/published_surfaces.md` lists each place the findings appear, its link, and the date it was last checked. It is kept out of the README, which is written for the reader of the findings. When a figure changes, every surface in the table is updated in the same piece of work, and the dates are refreshed.
 
 ---
 
@@ -2267,7 +2285,7 @@ Before publication, verify:
 - □ Dashboard text boxes contain no typed figures that are not in the data
 - □ No figure is typed next to the code that computes it
 - □ Every external figure has a linked source
-- □ Every published surface in the README's Published Surfaces table checked and dated
+- □ Every surface in `docs/published_surfaces.md` checked and dated
 
 ---
 
@@ -2302,6 +2320,7 @@ Checks that a computer can make run on every commit, so a slip is caught before 
 | Merge markers | Every commit | Unresolved `<<<<<<<` conflicts |
 | `check_notebooks.py` | Commits that change a notebook | Empty cells, cells never run or run out of order, saved errors, absolute local paths |
 | `check_figures.py` | Commits that change `README.md` or `docs/` | Figures in the write-up that no output holds (Figures in Text) |
+| `check_publication.py` | By hand, at the end of Phase 5, before the repository goes public | Template comments and placeholders, absolute local paths, private notes (Public and Private Content) |
 | `check_notebooks.py --execute` | By hand, at the end of each phase | A notebook that fails when run top to bottom from a fresh kernel |
 
 Rules:
@@ -2323,7 +2342,7 @@ Published work is corrected openly, not silently.
 
 1. Fix the figure at its source (the notebook or query), re-run, and update the authoritative document.
 2. Add a dated **Corrections** note to the README: what changed, the old and new values, and why.
-3. Update every surface in the Published Surfaces table.
+3. Update every surface in `docs/published_surfaces.md`.
 
 **Withdraw** when the error undermines the analysis itself (for example, a date import error that removed most of the rows):
 

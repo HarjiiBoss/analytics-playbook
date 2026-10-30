@@ -135,7 +135,10 @@ New projects come with pre-commit hooks (Playbook Part V → Automated Checks). 
 pip install pre-commit && pre-commit install    # once per clone
 pre-commit run --all-files                      # check everything now
 python3 tools/check_notebooks.py --execute      # end of each phase: run every notebook from a fresh kernel
+python3 tools/check_publication.py              # end of Phase 5, before the repository goes public
 ```
+
+Learning notes are private: `new_project.py` starts them in `~/financial-model-foundation/04-learning-notes/<project>.md`, outside the project repository.
 
 ---
 
@@ -226,7 +229,8 @@ analytics-playbook/
 ├── tools/
 │   ├── new_project.py
 │   ├── check_figures.py
-│   └── check_notebooks.py
+│   ├── check_notebooks.py
+│   └── check_publication.py
 │
 └── templates/
     ├── README_template.md
@@ -247,7 +251,7 @@ analytics-playbook/
     │   ├── cleaning_log_template.md
     │   ├── security_notes_template.md
     │   ├── tableau_blueprint_template.md
-    │   └── learning_notes_template.md
+    │   └── published_surfaces_template.md
     │
     ├── notebooks/
     │   └── notebook_template.ipynb
