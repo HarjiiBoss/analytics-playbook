@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.6.1).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.6.2).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -43,7 +43,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.6.1"
+PLAYBOOK_VERSION = "3.6.2"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -66,7 +66,12 @@ PROVENANCE_FILES = ["SOURCE.txt", "SHA256SUMS.txt"]
 # Check tools copied from this repository's tools/ into each project's tools/. The
 # pre-commit hooks call them there. A project keeps the version it was created with;
 # to update one, copy the newer file across in its own pull request.
-PROJECT_TOOLS = ["check_figures.py", "check_notebooks.py"]
+PROJECT_TOOLS = ["check_figures.py", "check_notebooks.py", "check_publication.py"]
+
+# Private learning notes (Playbook Part V → Public and Private Content) live in the private
+# financial-model-foundation repository, one file per project, made from its _template.md.
+# They are never written into the project repository.
+DEFAULT_NOTES_DIR = Path.home() / "financial-model-foundation" / "04-learning-notes"
 
 # Folders from the playbook's repository structure, plus assets/ and reports/
 # which the README template lists.
@@ -103,7 +108,7 @@ DOCUMENTS = [
     (["tableau_blueprint_template.md"], "docs/tableau_blueprint.md"),
     (["executive_summary_template.md"], "docs/executive_summary.md"),
     (["presentation_notes_template.md"], "docs/presentation_notes.md"),
-    (["learning_notes_template.md"], "docs/learning_notes.md"),
+    (["published_surfaces_template.md"], "docs/published_surfaces.md"),
     (["phase_00_setup_template.md"], "docs/phase_00_setup.md"),
     (["phase_01_data_preparation_template.md"], "docs/phase_01_data_preparation.md"),
     (["phase_02_business_analysis_template.md"], "docs/phase_02_business_analysis.md"),
@@ -298,6 +303,9 @@ def parse_args():
     p.add_argument("--no-github", action="store_true", help="Skip creating the GitHub repository")
     p.add_argument("--data", help="Dataset folder in the Dataset Library, e.g. ~/datasets/olist. "
                                    "Must hold SOURCE.txt and SHA256SUMS.txt")
+    p.add_argument("--notes-dir", default=str(DEFAULT_NOTES_DIR),
+                   help="Private learning-notes folder (outside the project). Default: "
+                        "~/financial-model-foundation/04-learning-notes")
     p.add_argument("--extra-packages", default="",
                    help="Comma-separated extra packages for requirements.txt")
     p.add_argument("--dry-run", action="store_true", help="Show what would happen, change nothing")
@@ -451,6 +459,24 @@ def setup_git(project_dir, slug, title, args, warnings):
     run(["git", "checkout", "-b", FIRST_BRANCH], project_dir, dry_run)
 
 
+def start_learning_notes(notes_dir, values, dry_run, warnings):
+    """Create <slug>.md in the private notes folder from its _template.md. Returns the path, or None."""
+    template = notes_dir / "_template.md"
+    if not template.is_file():
+        warnings.append("No private learning-notes template at " + str(template) + ". Clone "
+                        "financial-model-foundation to ~/financial-model-foundation, or pass --notes-dir.")
+        return None
+    target = notes_dir / (values["PROJECT_SLUG"] + ".md")
+    print("\nLearning notes (private, outside the project)")
+    if target.exists():
+        print("  exists: " + str(target))
+        return target
+    print("  " + str(target))
+    if not dry_run:
+        target.write_text(render(template.read_text(encoding="utf-8"), values), encoding="utf-8")
+    return target
+
+
 def main():
     args = parse_args()
     templates_dir = Path(args.templates).expanduser()
@@ -490,6 +516,7 @@ def main():
     if data_dir is not None:
         link_dataset(project_dir, data_dir, data_entries, args.dry_run)
     setup_git(project_dir, slug, values["PROJECT_TITLE"], args, warnings)
+    notes = start_learning_notes(Path(args.notes_dir).expanduser(), values, args.dry_run, warnings)
 
     print("\nSummary")
     print("  " + str(len(files)) + " files, " + str(len(FOLDERS)) + " folders")
@@ -505,6 +532,8 @@ def main():
         print("  4. Complete PROJECT_INFO.md (Available Data from data/raw/SOURCE.txt) and docs/phase_00_setup.md")
     else:
         print("  4. Complete PROJECT_INFO.md and docs/phase_00_setup.md")
+    if notes is not None:
+        print("  4b. Learning notes (private): " + str(notes) + " - commit them in financial-model-foundation, not here")
     print("  5. When the Phase 0 exit checklist is done: push the " + FIRST_BRANCH
           + " branch and open a pull request into main")
 

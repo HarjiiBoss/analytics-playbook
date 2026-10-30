@@ -180,7 +180,8 @@ Complete before publishing or sharing the project.
 - [ ] `tools/check_figures.py` passes on README, project page and executive summary
 - [ ] Each metric's name matches its definition
 - [ ] Every external figure has a linked source
-- [ ] Published Surfaces table in the README filled in, each surface checked and dated
+- [ ] `docs/published_surfaces.md` filled in, each surface checked and dated
+- [ ] `python3 tools/check_publication.py` passes: no template comments or placeholders left, no local paths, no private notes in the repository
 - [ ] Executive summary written first; README, dashboard text and presentation built from it
 - [ ] README finalized
 - [ ] Documentation complete
@@ -233,14 +234,13 @@ Select the final project status.
 
 # Methods Explained
 
-<!-- The reasoning behind this phase, written so the project can be reread from start to finish without the chat (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition used in this phase; delete the example block if the phase used none. Plain language, with a worked example where it helps. -->
+<!-- The reasoning behind this phase's choices, written for a reviewer such as a hiring manager or a client's analyst (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition; state each point once, plainly. This is a decision record, not a tutorial: background on how a method works belongs in financial-model-foundation. Delete the example block if the phase used none. -->
 
 ### [Method, rule or definition]
 
-- **What it is:**
-- **Why this one:** the alternatives considered, and why they were not used
-- **How to read the result:**
-- **Worked example:**
+- **Decision:** what was used, with its settings
+- **Alternatives considered:** and why they were not used
+- **How to read the result:** what the output means for the business question, and its limits
 
 ---
 
@@ -255,7 +255,7 @@ The project is complete only when:
 - [ ] Documentation is up to date.
 - [ ] The repository is reproducible.
 - [ ] The project is ready for publication or stakeholder delivery.
-- [ ] Methods Explained filled in for every method, rule or definition used in this phase, and the phase's learning notes added to `docs/learning_notes.md`
+- [ ] Methods Explained filled in for every method, rule or definition used in this phase
 
 ---
 

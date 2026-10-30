@@ -203,14 +203,13 @@ Explain why this method is appropriate, what business question it answers, and w
 
 # Methods Explained
 
-<!-- The reasoning behind this phase, written so the project can be reread from start to finish without the chat (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition used in this phase; delete the example block if the phase used none. Plain language, with a worked example where it helps. -->
+<!-- The reasoning behind this phase's choices, written for a reviewer such as a hiring manager or a client's analyst (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition; state each point once, plainly. This is a decision record, not a tutorial: background on how a method works belongs in financial-model-foundation. Delete the example block if the phase used none. -->
 
 ### [Method, rule or definition]
 
-- **What it is:**
-- **Why this one:** the alternatives considered, and why they were not used
-- **How to read the result:**
-- **Worked example:**
+- **Decision:** what was used, with its settings
+- **Alternatives considered:** and why they were not used
+- **How to read the result:** what the output means for the business question, and its limits
 
 ---
 
@@ -224,7 +223,7 @@ Proceed only when:
 - [ ] Assumptions have been documented.
 - [ ] A validation strategy has been defined.
 - [ ] Expected outputs align with the business decision.
-- [ ] Methods Explained filled in for every method, rule or definition used in this phase, and the phase's learning notes added to `docs/learning_notes.md`
+- [ ] Methods Explained filled in for every method, rule or definition used in this phase
 
 ---
 

@@ -66,6 +66,10 @@ data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
+# Private study notes never go into a project repository (Playbook Part V → Public and Private Content)
+learning_notes*.md
+docs/learning_notes*.md
+
 # Provenance files from the Dataset Library are committed; the data files are not
 !data/raw/SOURCE.txt
 !data/raw/SHA256SUMS.txt
