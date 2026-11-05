@@ -17,7 +17,7 @@ It reads only files Git tracks (so ignored data and private files are skipped) a
      including notebook outputs and Tableau workbooks. They expose folder and user names and
      break on any other machine.
   4. Private notes committed by mistake (learning_notes*.md). Those belong in the private
-     financial-model-foundation repository.
+     analyst-knowledge-base repository.
 
 Exit code 0 when nothing is found, 1 otherwise. It is not a commit hook: comments and
 placeholders are expected while the project is in progress.
@@ -60,7 +60,7 @@ def main():
         if name in SKIP or name.startswith(SKIP_DIRS):
             continue
         if PRIVATE.search(name):
-            problems.append(f"{name}: private learning notes; remove with `git rm --cached` and keep them in financial-model-foundation")
+            problems.append(f"{name}: private learning notes; remove with `git rm --cached` and keep them in analyst-knowledge-base")
             continue
         if path.suffix.lower() not in TEXT_SUFFIXES or not path.is_file():
             continue

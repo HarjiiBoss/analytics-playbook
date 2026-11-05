@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.6.4).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.6.5).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -48,7 +48,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.6.4"
+PLAYBOOK_VERSION = "3.6.5"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -95,9 +95,9 @@ Snapshot:      data/raw/WAREHOUSE_SNAPSHOT.csv, written by the loading notebook 
 PROJECT_TOOLS = ["check_figures.py", "check_notebooks.py", "check_publication.py", "check_phase.py"]
 
 # Private learning notes (Playbook Part V → Public and Private Content) live in the private
-# financial-model-foundation repository, one file per project, made from its _template.md.
+# analyst-knowledge-base repository (formerly financial-model-foundation), one file per project, made from its _template.md.
 # They are never written into the project repository.
-DEFAULT_NOTES_DIR = Path.home() / "financial-model-foundation" / "04-learning-notes"
+DEFAULT_NOTES_DIR = Path.home() / "analyst-knowledge-base" / "08-learning-notes"
 
 # Folders from the playbook's repository structure, plus assets/ and reports/
 # which the README template lists.
@@ -338,7 +338,7 @@ def parse_args():
                         "bigquery: tables queried in BigQuery, checked against a table snapshot")
     p.add_argument("--notes-dir", default=str(DEFAULT_NOTES_DIR),
                    help="Private learning-notes folder (outside the project). Default: "
-                        "~/financial-model-foundation/04-learning-notes")
+                        "~/analyst-knowledge-base/08-learning-notes")
     p.add_argument("--extra-packages", default="",
                    help="Comma-separated extra packages for requirements.txt")
     p.add_argument("--dry-run", action="store_true", help="Show what would happen, change nothing")
@@ -504,7 +504,7 @@ def start_learning_notes(notes_dir, values, dry_run, warnings):
     template = notes_dir / "_template.md"
     if not template.is_file():
         warnings.append("No private learning-notes template at " + str(template) + ". Clone "
-                        "financial-model-foundation to ~/financial-model-foundation, or pass --notes-dir.")
+                        "analyst-knowledge-base to ~/analyst-knowledge-base, or pass --notes-dir.")
         return None
     target = notes_dir / (values["PROJECT_SLUG"] + ".md")
     print("\nLearning notes (private, outside the project)")
@@ -579,7 +579,7 @@ def main():
     else:
         print("  4. Complete PROJECT_INFO.md and docs/phase_00_setup.md")
     if notes is not None:
-        print("  4b. Learning notes (private): " + str(notes) + " - commit them in financial-model-foundation, not here")
+        print("  4b. Learning notes (private): " + str(notes) + " - commit them in analyst-knowledge-base, not here")
     print("  5. When the Phase 0 exit checklist is done: push the " + FIRST_BRANCH
           + " branch and open a pull request into main")
 

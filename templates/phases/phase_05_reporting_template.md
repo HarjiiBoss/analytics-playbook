@@ -234,7 +234,7 @@ Select the final project status.
 
 # Methods Explained
 
-<!-- The reasoning behind this phase's choices, written for a reviewer such as a hiring manager or a client's analyst (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition; state each point once, plainly. This is a decision record, not a tutorial: background on how a method works belongs in financial-model-foundation. Delete the example block if the phase used none. -->
+<!-- The reasoning behind this phase's choices, written for a reviewer such as a hiring manager or a client's analyst (Playbook Part V → Reasoning in the Project Files). One block per method, rule or definition; state each point once, plainly. This is a decision record, not a tutorial: background on how a method works belongs in analyst-knowledge-base. Delete the example block if the phase used none. -->
 
 ### [Method, rule or definition]
 

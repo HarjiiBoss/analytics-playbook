@@ -2,9 +2,9 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.6.4  
+**Current Version:** 3.6.5  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
-**Last Updated:** October 2026
+**Last Updated:** November 2026
 
 ---
 
@@ -91,7 +91,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.6.1 | October 2026 | Added Reasoning in the Project Files (Documentation Standards): a Methods Explained section in every phase document and `docs/learning_notes.md`, created by `new_project.py`. Added Analysis Rules for Observational Projects (Phase 0) with a Reason for every rule, from Project 10. |
 | 3.6.2 | October 2026 | Added Public and Private Content (Repository Standards): learning notes move to the private financial-model-foundation repository, Published Surfaces moves from the README to `docs/published_surfaces.md`, and `tools/check_publication.py` checks a repository before it goes public. Methods Explained rewritten as a decision record for a reviewer. |
 | 3.6.3 | October 2026 | Added `tools/check_phase.py`, one command that runs every check due at the end of a phase, and a line for it in each phase exit checklist and the pull request template. Added `guide/QUICKSTART.md` (with a Word copy): setting up, starting a project, and which check to run when and from which folder. `check_publication.py` no longer reads the check tools themselves. |
-| **3.6.4** | October 2026 | Added provenance for data that stays in a warehouse (Phase 1 → Data Provenance): `new_project.py --source bigquery` adds the BigQuery packages, the BigQuery settings in `.env.example`, a `SOURCE.txt` to fill in, and a Warehouse Snapshot Check in the loading notebook in place of the checksum check. The project `.gitignore` ignores `.virtual_documents/` and `Untitled*.ipynb`. From Project 10 planning. |
+| 3.6.4 | October 2026 | Added provenance for data that stays in a warehouse (Phase 1 → Data Provenance): `new_project.py --source bigquery` adds the BigQuery packages, the BigQuery settings in `.env.example`, a `SOURCE.txt` to fill in, and a Warehouse Snapshot Check in the loading notebook in place of the checksum check. The project `.gitignore` ignores `.virtual_documents/` and `Untitled*.ipynb`. From Project 10 planning. |
+| **3.6.5** | November 2026 | The private study repository was renamed `analyst-knowledge-base` (formerly `financial-model-foundation`) and reordered; learning notes are now in `08-learning-notes/`. `new_project.py`, `check_publication.py`, the README and the Quick Start (and its Word copy) use the new path. |
 
 ---
 
@@ -964,7 +965,7 @@ The project is complete only when another analyst could reproduce the analysis a
 
 # Project-Type Modules
 
-The workflow above applies to every project. A module adds the checks that one type of project needs at each phase, learned from a finished project. A module is written only after a project of that type is complete, and points to the general standard instead of repeating it. Method detail (formulas, worked examples) belongs in the matching track of the financial-model-foundation repository.
+The workflow above applies to every project. A module adds the checks that one type of project needs at each phase, learned from a finished project. A module is written only after a project of that type is complete, and points to the general standard instead of repeating it. Method detail (formulas, worked examples) belongs in the matching track of the analyst-knowledge-base repository.
 
 ## Experiment (A/B test), from Project 9
 
@@ -1758,7 +1759,7 @@ A public repository is read by recruiters, hiring managers and clients, often fo
 |---------|----------------|-----|
 | Findings, charter, phase records, Methods Explained, Corrections | Project repository | The evidence and reasoning a reviewer checks |
 | Published Surfaces list | `docs/published_surfaces.md` | Bookkeeping; kept out of the README so it ends on findings |
-| Learning notes and interview preparation | Private financial-model-foundation repository, `04-learning-notes/<project>.md` | Study material, not professional output |
+| Learning notes and interview preparation | Private analyst-knowledge-base repository, `08-learning-notes/<project>.md` | Study material, not professional output |
 | Raw data, credentials, local paths | Nowhere in the repository | Licensing, security and privacy |
 
 `tools/check_publication.py` checks a project before it goes public: leftover template comments and placeholders, absolute local paths in any tracked text file, and private notes committed by mistake. It runs at the end of Phase 5, not as a commit hook, because comments and placeholders are expected while the work is in progress.
@@ -1849,7 +1850,7 @@ Documentation should explain both **what** was done and **why** it was done.
 
 The reasons for a project's decisions are kept in the project files, not only in the conversation or notes where they were worked out. Someone rereading the repository, the author included, should be able to follow every decision without the chat.
 
-- **Methods Explained**, in each phase document: a decision record for a reviewer. For every method, rule or definition used in the phase: the decision and its settings, the alternatives considered and why they were not used, and how to read the result. Stated once and plainly; background on how a method works belongs in financial-model-foundation, not in the project.
+- **Methods Explained**, in each phase document: a decision record for a reviewer. For every method, rule or definition used in the phase: the decision and its settings, the alternatives considered and why they were not used, and how to read the result. Stated once and plainly; background on how a method works belongs in analyst-knowledge-base, not in the project.
 - **Reasons beside rules:** every Decision Rule or Analysis Rule in `PROJECT_INFO.md` carries its reason.
 - **Learning notes** are private and kept outside the project (see Public and Private Content).
 - Notebooks follow the Notebook Header and Code Comment Standards.

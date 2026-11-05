@@ -13,7 +13,7 @@ A Word copy of this page is in [`Playbook_Quick_Start.docx`](Playbook_Quick_Star
 | `~/analytics-playbook` | The playbook, templates and tools. New projects are created from here | Public repository |
 | `~/projects/<project-name>` | Each project made by `new_project.py` | One repository per project |
 | `~/datasets/<source>` | Downloaded raw data, with `SOURCE.txt` and `SHA256SUMS.txt` (data in BigQuery stays there) | Never committed |
-| `~/financial-model-foundation/04-learning-notes` | Private learning notes and interview prep, one file per project | Private repository |
+| `~/analyst-knowledge-base/08-learning-notes` | Private learning notes and interview prep, one file per project | Private repository |
 
 Two folders, two kinds of command:
 
@@ -28,7 +28,7 @@ Two folders, two kinds of command:
    ```bash
    cd ~
    git clone https://github.com/HarjiiBoss/analytics-playbook.git
-   git clone https://github.com/HarjiiBoss/financial-model-foundation.git
+   git clone https://github.com/HarjiiBoss/analyst-knowledge-base.git
    ```
 2. Log the GitHub CLI in, so `new_project.py` can create repositories:
    ```bash
@@ -77,7 +77,7 @@ Run from `~/analytics-playbook`.
    ```
    The first three lines should say PASS. The unticked boxes it lists are your Phase 0 to-do list.
 6. You are now on the `phase-0-scoping` branch. Fill in `PROJECT_INFO.md` and `docs/phase_00_setup.md`.
-7. Your private learning notes file is at `~/financial-model-foundation/04-learning-notes/<project-name>.md`. Commit it in that repository, never in the project.
+7. Your private learning notes file is at `~/analyst-knowledge-base/08-learning-notes/<project-name>.md`. Commit it in that repository, never in the project.
 
 ---
 

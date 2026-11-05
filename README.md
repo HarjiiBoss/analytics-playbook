@@ -110,7 +110,7 @@ python3 tools/check_phase.py N
 | `check_figures.py` | Figures in the README and pages that no output holds |
 | `check_publication.py` | Template text, local paths and private notes left before the repository goes public |
 
-The pre-commit hooks run the notebook and figure checks on every commit. Learning notes are private: `new_project.py` starts them in `~/financial-model-foundation/04-learning-notes/<project>.md`, outside the project repository.
+The pre-commit hooks run the notebook and figure checks on every commit. Learning notes are private: `new_project.py` starts them in `~/analyst-knowledge-base/08-learning-notes/<project>.md`, outside the project repository.
 
 ---
 
