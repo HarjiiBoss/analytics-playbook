@@ -2,7 +2,7 @@
 """
 new_project.py
 
-Creates a new analytics project that follows the Data Analysis Playbook (v3.6.5).
+Creates a new analytics project that follows the Data Analysis Playbook (v3.6.6).
 
 The tool lives in the analytics-playbook repository and reads the templates from
 that repository's templates/ folder, so the playbook, the templates and the tool
@@ -48,7 +48,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLAYBOOK_VERSION = "3.6.5"
+PLAYBOOK_VERSION = "3.6.6"
 DEFAULT_AUTHOR = "Taofeek Salami"
 FIRST_BRANCH = "phase-0-scoping"
 COMMIT_MESSAGE = "docs: initialise project scaffold from Playbook v" + PLAYBOOK_VERSION
@@ -361,6 +361,21 @@ def collect_details(args):
     }
 
 
+# Text filled into the templates according to --source.
+SOURCE_TEXT = {
+    "files": {
+        "SQL_ENVIRONMENT_EXAMPLE": "-- USE database_name;",
+        "PROVENANCE_FILES": "data/raw/SOURCE.txt and data/raw/SHA256SUMS.txt",
+    },
+    "bigquery": {
+        # BigQuery has no USE statement; every table is named in full.
+        "SQL_ENVIRONMENT_EXAMPLE": ("-- BigQuery has no USE statement: name every table in full, e.g.\n"
+                                    "-- FROM `bigquery-public-data.dataset_name.table_name`"),
+        "PROVENANCE_FILES": "data/raw/SOURCE.txt and data/raw/WAREHOUSE_SNAPSHOT.csv",
+    },
+}
+
+
 def build_values(details):
     today = datetime.date.today().isoformat()
     values = dict(details)
@@ -376,6 +391,10 @@ def build_values(details):
 
 def build_files(index, values, extra_packages, warnings, source="files"):
     """Return {output path: file text}. Nothing is written here."""
+    # Template text that differs by data source (the SQL environment example and the
+    # provenance files named in PROJECT_INFO), filled into {{...}} placeholders.
+    values = dict(values)
+    values.update(SOURCE_TEXT[source])
     if source == "bigquery":
         extra_packages = ",".join(BIGQUERY_PACKAGES + [extra_packages])
     files = {}

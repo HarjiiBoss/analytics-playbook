@@ -2,7 +2,7 @@
 ## A Personal Standard Operating Procedure for End-to-End Analytics Projects
 
 **Author:** Taofeek Salami  
-**Current Version:** 3.6.5  
+**Current Version:** 3.6.6  
 **First Formalized:** July 2026 (Project 08 — Fintech Credit Risk Analysis)  
 **Last Updated:** November 2026
 
@@ -23,7 +23,7 @@ It serves four primary purposes:
 - Produce technically defensible analyses.
 - Deliver business insights that stakeholders can confidently act upon.
 
-This playbook is intentionally tool-agnostic. Whether using SQL, Python, Excel, Tableau, Power BI, R, DuckDB, Spark, or another platform, the underlying analytical process remains the same.
+This playbook is intentionally tool-agnostic. Whether using SQL, Python, Excel, Tableau, R, DuckDB, Spark, or another platform, the underlying analytical process remains the same.
 
 ---
 
@@ -92,7 +92,8 @@ If a technique increases complexity without improving these qualities, it should
 | 3.6.2 | October 2026 | Added Public and Private Content (Repository Standards): learning notes move to the private financial-model-foundation repository, Published Surfaces moves from the README to `docs/published_surfaces.md`, and `tools/check_publication.py` checks a repository before it goes public. Methods Explained rewritten as a decision record for a reviewer. |
 | 3.6.3 | October 2026 | Added `tools/check_phase.py`, one command that runs every check due at the end of a phase, and a line for it in each phase exit checklist and the pull request template. Added `guide/QUICKSTART.md` (with a Word copy): setting up, starting a project, and which check to run when and from which folder. `check_publication.py` no longer reads the check tools themselves. |
 | 3.6.4 | October 2026 | Added provenance for data that stays in a warehouse (Phase 1 → Data Provenance): `new_project.py --source bigquery` adds the BigQuery packages, the BigQuery settings in `.env.example`, a `SOURCE.txt` to fill in, and a Warehouse Snapshot Check in the loading notebook in place of the checksum check. The project `.gitignore` ignores `.virtual_documents/` and `Untitled*.ipynb`. From Project 10 planning. |
-| **3.6.5** | November 2026 | The private study repository was renamed `analyst-knowledge-base` (formerly `financial-model-foundation`) and reordered; learning notes are now in `08-learning-notes/`. `new_project.py`, `check_publication.py`, the README and the Quick Start (and its Word copy) use the new path. |
+| 3.6.5 | November 2026 | The private study repository was renamed `analyst-knowledge-base` (formerly `financial-model-foundation`) and reordered; learning notes are now in `08-learning-notes/`. `new_project.py`, `check_publication.py`, the README and the Quick Start (and its Word copy) use the new path. |
+| **3.6.6** | November 2026 | `new_project.py` fills source-specific text into the templates: a `--source bigquery` project's SQL stubs show a fully qualified table instead of MySQL's `USE`, and its PROJECT_INFO Available Data comment names `SOURCE.txt` and `WAREHOUSE_SNAPSHOT.csv` instead of `SHA256SUMS.txt`. Power BI removed from the tool-agnostic list in the introduction. |
 
 ---
 

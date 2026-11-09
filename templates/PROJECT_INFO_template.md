@@ -146,7 +146,7 @@ Set before any outcome data was examined.
 
 # Available Data
 
-<!-- Copy source, licence, download date and checksum file from data/raw/SOURCE.txt and data/raw/SHA256SUMS.txt (Playbook Phase 1 → Dataset Library). -->
+<!-- Copy source, licence, access date and integrity check from {{PROVENANCE_FILES}} (Playbook Phase 1 → Dataset Library). -->
 
 | Dataset | Source | Publisher/uploader | Refresh Frequency | Status |
 |----------|--------|--------------------|-------------------|--------|
